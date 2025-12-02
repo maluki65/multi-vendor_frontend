@@ -1,0 +1,9 @@
+@media(min-width:2560px){
+  .ErroIcon{
+      width:200px;
+      height:200px;
+  }
+  .ErroH1{
+      font-size: 5em;
+  }
+}

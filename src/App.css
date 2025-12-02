@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme{
+  --color-primary: #1A73E8;
+  --color-secondary: #FBBF24;
+  --color-high: #2444fb;
+  --color-dark: #111827;
+  --color-light: #F3F4F6;
+  --color-success: #10B981;
+  --color-error: #EF4444;
+  --color-muted: #9CA3AF;
+
+  --font-sans: Inter, sans-serif;
+  --font-display: "Playfair Display", serif;
+}

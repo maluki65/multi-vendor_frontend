@@ -1,0 +1,12 @@
+.page{
+  background-color: #fff;
+}
+.slide {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #d1cdcd;
+  width: 100%;
+  height: 100%;
+}
