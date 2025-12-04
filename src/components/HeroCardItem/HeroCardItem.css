@@ -1,0 +1,14 @@
+@media(min-width: 2560px){
+  .Hcard{
+    height: 550px;
+  }
+  .HCText{
+    font-size: 3rem;
+  }
+  .HCLink{
+    font-size: 2.5em;
+  }
+  .CText{
+    font-size: 1.9em;
+  }
+}

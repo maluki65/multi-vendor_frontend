@@ -1,0 +1,60 @@
+@media(min-width: 2560px){
+  .HeroC{
+    height: 100vh;
+    padding: 20px 30px;
+    padding-top: 3em;
+    gap: 6em;
+  }
+  .HeroC h1{
+    font-size: 7rem;
+  }
+  .started{
+    font-size: 2.3rem;
+  }
+  .HImg img, .HImg p{
+    height: 130px;
+    width: 130px;
+  }
+  .HImg p, .Hp h2, .Hp p{
+    font-size: 2em;
+  }
+}
+
+@media(max-width: 768px){
+  .HeroC h1{
+    font-size: 2.5em;
+  }
+}
+
+@media(max-width: 626px){
+  .HeroC h1{
+    font-size: 1.9em;
+  }
+}
+
+@media(max-width: 426px){
+  .HContainer{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .HeroC h1{
+    font-size: 2.4em;
+  }
+  .HICon{
+    align-items: start;
+  }
+  .HCards{
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media(max-width: 376px){
+  .HeroC h1{
+    font-size: 2.3em;
+  }
+}
+
+@media(max-width: 321px){
+  .HeroC h1{
+    font-size: 1.9em;
+  }
+}

@@ -81,7 +81,7 @@ function Navbar() {
 
   return (
     <>
-      <div className={`mt-2 py-1 px-[3%] flex items-center justify-between top-0 z-1000 w-full ${sticky ? 'backdrop-blur-[20px] bg-[rgb(238, 236, 236)]' : ''} navbar`}>
+      <div className={`sticky py-2.5 px-[3%] flex items-center  justify-between top-0 z-1000 w-full transition-all duration-300  ${sticky ? 'backdrop-blur-[20px] bg-[#ebe7e7]' : 'bg-transparent'} navbar`}>
         <div className='logo'>
           <h1 className='text-dark text-[1.2em] font-semibold'>
             Multi-Vendor
@@ -109,14 +109,14 @@ function Navbar() {
 
         <div className='flex gap-3 items-center Sign'>
           <a 
-           className='text-dark cursor-pointer font-semibold flex items-center gap-1'
+           className='text-dark cursor-pointer font-semibold flex items-center gap-1 regBtn'
            onClick={handleLogIn}
            > 
            <CiUser strokeWidth={1} />
             Sign In
           </a>
           <button 
-           className='px-3 py-2 bg-primary cursor-pointer text-light rounded-md'
+           className='px-3 py-2 bg-primary cursor-pointer text-light rounded-md regBtn'
            onClick={handleRegister}
            >
            Get Started
