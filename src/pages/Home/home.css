@@ -1,12 +1,6 @@
 @media(min-width: 2560px){
-  .HeroC{
-    height: 100vh;
-    padding: 20px 30px;
-    padding-top: 3em;
-    gap: 6em;
-  }
-  .HeroC h1{
-    font-size: 7rem;
+  .HeroC h1, .ProdCon h1{
+    font-size: 6rem;
   }
   .started{
     font-size: 2.3rem;
@@ -15,8 +9,14 @@
     height: 130px;
     width: 130px;
   }
-  .HImg p, .Hp h2, .Hp p{
+  .HImg p, .Hp h2, .Hp p, .ProdCon button {
     font-size: 2em;
+  }
+  .ProdCon p {
+    font-size: 1.8em;
+  }
+  .Ptext{
+    width: 100%;
   }
 }
 
@@ -29,6 +29,12 @@
 @media(max-width: 626px){
   .HeroC h1{
     font-size: 1.9em;
+  }
+  .PTContainer{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .Ptext{
+    width: 100%;
   }
 }
 

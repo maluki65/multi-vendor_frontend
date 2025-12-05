@@ -18,7 +18,7 @@ function home() {
   return (
     <Inner>
       <Navabar/>
-      <section className='min-h-[70vh] px-[4%] pt-3.5 flex flex-col gap-1 my-4.5 overflow-hidden HeroC'>
+      <section className='min-h-[70vh] px-[4%] pt-3.5 flex flex-col gap-1 overflow-hidden HeroC'>
         <div className='grid grid-cols-[60%_40%] gap-5 HContainer'>
           <h1 className='text-5xl font-thin tracking-wide font-sans text-[#383636]'>Discover quality products from <span className='font-bold text-dark'>trusted </span>vendors—shipped sustainably <span>→</span> <span className='rounded-full text-light p-1 bg-secondary text-base cursor-pointer text-center started' onClick={handleNavigate}>Get started</span>
           </h1>
@@ -51,17 +51,17 @@ function home() {
         </div>
       </section>
 
-      <section className='min-h-[50vh] my-1.5 px-[4%] overflow-hidden gap-4'>
-        <div className='grid grid-cols-[70%_30%] gap-3 my-2'>
+      <section className='min-h-[50vh] my-1.5 px-[4%] overflow-hidden ProdCon'>
+        <div className='grid grid-cols-[70%_30%] gap-3 my-2 PTContainer'>
           <div className='flex flex-col gap-3'>
             <button className='rounded-full py-1 px-2 bg-transparent text-dark font-sans border border-dark cursor-pointer w-fit text-sm'>
              Browse Full Collection
             </button>
-            <h1 className='text-4xl font-sans w-[50%]'>
+            <h1 className='text-4xl font-sans w-[50%] Ptext'>
              The Products Everyone’s Falling For
             </h1>
           </div>
-          <div className='flex flex-col  gap-3 justify-center'>
+          <div className='flex flex-col  gap-3 justify-center Prod'>
             <p className='text-[#383636] font-sans '>
               A curated list of the top-chosen products—celebrated for quality, value, and the stories they bring into people’s lives.
             </p>

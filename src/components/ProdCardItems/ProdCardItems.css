@@ -1,0 +1,9 @@
+@media(min-width: 2560px){
+  h3 {
+    font-size: 1.8em;
+  }
+  .SIcon{
+    width: 2em;
+    height: 2em;
+  }
+}

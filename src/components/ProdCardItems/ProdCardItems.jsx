@@ -20,7 +20,7 @@ function ProdCardItems({ prodCard }) {
         />
       </div>
       <div className="px-2.5">
-        <div className='flex justify-between items-center'>
+        <div className='flex justify-between items-center '>
           <h3 className="text-sm font-semibold text-dark">{prodCard.title}</h3>
           <p className="font-semibold">${prodCard.price}</p>
         </div>
@@ -28,7 +28,7 @@ function ProdCardItems({ prodCard }) {
           {[...Array(prodCard.rating)].map((_, index) => (
             <PiStarFill
               key={index}
-              className='text-secondary w-4 h-4'/>
+              className='text-secondary w-4 h-4 SIcon'/>
           ))}
         </span>
       </div>
