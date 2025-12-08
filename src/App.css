@@ -13,3 +13,11 @@
   --font-sans: Inter, sans-serif;
   --font-display: "Playfair Display", serif;
 }
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin{
+  animation: spin 5s linear infinite;
+}

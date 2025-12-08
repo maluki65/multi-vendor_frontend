@@ -1,9 +1,10 @@
 import React from 'react'
 import './home.css';
 import { useNavigate } from 'react-router-dom';
+import { GoNorthStar } from "react-icons/go";
 import { Inner } from '../../commons';
 import { Navabar } from '../../components';
-import { round01, round02, round03 } from '../../assets';
+import { round01, round02, round03, Create, WYellow, WPink, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07 } from '../../assets';
 import { HeroCardItem, ProdCardItem } from '../../components';
 import { HeroCards, ProdCards } from '../../commons';
 
@@ -51,7 +52,7 @@ function home() {
         </div>
       </section>
 
-      <section className='min-h-[50vh] my-1.5 px-[4%] overflow-hidden ProdCon'>
+      <section className='min-h-[50vh] my-1.5 px-[4%] overflow-hidden ProdCon' id='Products'>
         <div className='grid grid-cols-[70%_30%] gap-3 my-2 PTContainer'>
           <div className='flex flex-col gap-3'>
             <button className='rounded-full py-1 px-2 bg-transparent text-dark font-sans border border-dark cursor-pointer w-fit text-sm'>
@@ -78,6 +79,123 @@ function home() {
               </div>
             )
           })}
+        </div>
+      </section>
+
+      <section className='min-h-[60vh] my-16 px-[4%] overflow-hidden flex flex-col gap-10' id='About'>
+        <div className='flex justify-center'>
+          <h1 class="text-6xl text-dark font-sans NPText ">
+            <span class="flex items-start gap-2">
+              <span class="bg-[#ebe7e7] rounded-full p-1 text-dark animate-spin"><GoNorthStar size={30}/></span>
+              <span>Supercharging Merchants</span>
+            </span>
+
+            <span class="flex indent-12">
+              <span>and Vendors for</span>
+              <span class="text-primary">
+               →
+              </span>
+            </span>
+
+            <span class="block indent-20">Maximum Profit</span>
+          </h1>
+        </div>
+        <div className='grid grid-cols-2 gap-4 Sec02'>
+          <div className='flex flex-col gap-2 justify-center'>
+            <h2 className='text-dark font-sans font-semibold'>
+              A Unified Marketplace Built for Growth
+            </h2>
+            <p className='text-base tracking-tight font-sans'>
+             Our platform connects servide providers, suppliers, and vendors in a seamless digital ecosystem designed to simplify trade and increase profitability. From modern tools to trusted logistics and secure payments, we provide everything you need to grow your business with confidence.
+            </p>
+          </div>
+          <img  src={Create} className='rounded-md h-[400px] w-full object-cover'/>
+        </div>
+      </section>
+
+      <section className='min-h-[60vh] my-16 px-[4%] overflow-hidden flex flex-col gap-4 justify-center'>
+        <div className='grid grid-cols-2 gap-3'>
+          <img 
+            src={wSec05}
+            loading='lazy'
+            className='rounded-xl h-[450px] w-full object-fit'
+          />
+          <div className='min-h-[450px] bg-[#ebe7e7] rounded-xl px-2 py-2.5'>
+            <h1 className='text-2xl text-dark font-sans'>
+              Why Choose Us
+            </h1>
+            <p className='text-[#303030] my-1.5'>
+             We bring together trusted vendors, unbeatable prices, and a seamless shopping experience—all in one place. Enjoy faster delivery, verified sellers, and a platform designed to make every purchase simple, secure, and rewarding.
+            </p>
+            <div className="space-y-4 " id='Why Us'>
+              <details className="group [&_summary::-webkit-details-marker]:hidden transition ease-in duration-700 ">
+                  <summary
+                      className="flex items-center justify-between gap-1 rounded-md p-1"
+                  >
+                      <h2 className="text-lg   cursor-pointer text-[#070707] hover:underline font-medium">Unrivaled Quality</h2>
+
+                      <svg
+                      className="size-5 shrink-0 transition-transform cursor-pointer duration-300 text-[#070707] group-open:-rotate-180"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                  </summary>
+
+                  <p className="px-1 pt-1  text-[#303030]">
+                    Premium standards that deliver performance you can trust.
+                  </p>
+              </details>
+              <hr className='my-[5px] h-[1.5px]  bg-[#e4e2e21a]'/>
+              <details className="group [&_summary::-webkit-details-marker]:hidden transition ease-in duration-700 ">
+                  <summary
+                      className="flex items-center justify-between gap-1 rounded-md p-1"
+                  >
+                      <h2 className="text-lg   cursor-pointer text-[#070707] hover:underline font-medium">Customer-First Approach</h2>
+
+                      <svg
+                      className="size-5 shrink-0 transition-transform cursor-pointer duration-300 text-[#070707] group-open:-rotate-180"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                  </summary>
+
+                  <p className="px-1 pt-1  text-[#303030]">
+                   Service tailored around your needs, goals, and experience.
+                  </p>
+              </details>
+              <hr className='my-[5px] h-[1.5px]  bg-[#e4e2e21a]'/>
+              <details className="group [&_summary::-webkit-details-marker]:hidden transition ease-in duration-700 ">
+                  <summary
+                      className="flex items-center justify-between gap-1 rounded-md p-1"
+                  >
+                      <h2 className="text-lg   cursor-pointer text-[#070707] hover:underline font-medium">Trusted by Thousands</h2>
+
+                      <svg
+                      className="size-5 shrink-0 transition-transform cursor-pointer duration-300 text-[#070707] group-open:-rotate-180"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                  </summary>
+
+                  <p className="px-1 pt-1  text-[#303030]">
+                   A reputation strengthened by real people, real stories, and real success.
+                  </p>
+              </details>
+              <hr className='my-[5px] h-[1.5px]  bg-[#e4e2e21a]'/>
+            </div>
+          </div>
         </div>
       </section>
     </Inner>

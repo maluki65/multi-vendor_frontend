@@ -2,14 +2,14 @@
   .HeroC h1, .ProdCon h1{
     font-size: 6rem;
   }
-  .started{
+  .started, .Sec02 h2{
     font-size: 2.3rem;
   }
   .HImg img, .HImg p{
     height: 130px;
     width: 130px;
   }
-  .HImg p, .Hp h2, .Hp p, .ProdCon button {
+  .HImg p, .Hp h2, .Hp p, .ProdCon button, .Sec02 p{
     font-size: 2em;
   }
   .ProdCon p {
@@ -18,11 +18,24 @@
   .Ptext{
     width: 100%;
   }
+  .NPText{
+    font-size: 9rem;
+  }
+  .NPText span:last-child{
+    text-indent: 90px;
+  }
+  .Sec02 img{
+    width: 100%;
+    height: 35vw;
+  }
 }
 
 @media(max-width: 768px){
   .HeroC h1{
     font-size: 2.5em;
+  }
+  .NPText{
+    font-size: 3rem;
   }
 }
 
@@ -35,6 +48,12 @@
   }
   .Ptext{
     width: 100%;
+  }
+  .NPText{
+    font-size: 2.5rem;
+  }
+  .Sec02{
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
@@ -51,11 +70,17 @@
   .HCards{
     grid-template-columns: repeat(1, 1fr);
   }
+  .NPText{
+    font-size: 1.5rem;
+  }
 }
 
 @media(max-width: 376px){
   .HeroC h1{
     font-size: 2.3em;
+  }
+  .Sec02 img{
+    height: 65vw;
   }
 }
 
