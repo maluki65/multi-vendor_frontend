@@ -1,15 +1,15 @@
 @media(min-width: 2560px){
-  .HeroC h1, .ProdCon h1{
+  .HeroC h1, .ProdCon h1, .wSec h1{
     font-size: 6rem;
   }
-  .started, .Sec02 h2{
+  .started, .Sec02 h2, .wSec h2{
     font-size: 2.3rem;
   }
   .HImg img, .HImg p{
     height: 130px;
     width: 130px;
   }
-  .HImg p, .Hp h2, .Hp p, .ProdCon button, .Sec02 p{
+  .HImg p, .Hp h2, .Hp p, .ProdCon button, .Sec02 p, .wSec p{
     font-size: 2em;
   }
   .ProdCon p {
@@ -24,9 +24,15 @@
   .NPText span:last-child{
     text-indent: 90px;
   }
-  .Sec02 img{
+  .Sec02 img, .wSec img{
     width: 100%;
     height: 35vw;
+  }
+  .star{
+    display: none;
+  }
+  .wSec button{
+    font-size: 1.8em;
   }
 }
 
@@ -54,6 +60,16 @@
   }
   .Sec02{
     grid-template-columns: repeat(1, 1fr);
+  }
+  .WSCards{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .wCSec{
+    display: flex;
+    flex-wrap: wrap-reverse;
+  }
+  .star{
+    display: none;
   }
 }
 

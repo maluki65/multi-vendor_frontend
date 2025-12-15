@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { GoNorthStar } from "react-icons/go";
 import { Inner } from '../../commons';
 import { Navabar } from '../../components';
-import { round01, round02, round03, Create, WYellow, WPink, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07 } from '../../assets';
+import { round01, round02, round03, Create, WYellow, WPink, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013  } from '../../assets';
 import { HeroCardItem, ProdCardItem } from '../../components';
 import { HeroCards, ProdCards } from '../../commons';
 
@@ -113,14 +113,14 @@ function home() {
         </div>
       </section>
 
-      <section className='min-h-[60vh] my-16 px-[4%] overflow-hidden flex flex-col gap-4 justify-center'>
-        <div className='grid grid-cols-2 gap-3'>
+      <section className='min-h-[60vh] my-16 px-[4%] overflow-hidden flex flex-col gap-4 justify-center wSec'>
+        <div className='grid grid-cols-2 gap-3 wCSec'>
           <img 
             src={wSec05}
             loading='lazy'
             className='rounded-xl h-[450px] w-full object-fit'
           />
-          <div className='min-h-[450px] bg-[#ebe7e7] rounded-xl px-2 py-2.5'>
+          <div className='min-h-[450px] bg-[#ebe7e7] rounded-xl py-2 px-2.5'>
             <h1 className='text-2xl text-dark font-sans'>
               Why Choose Us
             </h1>
@@ -150,7 +150,7 @@ function home() {
                   </p>
               </details>
               <hr className='my-[5px] h-[1.5px]  bg-[#e4e2e21a]'/>
-              <details className="group [&_summary::-webkit-details-marker]:hidden transition ease-in duration-700 ">
+              <details className="group [&_summary::-webkit-details-marker]:hidden transition ease-in duration-700 " open>
                   <summary
                       className="flex items-center justify-between gap-1 rounded-md p-1"
                   >
@@ -194,6 +194,50 @@ function home() {
                   </p>
               </details>
               <hr className='my-[5px] h-[1.5px]  bg-[#e4e2e21a]'/>
+            </div>
+          </div>
+        </div>
+        <div className='grid grid-cols-[1fr_1fr_1fr_2fr] gap-2 WSCards'>
+          <div className='flex flex-col gap-2 rounded-md bg-amber-200 p-2 space-y-2'>
+            <h2 className='text-xl'>
+             100% Genuine Products
+            </h2>
+            <p className='text-[#747474] text-sm'>
+             Sourced directly to guarantee originality and long-lasting quality you can trust.
+            </p>
+            <button className='border-[1.5px] rounded-full text-dark text-sm cursor-pointer p-1 w-fit self-end'>
+              See More
+            </button>
+          </div>
+          <div className='flex flex-col gap-2 rounded-md bg-[#ebe7e7] p-2 space-y-2'>
+            <h2 className='text-xl'>
+             Enjoy Free & Simple Returns
+            </h2>
+            <p className='text-[#747474] text-sm'>
+             Return or exchange with zero stress, thanks to our simple and customer-friendly process.
+            </p>
+            <button className='border-[1.5px] rounded-full text-dark text-sm cursor-pointer p-1 w-fit self-end'>
+              See More
+            </button>
+          </div>
+          <div className='flex flex-col gap-2 rounded-md bg-[#ebe7e7] p-2 space-y-2'>
+            <h2 className='text-xl'>
+             Safe & Encrypted Checkout
+            </h2>
+            <p className='text-[#747474] text-sm'>
+             Your transactions are fully protected with secure, encrypted payment technology.
+            </p>
+            <button className='border-[1.5px] rounded-full text-dark text-sm cursor-pointer p-1 w-fit self-end'>
+              See More
+            </button>
+          </div>
+          <div className='relative bg-center rounded-md' style={{ backgroundImage: `url(${wSec03})`}}>
+            <div className='absolute inset-0 flex items-end p-2.5 justify-between'>
+              <h2 className='text-white text-xl font-bold'>
+                Everyday <br/> Wear
+              </h2>
+              <p className='bg-orange-500 h-32 w-32 flex items-center justify-center text-white gap-1 star' style={{clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 68%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)'}}>10% <span className=''>
+              OFF</span></p>
             </div>
           </div>
         </div>
