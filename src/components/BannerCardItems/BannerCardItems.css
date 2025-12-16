@@ -1,0 +1,67 @@
+@media (min-width: 2560px){
+  .BSText{
+    padding: 25px;
+  }
+  .BSText h1{
+    font-size: 3.5em;
+  }
+  .BSText p{
+    font-size: 2em;
+  }
+  .BSText button{
+    font-size: 2em;
+    padding:10px 15px;
+  }
+  .BSImg{
+    height: 30vw;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 1025px){
+  .BSText h1{
+    width: 70%;
+  }
+}
+
+@media (max-width: 769px){
+  .BSText h1{
+    width: 100%;
+    font-size: 1.8em;
+  }
+  .BSImg{
+    height: 35vw;
+  }
+}
+
+@media (max-width: 626px){
+  .BSText h1{
+    width: 100%;
+    font-size: 1.5em;
+  }
+  .BSText p{
+    width: 100%;
+    font-size: 13px;
+  }
+}
+
+@media ( max-width: 426px){
+  .BContainer{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .BSImg{
+    height: 45vw;
+  }
+  .BSText h1{
+    font-size: 1.2em;
+  }
+  .BSText p{
+    font-size: 12px;
+  }
+}
+
+@media ( max-width: 376px){
+  .BSImg{
+    height: 55vw;
+  }
+}

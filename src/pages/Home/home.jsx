@@ -2,11 +2,16 @@ import React from 'react'
 import './home.css';
 import { useNavigate } from 'react-router-dom';
 import { GoNorthStar } from "react-icons/go";
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import { Inner } from '../../commons';
 import { Navabar } from '../../components';
 import { round01, round02, round03, Create, WYellow, WPink, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013  } from '../../assets';
-import { HeroCardItem, ProdCardItem } from '../../components';
-import { HeroCards, ProdCards } from '../../commons';
+import { HeroCardItem, ProdCardItem, BannerCardItems } from '../../components';
+import { HeroCards, ProdCards, BannerCards } from '../../commons';
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 
 function home() {
@@ -84,20 +89,20 @@ function home() {
 
       <section className='min-h-[60vh] my-16 px-[4%] overflow-hidden flex flex-col gap-10' id='About'>
         <div className='flex justify-center'>
-          <h1 class="text-6xl text-dark font-sans NPText ">
-            <span class="flex items-start gap-2">
-              <span class="bg-[#ebe7e7] rounded-full p-1 text-dark animate-spin"><GoNorthStar size={30}/></span>
+          <h1 className="text-6xl text-dark font-sans NPText ">
+            <span className="flex items-start gap-2">
+              <span className="bg-[#ebe7e7] rounded-full p-1 text-dark animate-spin"><GoNorthStar size={30}/></span>
               <span>Supercharging Merchants</span>
             </span>
 
-            <span class="flex indent-12">
+            <span className="flex indent-12">
               <span>and Vendors for</span>
-              <span class="text-primary">
+              <span className="text-primary">
                →
               </span>
             </span>
 
-            <span class="block indent-20">Maximum Profit</span>
+            <span className="block indent-20">Maximum Profit</span>
           </h1>
         </div>
         <div className='grid grid-cols-2 gap-4 Sec02'>
@@ -241,6 +246,27 @@ function home() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className='min-h-[50vh] my-12 px-[4%] overflow-hidden '>
+        <Swiper
+         spaceBetween={0}
+         autoplay={{
+          delay: 3500,
+          disableOnInteraction: false,
+         }}
+         pagination={{
+          clickable: true,
+         }}
+         navigation={false}
+         modules={[Autoplay, Pagination, Navigation]}
+         className='mySwiper'>
+         {BannerCards.map((item, index) => (
+          <SwiperSlide key={index}>
+            <BannerCardItems banner={item}/>
+          </SwiperSlide>
+         ))}
+         </Swiper>
       </section>
     </Inner>
   )

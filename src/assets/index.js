@@ -25,6 +25,12 @@ import wSec06 from './wSec06.jpg';
 import wSec07 from './wSec07.jpg';
 import wSec011 from './wSec011.jpg';
 import wSec012 from './wSec012.jpg';
-import wSec013 from './wSec013.jpg'
+import wSec013 from './wSec013.jpg';
+import BB01 from './BB01.png';
+import BB02 from './BB02.png';
+import BP01 from './BP01.png';
+import BP02 from './BP02.png';
+import BS01 from './BS01.png';
+import BS02 from './BS02.png';
 
-export { round01, round02, round03, HImg01, HImg02, HImg03, HImg04, HImg05, Prod01, Prod02, Prod03, Prod04, Prod05, Prod06, WPink, WYellow, Create, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013 };
+export { round01, round02, round03, HImg01, HImg02, HImg03, HImg04, HImg05, Prod01, Prod02, Prod03, Prod04, Prod05, Prod06, WPink, WYellow, Create, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013, BB01,BB02, BP01, BP02, BS01, BS02 };
