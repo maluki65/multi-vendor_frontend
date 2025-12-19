@@ -48,6 +48,7 @@ function Navbar() {
     return () => {
       links.forEach(link => {
         link.removeEventListener('click', closeNavBar);
+        //setIsOpen(false);
       });
     }
   }, []);

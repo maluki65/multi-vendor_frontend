@@ -2,7 +2,7 @@ import { Prod01, Prod02, Prod03, Prod04, Prod05, Prod06 } from "../../assets";
 
 const prodCards = [
   {
-    id: 1,
+    id: 15535,
     title: 'Sunny Dress',
     price: 1500,
     rating: 4,
@@ -10,7 +10,7 @@ const prodCards = [
     size: 'md'
   },
   {
-    id: 2,
+    id: 26464,
     title: 'Hoodie for Men',
     price: 700,
     rating: 4,
@@ -18,7 +18,7 @@ const prodCards = [
     size: 'lg'
   },
   {
-    id: 3,
+    id: 33465645,
     title: 'Water Bottle',
     price: 200,
     rating: 4,
@@ -26,7 +26,7 @@ const prodCards = [
     size: 'sm'
   },
   {
-    id: 4,
+    id: 453454,
     title: 'cap',
     price: 250,
     rating: 5,

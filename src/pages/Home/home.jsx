@@ -2,15 +2,16 @@ import React from 'react'
 import './home.css';
 import { useNavigate } from 'react-router-dom';
 import { GoNorthStar } from "react-icons/go";
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { Autoplay, Pagination, Navigation, EffectCards } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import 'swiper/css/effect-cards';
+import { Link } from 'react-router-dom';
 import { Inner } from '../../commons';
-import { Navabar } from '../../components';
+import { Navabar, HeroCardItem, ProdCardItem, BannerCardItems, ProductItems, TestimonialItems, Footer } from '../../components';
+import { HeroCards, ProdCards, BannerCards, ProductCards, Testimonials } from '../../commons';
 import { round01, round02, round03, Create, WYellow, WPink, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013  } from '../../assets';
-import { HeroCardItem, ProdCardItem, BannerCardItems } from '../../components';
-import { HeroCards, ProdCards, BannerCards } from '../../commons';
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 
@@ -20,6 +21,13 @@ function home() {
   const handleNavigate = () => {
     navigate('/register')
   }
+
+  const ProductCategory = [
+    { name: 'Shoes', link: '/' },
+    { name: 'Clothing', link: '/' },
+    { name: 'Accessories', link: '/' },
+    { name: 'Jewellery', link: '/' }
+  ];
 
   return (
     <Inner>
@@ -268,6 +276,70 @@ function home() {
          ))}
          </Swiper>
       </section>
+
+      <section className='min-h-[60vh] my-12 px-[4%] overflow-hidden' id='Products'>
+        <div className='flex flex-col gap-3 justify-start pHeading'>
+          <h1 className='text-dark text-4xl font-sans font-semibold'>
+            Our All Products
+          </h1>
+          <p className='text-[#5c5b5b] text-base w-[35%]'>
+            These products can rotate weekly or based on seasonality and demand.
+          </p>
+          <div className='flex gap-2 PBtn'>
+            {ProductCategory.map((item, index ) => {
+              return (
+                <button key={index}>
+                  <Link
+                    to={item.link}
+                    className='text-[#5c5b5b] text-base rounded-full border-[1.5px] border-[#5c5b5b] py-1 px-2'>
+                      {item.name}
+                    </Link>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        <div className='grid grid-cols-3 gap-3 my-4 justify-center items-center PCSection'>
+          {ProductCards.map((items, index) => {
+            return (
+              <div key={index}>
+                <ProductItems product={items} />
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      <section className='min-h-[40vh] mt-12 px-[4%] bg-gray-50 py-8 overflow-hidden' id='Testimonials'>
+        <div className='flex flex-col items-center justify-center'>
+          <div className='flex flex-col justify-center gap-1 my-6 TSheadings'>
+            <h2 className='text-center text-bold text-muted text-xs uppercase'>
+              Testimonials
+            </h2>
+            <h1 className='text-dark text-3xl text'>
+              What our users say about us!
+            </h1>
+          </div>
+          <Swiper
+            effect="cards"
+            grabCursor={true}
+            modules={[EffectCards, Autoplay]}
+            autoplay={{
+              delay: 3500,
+              disableOnInteraction: false,
+            }}
+            navigation={false}
+            className='w-[520px] mySwiper'
+          >
+            {Testimonials.map((item, index) => (
+              <SwiperSlide key={index}>
+                <TestimonialItems testimonial={item}/>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </section>
+      <Footer/>
     </Inner>
   )
 }

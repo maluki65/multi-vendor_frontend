@@ -1,15 +1,47 @@
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+}
+
+.swiper-slide:nth-child(1n) {
+  background-color: rgb(206, 17, 17);
+}
+
+.swiper-slide:nth-child(2n) {
+  background-color: rgb(0, 140, 255);
+}
+
+.swiper-slide:nth-child(3n) {
+  background-color: rgb(10, 184, 111);
+}
+
+.swiper-slide:nth-child(4n) {
+  background-color: rgb(211, 122, 7);
+}
+
+.swiper-slide:nth-child(5n) {
+  background-color: rgb(118, 163, 12);
+}
+
+.swiper-slide:nth-child(6n) {
+  background-color: rgb(180, 10, 47);
+}
+
 @media(min-width: 2560px){
-  .HeroC h1, .ProdCon h1, .wSec h1{
+  .HeroC h1, .ProdCon h1, .wSec h1, .pHeading h1, .TSheadings h1{
     font-size: 6rem;
   }
-  .started, .Sec02 h2, .wSec h2{
+  .started, .Sec02 h2, .wSec h2, .TSheadings h2{
     font-size: 2.3rem;
   }
   .HImg img, .HImg p{
     height: 130px;
     width: 130px;
   }
-  .HImg p, .Hp h2, .Hp p, .ProdCon button, .Sec02 p, .wSec p{
+  .HImg p, .Hp h2, .Hp p, .ProdCon button, .Sec02 p, .wSec p, .pHeading p, .PBtn button a{
     font-size: 2em;
   }
   .ProdCon p {
@@ -33,6 +65,9 @@
   }
   .wSec button{
     font-size: 1.8em;
+  }
+  .mySwiper{
+    width: 50%;
   }
 }
 
@@ -61,7 +96,7 @@
   .Sec02{
     grid-template-columns: repeat(1, 1fr);
   }
-  .WSCards{
+  .WSCards, .PCSection{
     grid-template-columns: repeat(2, 1fr);
   }
   .wCSec{
@@ -70,6 +105,9 @@
   }
   .star{
     display: none;
+  }
+  .pHeading p{
+    width: 100%;
   }
 }
 
@@ -89,6 +127,12 @@
   .NPText{
     font-size: 1.5rem;
   }
+  .PCSection{
+    gap: 5px;
+  }
+  .mySwiper{
+    width: 90%;
+  }
 }
 
 @media(max-width: 376px){
@@ -104,6 +148,12 @@
   .WSCards h2{
     font-size: 1.1em;
   }
+  .TSheadings h1{
+    font-size: 1.5em;
+  }
+  .mySwiper{
+    width: 80%;
+  }
 }
 
 @media(max-width: 321px){
@@ -112,5 +162,11 @@
   }
   .wCSec img{
     height: 300px;
+  }
+  .PBtn{
+    flex-wrap: wrap;
+  }
+  .TSheadings h1{
+    font-size: 1.2em;
   }
 }

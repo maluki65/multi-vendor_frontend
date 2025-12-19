@@ -1,0 +1,12 @@
+@media(min-width: 2560px){
+  p{
+    font-size: 2em;
+  }
+  img{
+    height: 170px;
+    width: 170px;
+  }
+  h2{
+    font-size: 1.5em;
+  }
+}

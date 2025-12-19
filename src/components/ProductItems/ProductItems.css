@@ -1,0 +1,16 @@
+@media(min-width: 2560px){
+  .PIContainer img{
+    height: 17vw;
+  }
+  .PIcon{
+    width: 2.5em;
+    height: 2.5em;
+  }
+  .PIcon02{
+    width: 2em;
+    height: 2em;
+  }
+  .ptext{
+    font-size: 2em;
+  }
+}
