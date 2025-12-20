@@ -268,7 +268,7 @@ function home() {
          }}
          navigation={false}
          modules={[Autoplay, Pagination, Navigation]}
-         className='mySwiper'>
+         className='mySwiper01'>
          {BannerCards.map((item, index) => (
           <SwiperSlide key={index}>
             <BannerCardItems banner={item}/>

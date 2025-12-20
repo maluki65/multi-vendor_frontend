@@ -39,5 +39,14 @@ import PJo01 from './PJo01.png';
 import PJo02 from './PJo02.png';
 import PTo01 from './PTo01.png';
 import PLo01 from './PLo01.png';
+import Amina from './Amina.jpg';
+import Brian from './Brian.jpg';
+import Daniel from './Daniel.jpg';
+import Kevin from './Kevin.jpg';
+import Linda from './Linda.jpg';
+import Sarah from './Sarah.jpg';
+import Logo01 from './Logo01.jpeg';
+import Logo02 from './Logo02.jpeg';
+import Kenyan from './Kenyan.jpg';
 
-export { round01, round02, round03, HImg01, HImg02, HImg03, HImg04, HImg05, Prod01, Prod02, Prod03, Prod04, Prod05, Prod06, WPink, WYellow, Create, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013, BB01,BB02, BP01, BP02, BS01, BS02, PKo01, PKo02, PKo03, PJo01, PJo02, PTo01, PLo01 };
+export { round01, round02, round03, HImg01, HImg02, HImg03, HImg04, HImg05, Prod01, Prod02, Prod03, Prod04, Prod05, Prod06, WPink, WYellow, Create, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013, BB01,BB02, BP01, BP02, BS01, BS02, PKo01, PKo02, PKo03, PJo01, PJo02, PTo01, PLo01, Amina, Brian, Daniel, Kevin, Linda, Sarah, Logo01, Logo02, Kenyan };

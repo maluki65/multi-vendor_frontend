@@ -84,8 +84,8 @@ function Navbar() {
     <>
       <div className={`sticky py-2.5 px-[3%] flex items-center  justify-between top-0 z-1000 w-full transition-all duration-300  ${sticky ? 'backdrop-blur-[20px] bg-[#ebe7e7]' : 'bg-white'} navbar`}>
         <div className='logo'>
-          <h1 className='text-dark text-[1.2em] font-semibold'>
-            Multi-Vendor
+          <h1 className='text-secondary text-[1.4em] font-goodly cursor-pointer'>
+            Sell<span className='text-primary'>ory</span>
           </h1>
         </div>
 

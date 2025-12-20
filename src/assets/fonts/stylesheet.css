@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'Goodly';
+    src: url('GoodlyMedium.eot');
+    src: local('Goodly Medium'), local('GoodlyMedium'),
+        url('GoodlyMedium.eot?#iefix') format('embedded-opentype'),
+        url('GoodlyMedium.woff2') format('woff2'),
+        url('GoodlyMedium.woff') format('woff'),
+        url('GoodlyMedium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Goodly';
+    src: url('GoodlySemibold.eot');
+    src: local('Goodly Semibold'), local('GoodlySemibold'),
+        url('GoodlySemibold.eot?#iefix') format('embedded-opentype'),
+        url('GoodlySemibold.woff2') format('woff2'),
+        url('GoodlySemibold.woff') format('woff'),
+        url('GoodlySemibold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Goodly';
+    src: url('GoodlyRegular.eot');
+    src: local('Goodly'), local('GoodlyRegular'),
+        url('GoodlyRegular.eot?#iefix') format('embedded-opentype'),
+        url('GoodlyRegular.woff2') format('woff2'),
+        url('GoodlyRegular.woff') format('woff'),
+        url('GoodlyRegular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Goodly';
+    src: url('GoodlyLight.eot');
+    src: local('Goodly Light'), local('GoodlyLight'),
+        url('GoodlyLight.eot?#iefix') format('embedded-opentype'),
+        url('GoodlyLight.woff2') format('woff2'),
+        url('GoodlyLight.woff') format('woff'),
+        url('GoodlyLight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Goodly Extra';
+    src: url('GoodlyExtraLight.eot');
+    src: local('Goodly Extra Light'), local('GoodlyExtraLight'),
+        url('GoodlyExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('GoodlyExtraLight.woff2') format('woff2'),
+        url('GoodlyExtraLight.woff') format('woff'),
+        url('GoodlyExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Goodly';
+    src: url('GoodlyBold.eot');
+    src: local('Goodly Bold'), local('GoodlyBold'),
+        url('GoodlyBold.eot?#iefix') format('embedded-opentype'),
+        url('GoodlyBold.woff2') format('woff2'),
+        url('GoodlyBold.woff') format('woff'),
+        url('GoodlyBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+

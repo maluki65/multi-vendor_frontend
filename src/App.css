@@ -12,6 +12,7 @@
 
   --font-sans: Inter, sans-serif;
   --font-display: "Playfair Display", serif;
+  --font-goodly: "Goodly", sans-serif;
 }
 
 @keyframes spin{
@@ -20,4 +21,18 @@
 
 .animate-spin{
   animation: spin 5s linear infinite;
+}
+@font-face {
+  font-family: 'Goodly';
+  src: url('./assets/fonts/GoodlyRegular.woff2') format('woff2'),
+       url('./assets/fonts/GoodlyRegular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Goodly';
+  src: url('./assets/fonts/GoodlyBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
 }

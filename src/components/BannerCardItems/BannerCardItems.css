@@ -4,6 +4,7 @@
   }
   .BSText h1{
     font-size: 3.5em;
+    width: 100%;
   }
   .BSText p{
     font-size: 2em;
@@ -12,8 +13,9 @@
     font-size: 2em;
     padding:10px 15px;
   }
-  .BSImg{
+  .BSImg img{
     height: 30vw;
+    width: 30vw;
     padding: 20px;
   }
 }

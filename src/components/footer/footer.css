@@ -1,0 +1,34 @@
+@media(min-width: 2560px){
+  .FooterCon h1{
+    font-size: 2.5em;
+  }
+  .FooterCon p, li, a{
+    font-size: 2em;
+  }
+  .Ken img{
+    height: 50px;
+    width: 50px;
+  }
+  .FooterCon .icons{
+    height: 30px;
+    width: 30px;
+  }
+}
+
+@media(max-width: 769px){
+  .FooterCards{
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+@media(max-width: 426px){
+  .FooterCards{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .CopyCard{
+    flex-direction: column;
+    gap: 20px;
+  }
+}
