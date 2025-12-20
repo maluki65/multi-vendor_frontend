@@ -42,7 +42,7 @@ import PLo01 from './PLo01.png';
 import Amina from './Amina.jpg';
 import Brian from './Brian.jpg';
 import Daniel from './Daniel.jpg';
-import Kevin from './Kevin.jpg';
+import Kevin from './kevin.jpg';
 import Linda from './Linda.jpg';
 import Sarah from './Sarah.jpg';
 import Logo01 from './Logo01.jpeg';
