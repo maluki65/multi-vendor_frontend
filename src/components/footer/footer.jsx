@@ -39,10 +39,10 @@ function footer() {
 
   const FollowUs=[
     { name: 'Facebook', icon:FaFacebook, link: '/' },
-    { name: 'Instagram', icon:FaInstagramSquare, link: '/' },
-    { name: 'LinkedIn', icon:FaLinkedin, link: '/' },
-    { name: 'TikTok', icon:FaTiktok, link: '/' },
-    { name: 'X', icon:FaXTwitter, link: '/' },
+    { name: 'Instagram', icon:FaInstagramSquare, link: 'https://www.instagram.com/selloryecommerce/' },
+    { name: 'LinkedIn', icon:FaLinkedin, link: 'https://www.linkedin.com/in/sellory-ecommerce-5972aa39b' },
+    { name: 'TikTok', icon:FaTiktok, link: 'https://www.tiktok.com/@selloryecommerce' },
+    { name: 'X', icon:FaXTwitter, link: 'https://x.com/Selloryke' },
   ]
 
   return (
@@ -123,8 +123,10 @@ function footer() {
             {FollowUs.map((item, index) => {
               return (
                 <Link
-                  to={item?.link}
                   key={index}
+                  to={item?.link}
+                  target='_blank'
+                  rel='noopener noreferrer'
                   className='text-sm hover:underline flex items-center gap-2'
                   >
                     <item.icon className='text-lg icons'/>

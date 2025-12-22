@@ -4,8 +4,9 @@ import{ Navigate, useLocation } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollToHashElement from './components/scrollToHashElemet';
-import { Home, Contact } from './pages';
+import { Home, Contact, SignIn, SignUp } from './pages';
 import { NotFound } from './components';
+
 
 function AnimatedRoutes () {
   const location = useLocation();
@@ -17,6 +18,8 @@ function AnimatedRoutes () {
        key={location.pathname}
       >
         <Route path='/' element={<Home/>} />
+        <Route path='/signin' element={<SignIn/>} />
+        <Route path='/register' element={<SignUp/>} />
         <Route path='/contact' element={<Contact/>} />
         <Route path='*' element={<NotFound/>} />
       </Routes>
