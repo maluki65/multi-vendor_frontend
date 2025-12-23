@@ -154,6 +154,9 @@
   .mySwiper{
     width: 80%;
   }
+  .PBtn{
+    flex-wrap: wrap;
+  }
 }
 
 @media(max-width: 321px){
@@ -162,9 +165,6 @@
   }
   .wCSec img{
     height: 300px;
-  }
-  .PBtn{
-    flex-wrap: wrap;
   }
   .TSheadings h1{
     font-size: 1.2em;
