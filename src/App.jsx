@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ScrollToHashElement from './components/scrollToHashElemet';
 import { Home, Contact, SignIn, SignUp } from './pages';
 import { NotFound } from './components';
-import ProtectedRoute from './Hooks/ProtextedRoute';
+import ProtectedRoute from './Hooks/ProtectedRoute';
+import { useAuth, AuthProvider } from './Context/AuthContext';
 
 
 function AnimatedRoutes () {
@@ -34,16 +35,18 @@ function AnimatedRoutes () {
 
 function App() {
   return (
-    <Router>
-      <motion.div
-        initial = {{ opacity: 0, y: 40 }}
-        animate = {{ opacity: 1, y: 0 }}
-        transition = {{ duration: 0.9 }}
-      >
-        <ScrollToHashElement/>
-        <AnimatedRoutes/>
-      </motion.div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <motion.div
+          initial = {{ opacity: 0, y: 40 }}
+          animate = {{ opacity: 1, y: 0 }}
+          transition = {{ duration: 0.9 }}
+        >
+          <ScrollToHashElement/>
+          <AnimatedRoutes/>
+        </motion.div>
+      </Router>
+    </AuthProvider>
   );
 }
 
