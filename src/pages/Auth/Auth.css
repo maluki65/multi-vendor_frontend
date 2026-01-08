@@ -1,0 +1,71 @@
+.mySwiper00100 .swiper-pagination {
+  bottom: 0 !important; 
+  text-align: start;
+  margin-left: 10px;
+}
+.mySwiper00100 .swiper-pagination-bullet {
+  width: 20px;
+  height: 7px;
+  border-radius: 10%;
+  background-color: rgba(212, 210, 210, 0.5); 
+  opacity: 1;
+  margin: 0 4px;
+}
+
+
+.mySwiper00100 .swiper-pagination-bullet-active {
+  background-color: #FFFF;
+  width: 20px; 
+  border-radius: 10%;
+  height: 7px;
+}
+
+
+.mySwiper00100 .swiper-slide {
+  background: transparent; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media(min-width: 2560px){
+  .create{
+    font-size: 4em;
+  }
+  .menu{
+    font-size: 2.5em;
+  }
+  label{
+    font-size: 2em;
+    font-weight: 550;
+  }
+  input, button, .cont, .para{
+    font-size: 2em;
+  }
+  .icon{
+    height: 50px;
+    width:100px;
+    margin: 10px 0;
+  }
+  .swiperClass{
+    width: 650px;
+  }
+}
+
+@media(max-width:626px){
+  .signCon{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .signImg{
+    display: none;
+  }
+  .signText{
+    padding-top: 20px;
+  }
+}
+
+@media(max-width: 376px){
+  .passInputs{
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

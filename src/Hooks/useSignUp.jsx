@@ -9,11 +9,11 @@ function useSignUp() {
   const [isLoading, setIsLoading] = useState(false);
 
   const registerUser = async (values) => {
-    if (values.password !== values.passwordConfirm) {
+    /*if (values.password !== values.passwordConfirm) {
       setError("password don't match");
       setSuccess('');
       return false;
-    }
+    }*/
 
     try {
       setError('');
@@ -21,7 +21,6 @@ function useSignUp() {
 
       await signup(values);
 
-      setIsLoading(false);
       setSuccess('Account created successfully!');
       return true;
     } catch (error) {
@@ -32,9 +31,8 @@ function useSignUp() {
     }
   };
 
-  return (
-    registerUser, isLoading, error, success
-  );
+  return { registerUser, isLoading, error, success };
+  
 };
 
 export default useSignUp

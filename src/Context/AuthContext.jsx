@@ -36,28 +36,40 @@ export const AuthProvider = ({ children }) => {
 
   // On user login
   const login = async (email, password) => {
-    const res = await Api.post('/auth/user/login', {email, password});
-    setUserData(res.data.user);
-    setIsAuthenticated(true);
+    try{
+      const res = await Api.post('/users/auth//login', {email, password});
+      setUserData(res.data.user);
+      setIsAuthenticated(true);
 
-    setCsrfToken(res.data.csrfToken);
-    attachCsrfToken(res.data.csrfToken);
+      setCsrfToken(res.data.csrfToken);
+      attachCsrfToken(res.data.csrfToken);
+
+      return res.data;
+    } catch(error){
+      throw error;
+    }
   };
 
   // On user signup
   const signup = async (userInfo) => {
-    const res = await Api.post('/auth/user/signup', userInfo);
-    setUserData(res.data.user);
-    setIsAuthenticated(true);
+    try{
+      const res = await Api.post('/users/auth/signup', userInfo);
+      setUserData(res.data.user);
+      setIsAuthenticated(true);
 
-    setCsrfToken(res.data.csrfToken);
-    attachCsrfToken(res.data.csrfToken);
+      setCsrfToken(res.data.csrfToken);
+      attachCsrfToken(res.data.csrfToken);
+    
+      return res.data;
+    } catch(error){
+      throw error;
+    }
   };
 
   // On user logout
   const logout = async () => {
     try {
-     await Api.post('/auth/user/logout');
+     await Api.post('/users/auth/logout');
     } catch (_) {
       //Ignore network errors on logout
     }

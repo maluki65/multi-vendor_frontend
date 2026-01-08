@@ -36,9 +36,14 @@ api.interceptors.response.use(
    async (error) => {
     const originalRequest = error.config;
 
+    const isAuthRoute = 
+     originalRequest.url.includes('/auth/user/login') ||
+     originalRequest.url.includes('/auth/user/signup');
+
     if (
       error.response?.status === 401 &&
-      !originalRequest._retry
+      !originalRequest._retry &&
+      !isAuthRoute
     ) {
       if (isRefreshing) {
         return new Promise((_, reject) => {
@@ -52,7 +57,7 @@ api.interceptors.response.use(
       try {
         await api.post('/auth/refresh');
         isRefreshing = true;
-        FailedQueue = [];
+        processQueue(null);
         return api(originalRequest);
       } catch (refreshError) {
         isRefreshing = false;

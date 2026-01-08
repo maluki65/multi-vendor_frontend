@@ -84,7 +84,7 @@ function Navbar() {
     <>
       <div className={`sticky py-2.5 px-[3%] flex items-center  justify-between top-0 z-1000 w-full transition-all duration-300  ${sticky ? 'backdrop-blur-[20px] bg-[#ebe7e7]' : 'bg-white'} navbar`}>
         <div className='logo'>
-          <h1 className='text-secondary text-[1.4em] font-goodly cursor-pointer'>
+          <h1 className='text-orange-400 text-[1.4em] font-goodly cursor-pointer'>
             Sell<span className='text-primary'>ory</span>
           </h1>
         </div>
@@ -98,7 +98,7 @@ function Navbar() {
                 <li key={index}>
                   <Link
                     to={item.link}
-                    className={`PageLinks font-sans ${isActive ? 'text-secondary' : ''} ${item.name === 'Sign In'  ? 'font-semibold text-dark border border-dark px-2 py-2 rounded-md w-full' : 'text-dark'} ${ item.name === 'Get started' ? 'bg-primary text-light px-2 py-2 rounded-md ' : 'text-dark'} ml-[1.2rem] duration-300 text-dark ease-in-out text-base`}
+                    className={`PageLinks font-sans ${isActive ? 'text-orange-400' : ''} ${item.name === 'Sign In'  ? 'font-semibold text-dark border border-dark px-2 py-2 rounded-md w-full' : 'text-dark'} ${ item.name === 'Get started' ? 'bg-primary text-light px-2 py-2 rounded-md ' : 'text-dark'} ml-[1.2rem] duration-300 text-dark ease-in-out text-base`}
                   >
                     {item.name}
                   </Link>

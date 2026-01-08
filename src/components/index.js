@@ -6,3 +6,5 @@ export { default as ProdCardItem } from './ProdCardItems/ProdCardItems';
 export { default as BannerCardItems } from './BannerCardItems/BannerCardItems';
 export { default as ProductItems } from './ProductItems/ProductItems';
 export { default as TestimonialItems } from './TestimonialItems/TestimonialItems';
+export { default as Loader } from './loader/loader';
+export { default as SignSwipperItems } from './SignSwipperItems/SignSwipperItems';

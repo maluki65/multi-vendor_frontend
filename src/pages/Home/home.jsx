@@ -41,7 +41,7 @@ function home() {
            initial={{ opacity: 0, y: 40 }}
            whileInView={{ opacity: 1, y: 0 }}
            transition={{ duration: 1 }}
-           viewport={{ once: false, amount: 0.2 }}>Discover quality products from <span className='font-bold text-dark'>trusted </span>vendors—shipped sustainably <span>→</span> <span className='rounded-full text-light p-1 bg-secondary text-base cursor-pointer text-center started' onClick={handleNavigate}>Get started</span>
+           viewport={{ once: false, amount: 0.2 }}>Discover quality products from <span className='font-bold text-dark'>trusted </span>vendors—shipped sustainably <span>→</span> <span className='rounded-full text-white p-1 bg-orange-400 text-base cursor-pointer text-center started' onClick={handleNavigate}>Get started</span>
           </motion.h1>
           <div className='flex flex-col gap-2 items-end px-2.5 justify-center HICon'>
             <div className='flex flex-col justify-center'>

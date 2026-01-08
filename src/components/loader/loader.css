@@ -1,0 +1,18 @@
+.spinner {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow:
+    16px 0 0 0 rgba(86, 86, 86, 0.2),
+    12px 9px 0 0 rgba(182, 182, 182, 0.4),
+    4px 14px 0 0 rgba(163, 163, 164, 0.6),
+   -4px 14px 0 0 rgba(210, 210, 210, 0.8),
+   -12px 9px 0 0 #efeff0;
+  animation: spinner-b87k6z 1s infinite linear;
+}
+
+@keyframes spinner-b87k6z {
+  to {
+     transform: rotate(360deg);
+  }
+}
