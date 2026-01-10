@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await Api.get('/auth/user/profile');
+        const res = await Api.get('/users/auth/profile');
         setUserData(res.data.user);
         setIsAuthenticated(true);
 
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
   // On user login
   const login = async (email, password) => {
     try{
-      const res = await Api.post('/users/auth//login', {email, password});
+      const res = await Api.post('/users/auth/login', {email, password});
       setUserData(res.data.user);
       setIsAuthenticated(true);
 

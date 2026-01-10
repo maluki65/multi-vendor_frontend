@@ -39,8 +39,12 @@
     font-size: 2em;
     font-weight: 550;
   }
-  input, button, .cont, .para{
+  input, button, .cont, .para, .rem{
     font-size: 2em;
+  }
+  .rem01{
+    font-size: 1em;
+    font-weight: normal;
   }
   .icon{
     height: 50px;
@@ -52,7 +56,16 @@
   }
 }
 
+@media(max-width: 769px){
+  .create{
+    font-size: 2em;
+  }
+}
+
 @media(max-width:626px){
+  .create{
+    font-size: 1.6em;
+  }
   .signCon{
     grid-template-columns: repeat(1, 1fr);
   }
@@ -67,5 +80,8 @@
 @media(max-width: 376px){
   .passInputs{
     grid-template-columns: repeat(1, 1fr);
+  }
+  .signInText{
+    font-size: 14px;
   }
 }

@@ -59,12 +59,12 @@ function VendorSign() {
     <div className='flex flex-col justify-center items-center px-6'>
       <form onSubmit={handleVendorSignUp} className='w-full space-y-2'>
         {error && (
-          <div className='text-red-600 text-sm mb-3 my-2 errorF'>
+          <div className='text-red-600 bg-red-100 border border-red-400 p-2 rounded mb-3 errorF'>
             {error}
           </div>
         )}
         {formError && (
-          <div className="text-red-600 text-sm mb-3 my-2 errorF">
+          <div className="text-red-600 bg-red-100 border border-red-400 p-2 rounded mb-3 errorF">
             {formError}
           </div>
         )}

@@ -62,12 +62,12 @@ function BuyerSign() {
     <div className='flex flex-col justify-center items-center px-6'>
       <form onSubmit={handleBuyerSignup} className='w-full space-y-2'>
         {error && (
-          <div className='text-red-600 text-sm mb-3 my-2 errorF'>
+          <div className='text-red-600 bg-red-100 border border-red-400 p-2 rounded mb-3 errorF'>
             {error}
           </div>
         )}
         {formError && (
-          <div className="text-red-600 text-sm mb-3 my-2 errorF">
+          <div className="text-red-600 bg-red-100 border border-red-400 p-2 rounded mb-3 errorF">
             {formError}
           </div>
         )}
@@ -170,7 +170,7 @@ function BuyerSign() {
           <p className=' py-1 px-6 bg-gray-300 rounded'><FcGoogle className='cursor-pointer icon' size={22} /></p>
           <p className=' py-1 px-6 bg-gray-300 rounded'><FaLinkedin className='text-blue-500 cursor-pointer icon' size={22} /></p>
         </div>
-        <p className='flex items-center justify-center gap-1 my-4 text-gray-500 text-sm para'>Have an account? <span className='text-blue-600 cursor-pointer' onClick={handleNavigate}>Sign in</span></p>
+        <p className='flex items-center justify-center gap-1 my-4 text-gray-500 text-sm para'>Have an account? <span className='text-blue-600 cursor-pointer hover:underline' onClick={handleNavigate}>Sign in</span></p>
       </div>
     </div>
   )

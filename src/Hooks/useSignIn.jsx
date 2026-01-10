@@ -13,7 +13,6 @@ function useSignIn() {
       setIsLoading(true);
 
       await login(values.email, values.password);
-      setIsLoading(false);
       return true;
     } catch (error) {
       setError(error.response?.data?.message || 'failed to login');
@@ -21,10 +20,10 @@ function useSignIn() {
     } finally {
       setIsLoading(false);
     }
-  }
-  return (
-    SignInUser, error, isLoading
-  )
+  };
+
+  return { SignInUser, error, isLoading };
+  
 }
 
 export default useSignIn
