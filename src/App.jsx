@@ -14,9 +14,9 @@ function AnimatedRoutes () {
   const location = useLocation();
   const { isAuthenticated, loading } = useAuth();
 
-  if (loading) {
+  /*if (loading) {
     return <WLoader />; //null
-  }
+  }*/
 
   return (
     <AnimatePresence mode='wait'>
