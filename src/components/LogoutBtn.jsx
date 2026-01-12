@@ -1,5 +1,5 @@
 import React from  'react';
-import { useLogout } from '../hooks/useLogOut';
+import { useLogout } from '../hooks/useLogout';
 import { IoIosLogOut } from "react-icons/io";
 
 const LogoutBtn = () => {
