@@ -9,3 +9,5 @@ export { default as TestimonialItems } from './TestimonialItems/TestimonialItems
 export { default as Loader } from './loader/loader';
 export { default as SignSwipperItems } from './SignSwipperItems/SignSwipperItems';
 export { default as WLoader } from './WLoader/pageLoader';
+export { default as DashboardLayout } from './DashboardLayout/Layout/DashboardLayout';
+export { default as Overview } from './Tabs/OverviewTab';

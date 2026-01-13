@@ -1,0 +1,21 @@
+@media(min-width:2560px){
+  img{
+    height: 100px;
+    width: 100px;
+  }
+  .icons{
+    height: 30px;
+    width: 30px;
+  }
+  .sideText{
+    font-size: 1.6em;
+  }
+  .role{
+    font-size: 2em;
+  }
+}
+@media(max-width: 426px){
+  .role{
+    display: none;
+  }
+}

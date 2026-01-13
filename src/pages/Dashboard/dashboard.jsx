@@ -1,11 +1,24 @@
 import React from 'react';
 import './dashboard.css';
-import LogoutBtn from '../../components/LogoutBtn';
+import { useSearchParams } from "react-router-dom";
+import { useAuth } from '../../Context/AuthContext';
+import { DashboardLayout, Overview } from '../../components';
 
 function dashboard() {
+  const [searchParams] = useSearchParams();
+  const tab = searchParams.get('tab')|| 'overview';
+  const  { userData } = useAuth();
+
+  const user = {
+    fullName: userData.username || userData.storename,
+    role: userData.role,
+    email: userData.email
+  }
+
   return (
-    <div>dashboard
-    <LogoutBtn/></div>
+    <DashboardLayout fullName={user.fullName} role={user.role} email={user.email}>
+      { tab === 'overview' && <Overview/> }
+    </DashboardLayout>
   )
 }
 
