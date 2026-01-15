@@ -5,7 +5,7 @@ import Navbar from "./navbar";
 
 export default function DashboardLayout ({ fullName, role, email, children}){
   return(
-      <div className='relative sm:-8 p-4 bg-[#e5e4e4] min-h-screen flex flex-row'>
+      <div className='relative sm:-8 p-4 bg-gray-100 min-h-screen flex flex-row'>
         <div className='sm:flex hidden mr-10 relative'>
           <Sidebar
             role={role}
@@ -18,7 +18,7 @@ export default function DashboardLayout ({ fullName, role, email, children}){
             fullName={fullName}
             email={email}
           />
-          <main className="flex-1 p-4 overflow-y-auto bg-gray-50">
+          <main className="flex-1 px-4 overflow-y-auto bg-transparent rounded-xl">
             {children}
           </main>
         </div>
