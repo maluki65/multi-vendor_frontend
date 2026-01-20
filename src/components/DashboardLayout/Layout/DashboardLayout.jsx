@@ -18,7 +18,7 @@ export default function DashboardLayout ({ fullName, role, email, children}){
             fullName={fullName}
             email={email}
           />
-          <main className="flex-1 px-4 overflow-y-auto bg-transparent rounded-xl">
+          <main className="flex-1 px-4 overflow-y-auto bg-transparent rounded-xl py-2">
             {children}
           </main>
         </div>

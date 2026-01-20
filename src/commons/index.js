@@ -5,3 +5,7 @@ export { default as BannerCards } from './Data/BannerCards';
 export { default as ProductCards } from './Data/ProductCards';
 export { default as Testimonials } from './Data/Testimonials';
 export { default as SignSwipper } from './Data/signSwipper';
+export { default as PaymentsRequests } from './Data/PaymentRequests';
+export { default as SalesReportData } from './Data/salesReportData';
+export { default as RevenueData } from './Data/revenueData';
+export { default as VendorApprove } from './Data/vendorApprove';

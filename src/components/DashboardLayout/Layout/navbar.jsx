@@ -11,6 +11,7 @@ import { TbLogout2 } from "react-icons/tb";
 function Navbar({ role, fullName, email }) {
   const logout = useLogout();
   const menuRef = useRef();
+  const [scrolled, setScrolled] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -46,9 +47,19 @@ function Navbar({ role, fullName, email }) {
       console.log('Logout failed', error);
     }
   }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <>
-      <div className='flex md:flex-row flex-col-reverse justify-between mb-5 gap-6 border-b'>
+      <div className={ `sticky top-0 z-40 flex md:flex-row flex-col-reverse justify-between gap-6 transition-all duration-300 ${scrolled ? 'bg-gray-100 shadow-xs' : 'bg-transparent'}`}>
         {/*<div className='lg-flex-1 flex flex-row max-w-[458px] py-2 pl-4 pr-2 h-[52px] bg-[#1c1c24] rounded-full'>
           <input 
             type='text'

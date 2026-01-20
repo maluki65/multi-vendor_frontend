@@ -11,3 +11,7 @@ export { default as SignSwipperItems } from './SignSwipperItems/SignSwipperItems
 export { default as WLoader } from './WLoader/pageLoader';
 export { default as DashboardLayout } from './DashboardLayout/Layout/DashboardLayout';
 export { default as Overview } from './Tabs/OverviewTab';
+export { default as PaymentItem } from './DashboardItems/PaymentItem';
+export { default as SalesChart } from './Charts/salesReportChart';
+export { default as RevenueChart } from './Charts/revenueChart';
+export { default as VendorApprovals } from './DashboardItems/vendorItems'
