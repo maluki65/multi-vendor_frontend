@@ -9,7 +9,7 @@ function PaymentItem({payments}) {
   }
 
   return (
-    <div className='flex justify-between items-center'>
+    <div className='flex justify-between items-center pay'>
       <p className='p-2 rounded-md bg-dark text-white'>{getFirstTwoChars(payments.name)}</p>
       <div className='flex flex-col gap-1'>
         <h3 className='text-md font-medium text-dark'>
@@ -19,7 +19,7 @@ function PaymentItem({payments}) {
       </div>
       <button className='px-2 py-1 rounded-md text-sm text-white cursor-pointer bg-orange-500 flex items-center gap-2'>
         Pay Now 
-        <FaArrowRight className='' size={10}/>
+        <FaArrowRight className='Iconp' size={10}/>
       </button>
     </div>
   )

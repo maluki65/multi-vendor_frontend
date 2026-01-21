@@ -17,9 +17,9 @@ function Sidebar( { role }) {
       onClick={handleClick}
       className='relative group'
       >
-      <div className={`w-10 h-10 rounded-lg flex items-center justify-center cursor-pointer ${isActive === name ? 'bg-gray-200 text-orange-500' : 'text-gray-700'}`}
+      <div className={`w-10 h-10 rounded-lg flex items-center justify-center cursor-pointer Icons ${isActive === name ? 'bg-gray-200 text-orange-500' : 'text-gray-700'}`}
        >
-        <Icon size={20} />
+        <Icon className='Iconz' size={20} />
       </div>
 
       <div className='absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap bg-dark text-white text-sm px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg'>
@@ -47,7 +47,7 @@ function Sidebar( { role }) {
           alt="Logo"
         />
       </Link>
-      <div className=' flex flex-col justify-between items-center bg-white rounded-[20px] w-14 py-2'>
+      <div className=' flex flex-col justify-between items-center bg-white rounded-[20px] w-14 py-2 IconBg'>
         <div className='flex flex-col justify-center items-center gap-3'>
           {menuItems.map((link) => (
             <Icon
@@ -63,9 +63,9 @@ function Sidebar( { role }) {
           ))}
         </div>
       </div>
-      <div className='flex flex-col justify-between gap-3 items-center bg-white rounded-[20px] w-14 py-2 shadow-secondary'>
-        <AiOutlineQuestionCircle  className='cursor-pointer text-gray-700' size={20}/>
-        <TbLogout2 onClick={handleLogout} className='cursor-pointer text-gray-700' size={20}/>
+      <div className='flex flex-col justify-between gap-3 items-center bg-white rounded-[20px] w-14 py-2 shadow-secondary IconBg'>
+        <AiOutlineQuestionCircle  className='cursor-pointer text-gray-700 Iconz' size={20}/>
+        <TbLogout2 onClick={handleLogout} className='cursor-pointer text-gray-700 Iconz' size={20}/>
       </div>
     </div>
   )

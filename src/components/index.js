@@ -14,4 +14,5 @@ export { default as Overview } from './Tabs/OverviewTab';
 export { default as PaymentItem } from './DashboardItems/PaymentItem';
 export { default as SalesChart } from './Charts/salesReportChart';
 export { default as RevenueChart } from './Charts/revenueChart';
-export { default as VendorApprovals } from './DashboardItems/vendorItems'
+export { default as VendorApprovals } from './DashboardItems/vendorItems';
+export { default as AddAdmin } from './Tabs/AddAdmin';

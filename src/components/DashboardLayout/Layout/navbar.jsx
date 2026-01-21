@@ -70,7 +70,7 @@ function Navbar({ role, fullName, email }) {
             <IoIosSearch className='w-[15px] h-[15px] text-white object-contain'/>
           </div>
         </div>*/}
-        <div className="relative lg-flex-1 flex flex-row w-[full] lg:w-[30%] py-2 pl-4 pr-2 h-[52px]">
+        <div className="relative lg-flex-1 flex flex-row w-[full] lg:w-[30%] py-2 pl-4 pr-2 h-[52px] PayIn">
           <input
             type='text'
             placeholder='search for users'
@@ -80,7 +80,7 @@ function Navbar({ role, fullName, email }) {
           <span
             className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-700"
           >
-            <IoIosSearch size={20}/>
+            <IoIosSearch className='Icon' size={20}/>
           </span>
         </div>
         <div className='sm:flex hidden flex-row  gap-4'>      

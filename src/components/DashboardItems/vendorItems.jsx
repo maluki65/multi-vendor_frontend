@@ -15,7 +15,7 @@ function vendorItems({vendorApprovals}) {
         </p>
         <p className='text-[#525151] text-xs'>{vendorApprovals.email}</p>
       </div>
-      <BsThreeDotsVertical className='cursor-pointer' size={20}/>
+      <BsThreeDotsVertical className='cursor-pointer Icon' size={20}/>
     </div>
   )
 }

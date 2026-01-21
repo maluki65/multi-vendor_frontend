@@ -1,0 +1,98 @@
+@media(min-width: 2560px){
+  .overview .HDash{
+    font-size: 4em;
+  }
+  .overview .PDash, .paymentsReq h1, .charts01 h3, .salesRev h3, .vendors h1{
+    font-size: 2.7em;
+  }
+  .IContainer{
+    padding: 10px;
+  }
+  .Icon{
+    margin-right: 10px;
+    height: 50px;
+    width: 50px;
+  }
+  .Icons{
+    height: 70px;
+    width: 70px;
+  }
+  .Iconz{
+    height: 50px;
+    width: 50px;
+  }
+  .IconBg{
+    width: 80px;
+  }
+  .AnaCards p, .AnaCards a, .AnaCards h3{
+    font-size: 2.3em;
+  }
+  .AnaCards h1{
+    font-size: 3em;
+  }
+  sup{
+    font-size: 1em;
+  }
+  .PayIn{
+    height: 80px;
+  }
+  .paymentsReq input{
+    padding: 10px;
+  }
+  .PayItems{
+    max-height: 650px;
+  }
+  .RevChart {
+    height: 730px;
+  }
+  .salesContainer{
+    padding: 10px;
+  }
+  .salesChart01{
+    height: 450px;
+  }
+  .Ctext span{
+    padding: 15px;
+    font-size: 2em;
+  }
+  .vendors{
+    margin-top: 20px;
+  }
+  .vendorItem{
+    max-height: 500px;
+  }
+}
+
+@media(max-width: 769px){
+  .overview{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .OverCard{
+    border:none;
+  }
+  .cal{
+    font-size: 11px;
+  }
+  .DashIntro{
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+@media(max-width: 426px){
+  .AnaCards{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .PaymentChart{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .PayItems, .RevChart, .vendorItem{
+    max-height: 550px;
+  }
+}
+
+@media(max-width: 376px){
+  .AnaCards{
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

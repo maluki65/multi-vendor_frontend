@@ -52,23 +52,23 @@ function OverviewTab() {
   }, []);
 
   return (
-    <div className='grid grid-cols-[75%_25%] gap-2 bg-transparent'>
-      <div className='flex flex-col gap-4 border-r-2 border-gray-300 px-2'>
-        <div className='flex items-end justify-between'>
+    <div className='grid grid-cols-[75%_25%] gap-3 bg-transparent overview'>
+      <div className='flex flex-col gap-4 border-r-2 border-gray-300 px-2 OverCard'>
+        <div className='flex items-end justify-between DashIntro'>
           <div className='flex flex-col gap-2'>
-            <h1 className='text-xl text-black font-medium leading-relaxed'>
+            <h1 className='text-xl text-black font-medium leading-relaxed HDash'>
               Dashboard
             </h1>
-            <p className='text-md text-gray-500'>
+            <p className='text-md text-gray-500 PDash'>
               An easy way to manage vendors, orders and buyers with ease
             </p>
           </div>
-          <div className='rounded-full border-2 border-gray-300 py-1 px-3 flex items-base w-fit text-gray-600'>
-            <IoCalendarOutline className='' size={20}/>
-            <p className='text-sm'>{formatDateTime(now)}</p>
+          <div className='rounded-full border-2 border-gray-300 py-1 px-3 flex items-base w-fit text-gray-600 IContainer'>
+            <IoCalendarOutline className='Icon' size={20}/>
+            <p className='text-sm cal'>{formatDateTime(now)}</p>
           </div>
         </div>
-        <div className='grid grid-cols-3 gap-2'>
+        <div className='grid grid-cols-3 gap-2 AnaCards'>
           <div className='rounded-xl border-gray-300 p-2 bg-dark'>
             <div className='flex flex-col space-y-2'>
               <div className='flex items-center gap-1'>
@@ -87,12 +87,12 @@ function OverviewTab() {
           <div className='rounded-xl border-2 border-gray-300 bg-white p-2 flex flex-col space-y-2 justify-between'>
             <div className='flex items-center justify-between'>
               <h3 className='text-md text-gray-800'>Net Income</h3>
-              <BiDotsHorizontalRounded className='cursor-pointer' size={20}/>
+              <BiDotsHorizontalRounded className='cursor-pointer Icon' size={20}/>
             </div>
-            <p className="text-3xl font-semibold">
+            <h1 className="text-3xl font-semibold">
               <sup className="text-sm align-super mr-1">Ksh</sup>
               23,000
-            </p>
+            </h1>
             <p className='text-sm flex items-center gap-2 text-[#787777]'>
               <FaArrowTrendUp className='text-green-400'/>
               <span className='text-green-400'>
@@ -103,12 +103,12 @@ function OverviewTab() {
           <div className='rounded-xl border-2 border-gray-300 bg-white p-2 flex flex-col space-y-2 justify-between'>
             <div className='flex items-center justify-between'>
               <h3 className='text-md text-gray-800'>Total Return</h3>
-              <BiDotsHorizontalRounded className='cursor-pointer' size={20}/>
+              <BiDotsHorizontalRounded className='cursor-pointer Icon' size={20}/>
             </div>
-            <p className="text-3xl font-semibold">
+            <h1 className="text-3xl font-semibold">
               <sup className="text-sm align-super mr-1">Ksh</sup>
               35,000
-            </p>
+            </h1>
             <p className='text-sm flex items-center gap-2 text-[#787777]'>
               <FaArrowTrendDown className='text-red-500'/>
               <span className='text-red-500'>
@@ -123,13 +123,13 @@ function OverviewTab() {
             animate={{ opacity: 1, scale: 1}}
             exit={{opacity: 0, scale: 0.95}}
             transition={{duration: 0.3}}
-           className='grid grid-cols-2 gap-2 my-2 overflow-y-auto overflow-x-hidden'>
-            <div className='rounded-xl border-2 border-gray-300 p-2 flex flex-col gap-1'>
+           className='grid grid-cols-2 gap-2 my-2 overflow-y-auto overflow-x-hidden PaymentChart'>
+            <div className='rounded-xl border-2 border-gray-300 p-2 flex flex-col gap-1 paymentsReq'>
               <div className='flex justify-between items-center'>
               <h1 className='text-md text-dark'>Payment requests</h1>
-              <BsThreeDots className='cursor-pointer' size={20}/>
+              <BsThreeDots className='cursor-pointer Icon' size={20}/>
               </div>
-              <div className="relative flex w-full py-2 h-[52px]">
+              <div className="relative flex w-full py-2 h-[52px] PayIn">
                 <input
                   type='text'
                   placeholder='search for payment requests'
@@ -139,17 +139,17 @@ function OverviewTab() {
                 <span
                   className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-700"
                 >
-                  <IoIosSearch size={20}/>
+                  <IoIosSearch className='Icon' size={20}/>
                 </span>
               </div>
-              <div className='flex flex-col gap-2 max-h-[180px] overflow-y-auto pr-1'>
+              <div className='flex flex-col gap-2 max-h-[180px] overflow-y-auto pr-1 PayItems'>
                 {PaymentsRequests.map((items, index) =>(
                   <PaymentItem key={index} payments={items}/>
                 ))}
               </div>
             </div>
             <div className='flex flex-col gap-2 max-h-[200px]'>
-              <div className='bg-white rounded-xl p-2 shadow-sm w-full'>
+              <div className='bg-white rounded-xl p-2 shadow-sm w-full charts01'>
                 <h3 className='text-sn font-medium mb-3'>Revenue</h3>
                 <RevenueChart />
               </div>
@@ -161,8 +161,8 @@ function OverviewTab() {
           </motion.div>
         </AnimatePresence>
       </div>
-      <div className='flex flex-col gap-2 my-2 overflow-y-auto overflow-x-hidden'>
-        <div className='bg-white rounded-xl p-2 shadow-sm w-full overflow-hidden'>
+      <div className='flex flex-col gap-2 my-2 overflow-y-auto overflow-x-hidden salesContainer'>
+        <div className='bg-white rounded-xl p-2 shadow-sm w-full overflow-hidden salesRev'>
           <div className='flex flex-col gap-2 px-4'>
            <h3 className='text-md font-medium text-center'>Total Sales Report</h3>
            <hr className='flex-1 border-t border-gray-300' />
@@ -172,23 +172,23 @@ function OverviewTab() {
             Overview of how key performance metrics are distributed
           </p>
           <div className='grid grid-cols-3 items-center gap-1'>
-            <div className='flex items-center gap-1'>
+            <div className='flex items-center gap-1 Ctext'>
               <span className='flex items-center rounded-md bg-[#84cc16] p-2'></span>
               <span className='text-sm text-muted'>Amount</span>
             </div>
-            <div className='flex items-center gap-1'>
+            <div className='flex items-center gap-1 Ctext'>
               <span className='flex items-center rounded-md bg-[#22c55e] p-2'></span>
               <span className='text-sm text-muted'>Earnings</span>
             </div>
-            <div className='flex items-center gap-1'>
+            <div className='flex items-center gap-1 Ctext'>
               <span className='flex items-center rounded-md bg-[#fbbf24] p-2'></span>
               <span className='text-sm text-muted'>Products</span>
             </div>
           </div>
         </div>
-        <div className='p-3 rounded-xl bg-muted'>
+        <div className='p-3 rounded-xl bg-muted vendors'>
          <h1 className=''>Vendor Approvals</h1>
-          <div className='flex flex-col gap-2 max-h-[90px] overflow-y-auto pr-1'>
+          <div className='flex flex-col gap-2 max-h-[90px] overflow-y-auto pr-1 vendorItem'>
             {VendorApprove.map((item, index) => (
               <VendorApprovals key={index} vendorApprovals={item} />
             ))}

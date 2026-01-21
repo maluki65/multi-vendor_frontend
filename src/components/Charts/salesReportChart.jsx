@@ -20,7 +20,7 @@ function SalesReportChart() {
   }, []);
 
   return (
-    <div className='w-full h-[250px] min-h-[250px]'>
+    <div className='w-full h-[250px] min-h-[250px] salesChart'>
       <ResponsiveContainer width='100%' height='100%'>
         <PieChart>
           <Pie
@@ -50,7 +50,7 @@ function SalesReportChart() {
             y='45%'
             textAnchor='middle'
             dominantBaseline='middle'
-            className='text-sm fill-gray-500 p-2'
+            className='text-sm fill-gray-500 p-2 texts'
           >
             Total Commission
           </text>

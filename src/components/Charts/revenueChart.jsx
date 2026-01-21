@@ -10,7 +10,7 @@ function RevenueChart() {
   }, []);
 
   return(
-    <div className='w-full h-[230px]'>
+    <div className='w-full h-[230px] RevChart'>
       <ResponsiveContainer width='100%' height='100%'>
         <BarChart data={RevenueData}>
           <XAxis dataKey='month'/>

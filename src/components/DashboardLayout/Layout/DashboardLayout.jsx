@@ -12,13 +12,13 @@ export default function DashboardLayout ({ fullName, role, email, children}){
             fullName={fullName}
           />
         </div>
-        <div className='flex-1 max-sm:w-full max-w-7xl mx-auto sm:pr-5'>
+        <div className='flex-1 max-sm:w-full max-w-10xl mx-auto sm:pr-5'>
           <Navbar
             role={role}
             fullName={fullName}
             email={email}
           />
-          <main className="flex-1 px-4 overflow-y-auto bg-transparent rounded-xl py-2">
+          <main className="flex-1 px-4 overflow-y-auto bg-transparent rounded-xl">
             {children}
           </main>
         </div>

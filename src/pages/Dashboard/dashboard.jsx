@@ -2,7 +2,7 @@ import React from 'react';
 import './dashboard.css';
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from '../../Context/AuthContext';
-import { DashboardLayout, Overview } from '../../components';
+import { DashboardLayout, Overview, AddAdmin } from '../../components';
 
 function dashboard() {
   const [searchParams] = useSearchParams();
@@ -18,6 +18,7 @@ function dashboard() {
   return (
     <DashboardLayout fullName={user.fullName} role={user.role} email={user.email}>
       { tab === 'overview' && <Overview/> }
+      { tab === 'Add-admin' && <AddAdmin/>}
     </DashboardLayout>
   )
 }

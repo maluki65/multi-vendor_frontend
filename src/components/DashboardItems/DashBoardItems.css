@@ -1,0 +1,19 @@
+@media(min-width: 2560px){
+  .Iconp{
+    margin-right: 10px;
+    height: 40px;
+    width: 35px;
+  }
+}
+
+@media(max-width: 376px){
+  .pay p{
+    font-size: 12px;
+  }
+  .pay button{
+    padding: 2px;
+  }
+  .Iconp{
+    display: none;
+  }
+}
