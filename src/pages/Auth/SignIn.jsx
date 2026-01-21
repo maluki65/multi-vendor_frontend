@@ -41,7 +41,7 @@ function SignIn() {
       password
     }
     await SignInUser(payload);
-    console.log('user logged In');
+    //console.log('user logged In');
   };
 
   const handleNavigate = () => {

@@ -1,8 +1,8 @@
 @media(min-width: 2560px){
-  .overview .HDash{
+  .overview .HDash, .adminH1{
     font-size: 4em;
   }
-  .overview .PDash, .paymentsReq h1, .charts01 h3, .salesRev h3, .vendors h1{
+  .overview .PDash, .paymentsReq h1, .charts01 h3, .salesRev h3, .vendors h1, .adminP{
     font-size: 2.7em;
   }
   .IContainer{
@@ -36,7 +36,7 @@
   .PayIn{
     height: 80px;
   }
-  .paymentsReq input{
+  .paymentsReq input, input{
     padding: 10px;
   }
   .PayItems{

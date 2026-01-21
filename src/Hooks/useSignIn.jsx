@@ -15,7 +15,7 @@ function useSignIn() {
       await login(values.email, values.password);
       return true;
     } catch (error) {
-      setError(error.response?.data?.message || 'failed to login');
+      setError(error.response?.data?.message || 'Invalid email or password');
       return false
     } finally {
       setIsLoading(false);
