@@ -16,3 +16,4 @@ export { default as SalesChart } from './Charts/salesReportChart';
 export { default as RevenueChart } from './Charts/revenueChart';
 export { default as VendorApprovals } from './DashboardItems/vendorItems';
 export { default as AddAdmin } from './Tabs/AddAdmin';
+export { default as Users } from './Tabs/Users';

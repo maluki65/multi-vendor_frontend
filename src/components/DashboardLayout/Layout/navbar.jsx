@@ -59,7 +59,7 @@ function Navbar({ role, fullName, email }) {
 
   return (
     <>
-      <div className={ `sticky top-0 z-40 flex md:flex-row flex-col-reverse justify-between gap-6 transition-all duration-300 ${scrolled ? 'bg-gray-100 shadow-xs' : 'bg-transparent'}`}>
+      <div className={ `sticky top-0 z-40 flex md:flex-row flex-col-reverse justify-end gap-6 transition-all duration-300 ${scrolled ? 'bg-gray-100 shadow-xs' : 'bg-transparent'}`}>
         {/*<div className='lg-flex-1 flex flex-row max-w-[458px] py-2 pl-4 pr-2 h-[52px] bg-[#1c1c24] rounded-full'>
           <input 
             type='text'
@@ -69,7 +69,7 @@ function Navbar({ role, fullName, email }) {
           <div className='w-[72px] h-full rounded-[20px] bg-[#4acd8d] flex justify-center items-center cursor-pointer'>
             <IoIosSearch className='w-[15px] h-[15px] text-white object-contain'/>
           </div>
-        </div>*/}
+        </div>
         <div className="relative lg-flex-1 flex flex-row w-[full] lg:w-[30%] py-2 pl-4 pr-2 h-[52px] PayIn">
           <input
             type='text'
@@ -82,7 +82,7 @@ function Navbar({ role, fullName, email }) {
           >
             <IoIosSearch className='Icon' size={20}/>
           </span>
-        </div>
+        </div>*/}
         <div className='sm:flex hidden flex-row  gap-4'>      
           <div className='flex items-center gap-2'>
             <div className='flex flex-col gap-1'>

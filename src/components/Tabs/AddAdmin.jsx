@@ -62,11 +62,11 @@ function AddAdmin() {
   }
 
   return (
-    <div className='m-4 p-4 rounded-xl shadow-md max-w-7xl mx-auto bg-white '>
+    <div className='m-4 max-w-7xl mx-auto flex-1 flex justify-center items-center addForm'> 
       {isloading ? (
         <Loader/>
       ): (
-        <form className='p-2 flex flex-col space-y-2' onSubmit={handleSubmit}>
+        <form className='p-4 rounded-xl shadow-md flex flex-col space-y-2 bg-white' onSubmit={handleSubmit}>
           {error && (
             <div className='text-red-600 bg-red-100 border-red-400 p-2 rounded mb-3'>
               {error}

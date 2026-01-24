@@ -1,5 +1,5 @@
+import { MdOutlineAdminPanelSettings, MdOutlinePayments } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
-import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
@@ -13,6 +13,7 @@ export const menuRoleItems = {
     { label: 'Users', value: 'Users', icon: LuUsers, link: "?tab=users" },
     { label: 'Approvals', value: 'Approvals', icon: IoCheckmarkDoneCircleOutline, link: "?tab=approvals" },
     { label: 'Orders', value: 'Orders', icon: RiShoppingCartLine, link: "?tab=orders" },
+    { label: 'Payments', value: 'Payments', icon: MdOutlinePayments, link: '?tab=payments'},
     //{ label: 'Profile', value: 'Profile', icon: CgProfile, link: "?tab=profile"},
     { label: 'Settings', value: 'Settings', icon: IoSettingsOutline, link: "?tab=settings"},
   ],
