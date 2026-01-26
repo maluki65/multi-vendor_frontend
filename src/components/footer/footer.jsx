@@ -38,7 +38,7 @@ function footer() {
   ];
 
   const FollowUs=[
-    { name: 'Facebook', icon:FaFacebook, link: '/' },
+    { name: 'Facebook', icon:FaFacebook, link: 'https://www.facebook.com/profile.php?id=61586947749716' },
     { name: 'Instagram', icon:FaInstagramSquare, link: 'https://www.instagram.com/selloryecommerce/' },
     { name: 'LinkedIn', icon:FaLinkedin, link: 'https://www.linkedin.com/in/sellory-ecommerce-5972aa39b' },
     { name: 'TikTok', icon:FaTiktok, link: 'https://www.tiktok.com/@selloryecommerce' },
