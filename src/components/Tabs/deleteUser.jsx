@@ -34,7 +34,7 @@ const useDeleteUser = () => {
         </button>
 
         <button 
-          className='px-3 py-1 cursor-pointer bg-gray-300 rounded-m hover:bg-gary-400'
+          className='px-3 py-1 cursor-pointer bg-gray-300 rounded-md hover:bg-gary-400'
           onClick={() => toast.dismiss(t.id)}
         >
           Cancel
