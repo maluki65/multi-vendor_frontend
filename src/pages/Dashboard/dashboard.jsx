@@ -3,20 +3,20 @@ import './dashboard.css';
 import { useSearchParams } from "react-router-dom";
 import { useCurrentUser } from '../../Hooks/useCurrentUser';
 import { getUserProfileByRole, needsProfile } from '../../utils/userProfiles';
+import { getProfileFormByRole } from '../../utils/profileforms';
 import { useAuth } from '../../Context/AuthContext';
 import { DashboardLayout, Overview, AddAdmin, Users, ProfileForm } from '../../components';
 
-function dashboard() {
+function Dashboard() {
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab')|| 'overview';
   const  { userData } = useAuth();
-
   const { data: me, isLoading } = useCurrentUser();
   
   if (isLoading) return <p>Loading...</p>
 
-  const profile = getUserProfileByRole(me);
   const showProfileForm = needsProfile(me);
+  const ProfileComponent = getProfileFormByRole(me.role);
 
   const user = {
     fullName: userData.username || userData.storename,
@@ -26,9 +26,9 @@ function dashboard() {
 
   return (
     <DashboardLayout fullName={user.fullName} role={user.role} email={user.email}>
-      {showProfileForm ? (
-        <ProfileForm role={me.role}/>
-      ): (
+      {showProfileForm && ProfileComponent ? (
+        <ProfileComponent />
+      ) : (
         <>
           { tab === 'overview' && <Overview/> }
           { tab === 'Add-admin' && <AddAdmin/>}
@@ -39,4 +39,4 @@ function dashboard() {
   )
 }
 
-export default dashboard
+export default Dashboard
