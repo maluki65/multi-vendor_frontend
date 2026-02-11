@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { FaChevronDown, FaBarsStaggered } from "react-icons/fa6";
 import { useLogout } from '../../../Hooks/useLogout';
 import { menuRoleItems } from '../roles/menuConfig';
+import { useProfile } from '../../../Hooks/useProfile';
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
 import { ImgP } from '../../../assets';
@@ -16,8 +17,11 @@ function Navbar({ role, fullName, email }) {
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const activeTab = searchParams.get('tab') || 'overview';
+  const profile = role === 'Admin' ? null : useProfile(role).profile;
+
 
   const menuItems = menuRoleItems[role] || [];
+
 
   useEffect(() => {
     const handleClickOutSide =(e) => {
@@ -86,7 +90,7 @@ function Navbar({ role, fullName, email }) {
         <div className='sm:flex hidden flex-row  gap-4'>      
           <div className='flex items-center gap-2'>
             <div className='flex flex-col gap-1'>
-              <h3 className='font-normal text-black text-sm'>{fullName}</h3>
+              <h3 className='font-normal text-black text-sm'>{profile?.fullname ?? fullName}</h3>
               <p className='text-sm text-[#a1a0a0]'>{email}</p>
             </div>
             <div 
@@ -135,9 +139,10 @@ function Navbar({ role, fullName, email }) {
                 )}
               </div>
             <img 
-              src={ImgP}
+              src={profile?.avatar ?? ImgP} 
               alt='user'
               className='rounded-full object-cover h-10 w-10'
+              loading='lazy'
             />
           </div>
         </div>
@@ -146,9 +151,10 @@ function Navbar({ role, fullName, email }) {
         <div className='sm:hidden flex justify-between items-center relative'>
           <div className='w-10 h-10 rounded-[10px] bg-[#2c2f32] flex justify-center items-center cursor-pointer'>
             <img 
-              src={ImgP}
+              src={profile?.avatar ?? ImgP}
               alt='user'
               className='w-[60%] h-[60%] object-contain rounded-full'
+              loading='lazy'
             />
           </div>
           <FaBarsStaggered 
@@ -180,9 +186,10 @@ function Navbar({ role, fullName, email }) {
                 className="flex items-center w-full gap-3 p-2 rounded-lg bg-white"
               >
                 <img
-                  src={ImgP}
+                  src={profile?.avatar ?? ImgP}
                   alt="user"
                   className="rounded-full object-cover h-10 w-10"
+                  loading='lazy'
                 />
                 <span className="flex flex-col text-left">
                   <span className="font-normal text-black flex items-center text-md gap-2" onClick={handleLogout}>Logout <TbLogout2 className='text-[#727272] cursor-pointer' size={20}/></span>

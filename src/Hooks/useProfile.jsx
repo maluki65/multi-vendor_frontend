@@ -19,7 +19,8 @@ export const useProfile = (role) => {
       if (!route) return null;
       try {
         const res = await Api.get(route /*'/users/auth/profile'*/);
-        return res.data;
+        //console.log('Profile API response:', res.data);
+        return res.data.profile;
       } catch (error) {
         if (error?.response?.status == 404) {
           return null;
@@ -40,7 +41,7 @@ export const useProfile = (role) => {
       return res.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(PROFILE_KEY, data);
+      queryClient.setQueryData(PROFILE_KEY, data.profile);
     },
   });
 
@@ -51,7 +52,8 @@ export const useProfile = (role) => {
       return res.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(PROFILE_KEY, data);
+      queryClient.setQueryData(PROFILE_KEY, data.profile);
+      queryClient.invalidateQueries(PROFILE_KEY);
     },
   });
 
@@ -84,7 +86,7 @@ export const useProfile = (role) => {
     },
 
     onSuccess: (data) => {
-      queryClient.setQueryData(PROFILE_KEY, data);
+      queryClient.setQueryData(PROFILE_KEY, data.profile);
     },
 
     onSettled: () => {
