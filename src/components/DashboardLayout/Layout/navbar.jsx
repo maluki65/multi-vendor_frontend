@@ -9,7 +9,7 @@ import { IoIosSearch } from "react-icons/io";
 import { ImgP } from '../../../assets';
 import { TbLogout2 } from "react-icons/tb";
 
-function Navbar({ role, fullName, email }) {
+function Navbar({ role, fullName, email, storeName }) {
   const logout = useLogout();
   const menuRef = useRef();
   const [scrolled, setScrolled] = useState(false);
@@ -21,6 +21,10 @@ function Navbar({ role, fullName, email }) {
 
 
   const menuItems = menuRoleItems[role] || [];
+
+  const displayName = role === 'Vendor'
+   ? profile?.storeName ?? storeName
+   : profile?.fullname ?? fullName;
 
 
   useEffect(() => {
@@ -90,7 +94,7 @@ function Navbar({ role, fullName, email }) {
         <div className='sm:flex hidden flex-row  gap-4'>      
           <div className='flex items-center gap-2'>
             <div className='flex flex-col gap-1'>
-              <h3 className='font-normal text-black text-sm'>{profile?.fullname ?? fullName}</h3>
+              <h3 className='font-normal text-black text-sm'>{displayName}</h3>
               <p className='text-sm text-[#a1a0a0]'>{email}</p>
             </div>
             <div 

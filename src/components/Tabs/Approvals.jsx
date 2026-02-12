@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Tabs.css';
 import { Toaster } from 'react-hot-toast';
 import { LuAlarmClock } from "react-icons/lu";
 import usePendingVendors  from '../../Hooks/usePendingVendors';
 import useVendorAction from '../../Hooks/useVendorAction';
+import { FaFileContract } from "react-icons/fa";
+import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline } from "react-icons/md";
 
 function Approvals() {
   const { data, isLoading: isDataLoading, isError } = usePendingVendors();
@@ -38,11 +40,17 @@ function Approvals() {
       <Toaster position='top-right' reverseOrder={false} />
       <div>
         {isDataLoading ? (
-          <P> Loading vendors...</P>
+          <p> Loading vendors...</p>
         ) : isError ? (
-          <p>Failed to load vendors</p>
+          <p className='h-[80vh] text-dark text-md  mt-2 flex flex-col justify-center items-center gap-2'>
+            <MdOutlineErrorOutline className='text-red-500' size={60} />
+            Failed to load vendor approvals
+          </p>
         ) : data.length === 0 ? (
-          <p className=''> No vendor awaiting approval</p>
+          <p className='h-[80vh] text-dark text-md  mt-2 flex flex-col justify-center items-center gap-2'>
+            <MdOutlineProductionQuantityLimits className='text-red-500' size={60} />
+            No vendors awaiting approval
+          </p>
         ):(
           <div className='grid grid-cols-3 gap-3 mt-3'>
             {data.map((vendor) => (
@@ -79,7 +87,7 @@ function Approvals() {
                           vendor._id, 
                           'approve'
                         )}
-                        className={`px-3 py-1 rounded-lg cursor-pointer text-light ${isActionLoading(vendor._id) ? 'bg-gray-400' : 'bg-green-500'}`}
+                        className={`px-3 py-1 rounded-lg cursor-pointer text-light hover:border-[1.5px] hover:border-green-500 ${isActionLoading(vendor._id) ? 'bg-gray-400' : 'bg-[#424242]'}`}
                       >
                         {isActionLoading(vendor._id) ? 'Approving...' :'Approve'}
                       </button>
@@ -90,12 +98,15 @@ function Approvals() {
                           'reject', 
                           'Incomplete Info'
                         )}
-                        className={`px-3 py-1 rounded-lg cursor-pointer text-light ${isActionLoading(vendor._id) ? 'bg-gray-400' : 'bg-red-500'}`}
+                        className={`px-3 py-1 rounded-lg cursor-pointer text-light hover:border-[1.5px] hover:border-red-500 ${isActionLoading(vendor._id) ? 'bg-gray-[#424242]' : 'bg-[#424242]'}`}
                       >
                         {isActionLoading(vendor._id) ? 'Rejecting...' : 'Reject'}
                       </button>
                     </div>
                   </div>
+                  <p className='flex items-center justify-center gap-2 text-white p-2 cursor-pointer hover:underline'>
+                    <FaFileContract className=''/> view approval docs
+                  </p>
               </div>
             ))}
           </div>

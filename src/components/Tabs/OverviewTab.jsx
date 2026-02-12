@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PaymentItem, SalesChart, RevenueChart, VendorApprovals } from '..';
 import { PaymentsRequests, VendorApprove } from '../../commons';
 import { IoCalendarOutline, IoChevronForward } from "react-icons/io5";
+import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline } from "react-icons/md";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
 import usePendingVendors from '../../Hooks/usePendingVendors';
@@ -23,11 +24,6 @@ function OverviewTab() {
 
     return () => clearInterval(interval);
   }, []);
-
-  
-  if (isLoading) return  <p> Loding Vendors...</p>
-  if (isError) return <p>Failed to load vendors</p>;
-
 
   const getFirstTwoChars = (name) => {
     return name.slice(0,2).toUpperCase();
@@ -201,8 +197,17 @@ function OverviewTab() {
         <div className='p-3 rounded-xl bg-muted vendors'>
          <h1 className=''>Vendor Approvals</h1>
          <div className='flex flex-col gap-2 max-h-[90px] overflow-y-auto pr-1 vendorItem'>
-            {data.length === 0 ? (
-              <p className='text-muted text-sm'>
+            {isLoading ? (
+              <p className='text-dark'> loading vendor approvals...</p>
+            ) : isError ? (
+              <p className='text-dark text-sm  mt-2 flex flex-col justify-center items-center gap-2'>
+                <MdOutlineErrorOutline className='text-red-500' size={45} />
+                 Failed to load vendor approvals
+              </p>
+            ) : (
+              data.length === 0 ? (
+              <p className='text-dark text-sm  mt-2 flex flex-col justify-center items-center gap-2'>
+                <MdOutlineProductionQuantityLimits className='text-red-500' size={45} />
                 No vendors awaiting approval
               </p>
             ) : (
@@ -230,7 +235,7 @@ function OverviewTab() {
                   />
                 </div>
               ))
-            )}
+            ))}
           </div>
         </div>
       </div>

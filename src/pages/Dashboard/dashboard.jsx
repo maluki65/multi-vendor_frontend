@@ -23,11 +23,11 @@ function Dashboard() {
   const showProfileForm = (!isVendor || isVendorApproved) && needsProfile(me);
   const ProfileComponent = getProfileFormByRole(me.role);
 
-
   const user = {
     fullName: userData.username || userData.storename,
     role: userData.role,
-    email: userData.email
+    email: userData.email,
+    storeName: userData.storeName
   }
 
   return (
@@ -35,9 +35,10 @@ function Dashboard() {
       fullName={user.fullName} 
       role={user.role} 
       email={user.email}
+      storeName={user.storeName}
       >
-      {isVendorPending && (
-        <div className='bg-yellow-100 border border-yellow-400 text-yellow-800 p-4 rounded-lg mb-4'>
+      {isVendorPending &&  tab !== 'verification' &&(
+        <div className='bg-yellow-100 border border-yellow-400 text-yellow-800 p-4 rounded-lg my-4'>
           <h3 className='font-semibold'>
             Your vendor account is under review
           </h3>
@@ -61,12 +62,15 @@ function Dashboard() {
         <ProfileComponent/>
       )}
 
-      {!isVendorPending && !showProfileForm && (
+      {(
+        (!isVendorPending && !showProfileForm ) ||
+        (isVendorPending && tab === 'verification')
+      ) && (
         <>
           {tab === 'overview' && <Overview/>}
           {tab === 'Add-admin' && <AddAdmin/>}
           {tab === 'Approvals' && <Approvals/> }
-          {tab === 'Verification' && <VendorVerification/>}
+          {tab === 'verification' && <VendorVerification/>}
           {tab === 'Users' && <Users />}
         </>
       )}

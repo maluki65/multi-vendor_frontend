@@ -3,7 +3,7 @@ import './layout.css';
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 
-export default function DashboardLayout ({ fullName, role, email, children}){
+export default function DashboardLayout ({ fullName, storeName, role, email,  children}){
   return(
       <div className='relative sm:-8 p-4 bg-gray-100 min-h-screen flex flex-row'>
         <div className='sm:flex hidden mr-10 relative'>
@@ -17,6 +17,7 @@ export default function DashboardLayout ({ fullName, role, email, children}){
             role={role}
             fullName={fullName}
             email={email}
+            storeName={storeName}
           />
           <main className="flex-1 px-4 overflow-y-auto bg-transparent rounded-xl">
             {children}
