@@ -17,6 +17,7 @@ export { default as RevenueChart } from './Charts/revenueChart';
 export { default as VendorApprovals } from './DashboardItems/vendorItems';
 export { default as AddAdmin } from './Tabs/AddAdmin';
 export { default as Users } from './Tabs/Users';
-export { default as ProfileForm } from './ProfileForm/ProfileForm';
 export { default as CreateVendorProfile } from './ProfileForm/createVendorProfile';
 export { default as CreateBuyerProfile } from './ProfileForm/createBuyerProfile';
+export { default as VendorVerification } from './Tabs/vendorVerification';
+export { default as Approvals } from './Tabs/Approvals';

@@ -1,4 +1,4 @@
-import { MdOutlineAdminPanelSettings, MdOutlinePayments } from "react-icons/md";
+import { MdOutlineAdminPanelSettings, MdOutlinePayments, MdOutlineDomainVerification } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -17,6 +17,11 @@ export const menuRoleItems = {
     //{ label: 'Profile', value: 'Profile', icon: CgProfile, link: "?tab=profile"},
     { label: 'Settings', value: 'Settings', icon: IoSettingsOutline, link: "?tab=settings"},
   ],
-  Vendor: [],
+  Vendor: [
+    { label: 'Dashboard', value: 'overview', icon: RxDashboard, link: "?tab=overview" },
+    { label: 'Orders', value: 'orders', icon: RiShoppingCartLine, requiresApproval: true, link: "?tab=orders" },
+    { label: 'Payments', value: 'payments', icon: MdOutlinePayments, requiresApproval: true, link: "?tab=payments" },
+    { label: 'Verification', value: 'verification', icon: MdOutlineDomainVerification, requiresApproval: true, link: "?tab=verification" },
+  ],
   Buyer:[]
 }

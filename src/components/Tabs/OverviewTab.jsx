@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './Tabs.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PaymentItem, SalesChart, RevenueChart, VendorApprovals } from '..';
@@ -6,12 +6,32 @@ import { PaymentsRequests, VendorApprove } from '../../commons';
 import { IoCalendarOutline, IoChevronForward } from "react-icons/io5";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
+import usePendingVendors from '../../Hooks/usePendingVendors';
 import { FaRecordVinyl } from "react-icons/fa";
-import { BsThreeDots } from "react-icons/bs";
+import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosSearch } from "react-icons/io";
 
 function OverviewTab() {
   const [now, setNow] = React.useState(new Date());
+  
+  const { data, isLoading, isError } = usePendingVendors();
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  
+  if (isLoading) return  <p> Loding Vendors...</p>
+  if (isError) return <p>Failed to load vendors</p>;
+
+
+  const getFirstTwoChars = (name) => {
+    return name.slice(0,2).toUpperCase();
+  }
 
   const formatDate = (date) => {
     const day = date.getDate();
@@ -42,14 +62,6 @@ function OverviewTab() {
 
     return `${formattedDate} • ${formattedTime}`;
   }
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(new Date());
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className='grid grid-cols-[75%_25%] gap-3 bg-transparent overview'>
@@ -188,10 +200,37 @@ function OverviewTab() {
         </div>
         <div className='p-3 rounded-xl bg-muted vendors'>
          <h1 className=''>Vendor Approvals</h1>
-          <div className='flex flex-col gap-2 max-h-[90px] overflow-y-auto pr-1 vendorItem'>
-            {VendorApprove.map((item, index) => (
-              <VendorApprovals key={index} vendorApprovals={item} />
-            ))}
+         <div className='flex flex-col gap-2 max-h-[90px] overflow-y-auto pr-1 vendorItem'>
+            {data.length === 0 ? (
+              <p className='text-muted text-sm'>
+                No vendors awaiting approval
+              </p>
+            ) : (
+              data.map((vendor) => (
+                <div
+                  key={vendor._id}
+                  className='flex justify-between items-center'
+                >
+                  <p className='rounded-full items-center p-1 text-xs text-white bg-dark'>
+                    {getFirstTwoChars(vendor.storeName || vendor.email)}
+                  </p>
+
+                  <div className='flex flex-col gap-1'>
+                    <p className='text-xs font-medium text-dark'>
+                      {vendor.storeName || 'No store name'}
+                    </p>
+                    <p className='text-[#525151] text-xs'>
+                      {vendor.email}
+                    </p>
+                  </div>
+
+                  <BsThreeDotsVertical
+                    className='cursor-pointer Icon'
+                    size={20}
+                  />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

@@ -30,6 +30,8 @@ function Sidebar( { role }) {
 
   const menuItems = menuRoleItems[role] || [];
 
+  //const isDisabled = role === 'Vendor' && me.status === 'pending' && link.requiresApproval;
+
   const handleLogout = async () => {
     try{
       await logout();
