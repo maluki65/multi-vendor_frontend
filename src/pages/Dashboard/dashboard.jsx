@@ -5,7 +5,7 @@ import { useCurrentUser } from '../../Hooks/useCurrentUser';
 import { needsProfile } from '../../utils/userProfiles';
 import { getProfileFormByRole } from '../../utils/profileforms';
 import { useAuth } from '../../Context/AuthContext';
-import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals } from '../../components';
+import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications } from '../../components';
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -70,7 +70,8 @@ function Dashboard() {
           {tab === 'overview' && <Overview/>}
           {tab === 'Add-admin' && <AddAdmin/>}
           {tab === 'Approvals' && <Approvals/> }
-          {tab === 'verification' && <VendorVerification/>}
+          {tab === 'verification' && isVendor && <VendorVerification/>}
+          {tab === 'verification' && me?.role === 'Admin' && <AdminVerifications/>}
           {tab === 'Users' && <Users />}
         </>
       )}

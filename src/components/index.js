@@ -21,3 +21,4 @@ export { default as CreateVendorProfile } from './ProfileForm/createVendorProfil
 export { default as CreateBuyerProfile } from './ProfileForm/createBuyerProfile';
 export { default as VendorVerification } from './Tabs/vendorVerification';
 export { default as Approvals } from './Tabs/Approvals';
+export { default as AdminVerifications } from './Tabs/AdminVerification';
