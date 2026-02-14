@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Tabs.css';
+import { CgProfile } from "react-icons/cg";
 import { toast, Toaster } from 'react-hot-toast';
 import useVerification from '../../Hooks/useVerification';
 import UploadVerificationImgs from '../../utils/verificationDoc';
@@ -9,8 +10,21 @@ function VendorVerification() {
   const verification = getMyVerification.data;
   const isLoading = getMyVerification.isLoading;
 
+  const [verificationFiles, setVerificationFiles] = useState([]);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [imgErr, setImgErr] = useState();
+
+  const verifyRef = useRef();
+  const MAX_IMG_SIZE = 5;
+
+  // On preventing memory leaks
+  useEffect(() => {
+    return () => {
+      verificationFiles.forEach((item) =>
+      URL.revokeObjectURL(item.preview)
+    )};
+  }, [verificationFiles]);
 
   if (isLoading) return <p>Loading verification info...</p>
 
@@ -34,14 +48,78 @@ function VendorVerification() {
     );
   }
 
+  const handleVerifyDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const files = Array.from(e.dataTransfer.files);
+
+    handleVerifyImgChange({
+      target: { files },
+    })
+  };
+
+  const handleDragOverVerify = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false)
+  }
+
+  const handleVerifyImgChange = (e) => {
+    let files = Array.from(e.target.files);
+
+    if (files.length + verificationFiles.length > 4) {
+      toast.error('maximum 4 images allowed');
+      //setImgErr('maximum 4 images allowed');
+      files = files.slice(0, 4 - verificationFiles.length);
+    }
+
+    const validFiles = files.filter(
+      (file) => 
+        file.type.startsWith('image/') && 
+        file.size <= MAX_IMG_SIZE * 1024 * 1024
+    );
+
+    if (validFiles.length !== files.length) {
+      toast.error('Some files were invalid or exceeded 5MB');
+      //setImgErr('Some files were invalid or exceeded 5MB');
+    }
+
+    const newFiles = validFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+
+    setVerificationFiles((prev) => [
+      ...prev,
+      ...newFiles
+    ]);
+  };
+
+  const removeImage = (indexToRemove) => {
+    setVerificationFiles((prev) => {
+      const updated = [...prev];
+
+      URL.revokeObjectURL(updated[indexToRemove].preview);
+
+      updated.splice(indexToRemove, 1);
+      return updated;
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!termsAccepted) return toast.error('You must accept vendor agreement!')
-    if (selectedFiles.length === 0)
+    if (verificationFiles.length === 0)
       return toast.error('Please upload your verification documents!');
 
     try{
-      const uploadedFiles = await UploadVerificationImgs(selectedFiles);
+      const uploadedFiles = await UploadVerificationImgs(
+        verificationFiles.map((item) => item.file)
+      );
 
       const verificationImg = uploadedFiles.map(f => f.url);
       const verificationImgIds = uploadedFiles.map(f => f.fileId);
@@ -63,43 +141,102 @@ function VendorVerification() {
     }
   };
   return (
-    <div className='max-w-lg mx-auto p-4 bg-yellow-50 border border-yellow-300 rounded-lg'>
-      <h3 className='text-lg font-semibold mb-4'>
-        {userStatus === 'rejected' ? 'Resubmit your verification' : 'Vendor Verifcation'}
-      </h3>
+    <>
+      <Toaster position='top-right' reverseOrder={false} />
+      <div className='max-w-lg mx-auto p-4 bg-yellow-50 border border-yellow-300 rounded-lg'>
+        <h3 className='text-lg font-semibold mb-4'>
+          {userStatus === 'rejected' ? 'Resubmit your verification' : 'Vendor Verifcation'}
+        </h3>
 
-      {userStatus === 'rejected' && vendorUser.rejectionReason && (
-        <div className='mb-4 p-2 bg-red-100 text-red-800 rounded'>
-          <strong> Rejection Reason:</strong> {vendorUser.rejectionReason}
-        </div>
-      )}
+        {userStatus === 'rejected' && vendorUser.rejectionReason && (
+          <div className='mb-4 p-2 bg-red-100 text-red-800 rounded'>
+            <strong> Rejection Reason:</strong> {vendorUser.rejectionReason}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input 
-          type='file'
-          multiple
-          accept='images/*'
-          onChange={(e) => setSelectedFiles(Array.from(e.target.files))}
-        />
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+          <div className='flex flex-col gap-3 my-2'>
+            <p className='text-xs leading-relaxed my-1'>
+              Maximum single image file is 5MB
+              { imgErr && <p className='text-red-600'>{imgErr}</p>}
+            </p>
+          </div>
 
-        <label className='flex items-center gap-2'>
-          <input
-            type='checkbox'
-            checked={termsAccepted}
-            onChange={(e) => setTermsAccepted(e.target.checked)}
-          />
-          I have read and agree to the vendor agreement stated
-        </label>
+          <div className='flex flex-col gap-2'>
+            <div 
+              onDrop={handleVerifyDrop}
+              onDragOver={handleDragOverVerify}
+              onDragLeave={handleDragLeave}
+              className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded cursor-pointer transition-all duration-200 
+               ${
+                isDragging 
+                  ? 'border-blue-400 bg-blue-50 scale-105' 
+                  : 'border-gray-300 hover:border-orange-400 hover:bg-gray-50'
+                }`
+              }
+              >
+                <label
+                  htmlFor='VerifyImgs'
+                  className='flex flex-col items-center justify-center w-full h-full cursor-pointer'>
+                    <CgProfile className='w-8 h-8 text-gray-500'/>
+                    <p className='mt-2 text-sm flex gap-1 items-center font-semibold text-gray-500'>
+                      Add National ID/Passport <span className='text-red-600 text-base'>*</span>
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Max 4 images • 5MB each
+                    </p>
+                </label>
+                <input
+                  id='VerifyImgs'
+                  type='file'
+                  multiple
+                  accept='images/*'
+                  onChange={handleVerifyImgChange}
+                  ref={verifyRef}
+                  className='hidden'
+                />
+              </div>
+              {verificationFiles.length > 0 && (
+                <div className='flex flex-wrap gap-2 mt-3'>
+                  {verificationFiles.map((item, index) => (
+                    <div key={index} className='relative'>
+                      <img
+                        src={item.preview}
+                        alt={`verification-${index}`}
+                        className='w-24 h-20 object-cover rounded shadow-md'
+                      />
 
-        <button 
-          type='submit'
-          className='px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:opacity-50'
-          disabled={submitVerification.isLoading || resubmitVerification.isLoading}
-          >
-            {userStatus === 'rejected' ? 'Resubmit verification' : 'Submit verification'}
-          </button>
-      </form>
-    </div>
+                      <botton 
+                        type='botton'
+                        onClick={() => removeImage(index)}
+                        className='absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-red-600 cursor-pointer'>
+                          X
+                      </botton>
+                    </div>
+                  ))}
+                </div>
+              )}
+          </div>
+
+          <label className='flex items-center gap-2'>
+            <input
+              type='checkbox'
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+            />
+            I have read and agree to the vendor agreement stated
+          </label>
+
+          <button 
+            type='submit'
+            className='px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:opacity-50'
+            disabled={submitVerification.isLoading || resubmitVerification.isLoading}
+            >
+              {userStatus === 'rejected' ? 'Resubmit verification' : 'Submit verification'}
+            </button>
+        </form>
+      </div>
+    </>
   );
 }
 
