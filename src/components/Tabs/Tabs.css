@@ -64,6 +64,9 @@
   .addForm{
     max-width: 100%;
   }
+  .IDText{
+    font-size: 23px;
+  }
 }
 
 @media(max-width: 769px){
@@ -91,6 +94,9 @@
   }
   .PayItems, .RevChart, .vendorItem{
     max-height: 550px;
+  }
+  .Agreement{
+    font-size: 13px;
   }
 }
 

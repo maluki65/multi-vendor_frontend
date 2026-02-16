@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Tabs.css';
 import { CgProfile } from "react-icons/cg";
+import { VendorTerms } from '../../commons';
 import { toast, Toaster } from 'react-hot-toast';
 import useVerification from '../../Hooks/useVerification';
 import UploadVerificationImgs from '../../utils/verificationDoc';
@@ -13,6 +14,7 @@ function VendorVerification() {
   const [verificationFiles, setVerificationFiles] = useState([]);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [signature, setSignature] = useState('');
   const [imgErr, setImgErr] = useState();
 
   const verifyRef = useRef();
@@ -44,6 +46,16 @@ function VendorVerification() {
           <p><strong>Store Name:</strong> {vendorUser.storeName} </p>
           <p><strong>Email:</strong> {vendorUser.email} </p>
         </div>
+      </div>
+    );
+  }
+
+  if (vendorUser && userStatus == 'pending'){
+    return (
+      <div className='p-4 bg-yellow-50 border border-green-300 rounded-lg'>
+        <h3 className='font-medium text-green-800 mb-2'>
+          Verification for this profile is already submitted. Awaiting Admin approval.
+        </h3>
       </div>
     );
   }
@@ -117,23 +129,34 @@ function VendorVerification() {
       return toast.error('Please upload your verification documents!');
 
     try{
+      const toastId = toast.loading('Submitting verification docs...');
+
       const uploadedFiles = await UploadVerificationImgs(
         verificationFiles.map((item) => item.file)
       );
 
-      const verificationImg = uploadedFiles.map(f => f.url);
-      const verificationImgIds = uploadedFiles.map(f => f.fileId);
+      const verificationFilesPayload = uploadedFiles.map((f) => ({
+        url: f.url,
+        fileId: f.fileId,
+      }));
 
       const payload = {
-        verificationImg,
-        verificationImgIds,
+        verificationFiles: verificationFilesPayload,
         termsConditions: termsAccepted,
+        signature,
       };
 
+      const onSuccess = () => {
+        toast.success('verification submitted. Awaiting Admin approval', { id: toastId});
+        setVerificationFiles([]);
+        setSignature('');
+        setTermsAccepted(false);
+      }
+
       if (userStatus === 'rejected') {
-        resubmitVerification.mutate(payload);
+        resubmitVerification.mutate(payload, { onSuccess});
       } else {
-        submitVerification.mutate(payload);
+        submitVerification.mutate(payload, { onSuccess });
       }
     } catch(error){
       console.error('Verification docs upload failed', error);
@@ -143,9 +166,9 @@ function VendorVerification() {
   return (
     <>
       <Toaster position='top-right' reverseOrder={false} />
-      <div className='max-w-lg mx-auto p-4 bg-yellow-50 border border-yellow-300 rounded-lg'>
+      <div className='mx-auto p-4 bg-yellow-50 border border-yellow-300 rounded-lg verifyCon'>
         <h3 className='text-lg font-semibold mb-4'>
-          {userStatus === 'rejected' ? 'Resubmit your verification' : 'Vendor Verifcation'}
+          {userStatus === 'rejected' ? 'Resubmit your verification' : 'Vendor Verification'}
         </h3>
 
         {userStatus === 'rejected' && vendorUser.rejectionReason && (
@@ -179,10 +202,10 @@ function VendorVerification() {
                   htmlFor='VerifyImgs'
                   className='flex flex-col items-center justify-center w-full h-full cursor-pointer'>
                     <CgProfile className='w-8 h-8 text-gray-500'/>
-                    <p className='mt-2 text-sm flex gap-1 items-center font-semibold text-gray-500'>
+                    <p className='mt-2 text-sm  flex gap-1 items-center font-semibold text-gray-500 IDText'>
                       Add National ID/Passport <span className='text-red-600 text-base'>*</span>
                     </p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-gray-400 IDText">
                       Max 4 images • 5MB each
                     </p>
                 </label>
@@ -206,25 +229,70 @@ function VendorVerification() {
                         className='w-24 h-20 object-cover rounded shadow-md'
                       />
 
-                      <botton 
+                      <button 
                         type='botton'
                         onClick={() => removeImage(index)}
                         className='absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-red-600 cursor-pointer'>
                           X
-                      </botton>
+                      </button>
                     </div>
                   ))}
                 </div>
               )}
           </div>
+          <div className="space-y-4 " id='Why Us'>
+            <details className="group [&_summary::-webkit-details-marker]:hidden transition ease-in duration-700 ">
+                <summary
+                    className="flex items-center justify-between gap-1 rounded-md p-1"
+                >
+                    <h2 className="text-base cursor-pointer text-orange-600 hover:underline font-medium">Vendor agreement</h2>
 
-          <label className='flex items-center gap-2'>
+                    <svg
+                    className="size-5 shrink-0 transition-transform cursor-pointer duration-300 text-[#070707] group-open:-rotate-180"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </summary>
+
+                <div className='flex flex-col gap-2'>
+                  <div className='vendor-terms-container'>
+                    {VendorTerms.map((term) => (
+                      <div 
+                        key={term.id}
+                        className='vendor-term'
+                        >
+                          <h3 className='term-title p-2 text-primary '>{term.title}</h3>
+                          <p className='term-text p-2 text-md'>{term.text}</p>
+                        </div>
+                    ))}
+                  </div>
+                  <div className='flex flex-col gap-1'>
+                    <label className='flex items-center gap-1'>Signature <span className='text-red-600'>*</span></label>
+                    <span className='text-xs text-red-500'>Please ensure the signature matches the full name as it appears on the ID or Passport.</span>
+                    <input
+                      type='text'
+                      value={signature}
+                      required
+                      onChange={(e) => setSignature(e.target.value)}
+                      placeholder='Enter your full signature'
+                      className='border-b-[1.5px] border-b-dark my-2 focus:outline-0'
+                    />
+                  </div>
+                </div>
+            </details>
+          </div>
+
+          <label className='flex items-center gap-2 font-normal Agreement'>
             <input
               type='checkbox'
               checked={termsAccepted}
               onChange={(e) => setTermsAccepted(e.target.checked)}
             />
-            I have read and agree to the vendor agreement stated
+            I have read and I agree to the vendor agreement stated.
           </label>
 
           <button 

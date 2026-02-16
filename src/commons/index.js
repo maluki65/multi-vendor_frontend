@@ -9,3 +9,4 @@ export { default as PaymentsRequests } from './Data/PaymentRequests';
 export { default as SalesReportData } from './Data/salesReportData';
 export { default as RevenueData } from './Data/revenueData';
 export { default as VendorApprove } from './Data/vendorApprove';
+export { default as VendorTerms } from './Data/VendorTerms';

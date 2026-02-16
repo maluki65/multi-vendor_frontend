@@ -6,7 +6,7 @@ const PUBLIC_KEY = import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY;
 const FOLDER = import.meta.env.VITE_IMAGEKIT_VERIFICATIONIMGS;
 
 const imagekit = axios.create({
-  baseUrl: IMAGEKIT_URL,
+  baseURL: IMAGEKIT_URL,
   withCredentials: false,
 });
 
@@ -24,7 +24,7 @@ const uploadSingleImage =  async(file) => {
   formData.append('publicKey', PUBLIC_KEY);
   formData.append('folder', FOLDER);
   formData.append('signature', signature);
-  formData.append('token', token),
+  formData.append('token', token);
   formData.append('expire', expire);
 
   const res = await imagekit.post('/files/upload', formData);
