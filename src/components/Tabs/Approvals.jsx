@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import './Tabs.css';
+import { VerifyDoc } from '..';
 import { Toaster } from 'react-hot-toast';
 import { LuAlarmClock } from "react-icons/lu";
-import usePendingVendors  from '../../Hooks/usePendingVendors';
-import useVendorAction from '../../Hooks/useVendorAction';
 import { FaFileContract } from "react-icons/fa";
+import useVerification from '../../Hooks/useVerification';
+import useVendorAction from '../../Hooks/useVendorAction';
+import usePendingVendors  from '../../Hooks/usePendingVendors';
 import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline } from "react-icons/md";
 
 function Approvals() {
+  const { getVerificationByUserId } = useVerification();
+  const [verifyModal, setVerifyModal] = useState(false);
+  const [selectedVendorId, setSelectedVendorId] = useState(null);
+  
   const { data, isLoading: isDataLoading, isError } = usePendingVendors();
   const { handleVendorActions, isLoading: isActionLoading } = useVendorAction();
+
+  const vendorVerificationQuery = getVerificationByUserId(selectedVendorId);
 
   const getFirstTwoChars = (name) => {
     return name.slice(0,2).toUpperCase()
@@ -34,6 +42,11 @@ function Approvals() {
 
     return `${day}${getOriginal(day)} ${month} ${year}`;
   };
+
+  const openModal = (vendorId) =>{
+    setSelectedVendorId(vendorId);
+    setVerifyModal(true);
+  }
 
   return (
     <>
@@ -104,11 +117,60 @@ function Approvals() {
                       </button>
                     </div>
                   </div>
-                  <p className='flex items-center justify-center gap-2 text-white p-2 cursor-pointer hover:underline'>
+                  <button className='flex items-center justify-center   gap-2 text-white p-2 cursor-pointer hover:underline'
+                   onClick={() => openModal(vendor._id)}
+                   >
                     <FaFileContract className=''/> view approval docs
-                  </p>
+                  </button>
               </div>
             ))}
+
+            <VerifyDoc
+              isOpen={verifyModal}
+              onClose={() => setVerifyModal(false)}
+              title='Vendor verification documents'
+              >
+                {vendorVerificationQuery.isLoading ? (
+                  <p>Loading docs...</p>
+                ) : vendorVerificationQuery.isError ? (
+                  <p className='text-red-600'>Failed to load documents</p>
+                ): vendorVerificationQuery.data?.verificationFiles?.length > 0 ? (
+                  <div className='flex flex-col gap-2'>
+                    <div className='grid grid-cols-2 gap-2'>
+                      {vendorVerificationQuery.data.verificationFiles.map((file, idx) => (
+                        <img 
+                          key={idx}
+                          src={file.url}
+                          className='w-full h-32 object-cover rounded'
+                        />
+                      ))}
+                    </div>
+
+                    <div className='bg-gray-100 p-3 rounded-lg'>
+                      <p className='text-sm text-gray-500'>Signature</p>
+                      <p className='text-dark font-medium wrap-break-words'>
+                        {vendorVerificationQuery.data.signature}
+                      </p>
+                    </div>
+                    
+                    <div className='bg-gray-100 p-3 rounded-lg'>
+                      <p className='text-sm text-gray-600'>Terms & Conditions</p>
+                      <p className={`font-medium ${vendorVerificationQuery.data.termsConditions 
+                        ? 'text-green-600'
+                        : 'text-red-600'
+                        }`}>
+                          {vendorVerificationQuery.data.termsConditions
+                            ? 'Accepted'
+                            : 'Note Accepted'
+                          }
+                        </p>
+                    </div>
+                  </div>
+                ) : (
+                  <p className=''> No documents uploaded by this vendor</p>
+                )}
+                
+            </VerifyDoc>
           </div>
         )}
       </div>
