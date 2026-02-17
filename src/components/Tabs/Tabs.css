@@ -2,7 +2,7 @@
   .overview .HDash, .adminH1{
     font-size: 4em;
   }
-  .overview .PDash, .paymentsReq h1, .charts01 h3, .salesRev h3, .vendors h1, .adminP{
+  .overview .PDash, .paymentsReq h1, .charts01 h3, .salesRev h3, .vendors h1, .adminP, .CSVAct{
     font-size: 2.7em;
   }
   .IContainer{
@@ -67,6 +67,44 @@
   .IDText{
     font-size: 23px;
   }
+  .appContainer{
+    height: 450px;
+  }
+  .UUIDcon{
+    padding: 2px 10px;
+    gap: 3px;
+  }
+  .UUIDcon div p, .STitle, .AppSign{
+    font-size: 2em;
+  }
+  .namesTag{
+    height:90px;
+    width: 90px;
+  }
+  .verifyImg{
+    align-items: center;
+    justify-items: center;
+  }
+  .verImg{
+    height: 400px;
+    width: 100%;
+    border-radius: 20px
+  }
+  .userTable thead tr th, .userTable tbody tr td {
+    font-size: 2em;
+  }
+  .userTable tbody tr td span{
+    font-size: 1.2em;
+  }
+  .navigator span{
+    font-size: 1.7em;
+  }
+  .Upop{
+    width: fit-content;
+  }
+  .Upop button{
+    font-size: 1em
+  }
 }
 
 @media(max-width: 769px){
@@ -83,6 +121,12 @@
     display: flex;
     flex-wrap: wrap;
   }
+  .verImg{
+    height: 200px;
+  }
+  .ApprovalCards{
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media(max-width: 426px){
@@ -97,6 +141,15 @@
   }
   .Agreement{
     font-size: 13px;
+  }
+  .verifyImg{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .verImg{
+    height: 150px;
+  }
+  .ApprovalCards{
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 

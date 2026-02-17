@@ -65,13 +65,13 @@ function Approvals() {
             No vendors awaiting approval
           </p>
         ):(
-          <div className='grid grid-cols-3 gap-3 mt-3'>
+          <div className='grid grid-cols-3 gap-3 mt-3 ApprovalCards'>
             {data.map((vendor) => (
               <div 
                 key={vendor._id}
-                className='bg-primary rounded-4xl flex flex-col h-[210px]'
+                className='bg-primary rounded-4xl flex flex-col h-[210px] appContainer'
                 >
-                  <div className='bg-[#282828] py-4 px-2 h-[90%] rounded-4xl flex flex-col space-y-3 justify-center'>
+                  <div className='bg-[#282828] py-4 px-2 h-[90%] rounded-4xl flex flex-col space-y-3 justify-center UUIDcon'>
                     <div className='flex items-center justify-between'>
                       <p className='text-muted font-normal leading-relaxed text-sm'>
                         {vendor?.UUID}
@@ -80,12 +80,12 @@ function Approvals() {
                         <LuAlarmClock className=''/> {formatDate(vendor?.createdAt)}
                       </p>
                     </div>
-                    <div className='flex items-center gap-3'>
-                      <p className='rounded-full w-12 h-12 bg-orange-400 text-[#282828] flex items-center justify-center'>
+                    <div className='flex items-center gap-3 '>
+                      <p className='rounded-full w-12 h-12 bg-orange-400 text-[#282828] flex items-center justify-center namesTag'>
                         {getFirstTwoChars(vendor?.storeName || vendor?.storeSlug)}
                       </p>
                       <div className='flex flex-col gap-1'>
-                        <h1 className='text-[#c7ccd6] font-medium leading-relaxed'>
+                        <h1 className='text-[#c7ccd6] font-medium leading-relaxed STitle'>
                         {vendor?.storeName || vendor?.storeSlug}
                         </h1>
                         <p className='text-muted font-medium leading-relaxed text-sm'>
@@ -136,18 +136,18 @@ function Approvals() {
                   <p className='text-red-600'>Failed to load documents</p>
                 ): vendorVerificationQuery.data?.verificationFiles?.length > 0 ? (
                   <div className='flex flex-col gap-2'>
-                    <div className='grid grid-cols-2 gap-2'>
+                    <div className='grid grid-cols-2 gap-2 verifyImg '>
                       {vendorVerificationQuery.data.verificationFiles.map((file, idx) => (
                         <img 
                           key={idx}
                           src={file.url}
-                          className='w-full h-32 object-cover rounded'
+                          className='w-full h-32 object-cover rounded verImg'
                         />
                       ))}
                     </div>
 
                     <div className='bg-gray-100 p-3 rounded-lg'>
-                      <p className='text-sm text-gray-500'>Signature</p>
+                      <p className='text-sm text-gray-500 AppSign'>Signature</p>
                       <p className='text-dark font-medium wrap-break-words'>
                         {vendorVerificationQuery.data.signature}
                       </p>

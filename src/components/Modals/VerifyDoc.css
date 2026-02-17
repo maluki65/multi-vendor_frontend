@@ -1,0 +1,15 @@
+@media(min-width: 2560px){
+  .modalCon{
+    max-width: 60%;
+    height: 60vh;
+  }
+  .modalT{
+    font-size: 3em;
+  }
+}
+
+@media(max-width:376px){
+  .modalT{
+    font-size: 15px;
+  }
+}

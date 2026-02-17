@@ -10,15 +10,15 @@ function VerifyDoc({ isOpen, onClose, title, children }) {
         onClick={onClose}
       />
 
-      <div className='fixed inset-0 flex items-center justify-center z-50'>
-        <div className='bg-white rounded-lg shadow-lg w-full max-w-xl mx-4 p-6 relative'>
+      <div className='fixed inset-0 flex items-center justify-center z-50 overflow-y-auto'>
+        <div className='bg-white rounded-lg shadow-lg w-full max-w-2xl mx-4 p-6 relative modalCon'>
           <div className='flex justify-between items-center mb-4'>
-            <h2 className='text-lg font-medium'>
+            <h2 className='text-lg font-medium modalT'>
              {title}
             </h2>
             <button 
               onClick={onClose}
-              className='text-muted hover:text-gray-800 font-bold cursor-pointer'>
+              className='text-muted hover:text-gray-800 font-bold cursor-pointer modalT'>
                 X
               </button>
           </div>

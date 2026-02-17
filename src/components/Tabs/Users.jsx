@@ -48,7 +48,7 @@ const ActionPopUp = ({ row, onDelete, onOpenUserModal, onOpenRoleModal }) => {
       </button>
       {open && (
         <div 
-        className='absolute right-0 mt-1 w-36 bg-white border shadow-lg rounded z-10'
+        className='absolute right-0 mt-1 w-36 bg-white border shadow-lg rounded z-10 Upop'
          onClick={e => e.stopPropagation()}
         >
           {['View', 'Update role', 'Delete'].map(act => (
@@ -233,7 +233,7 @@ function Users() {
          </div>
          <div className='flex items-center gap-3'>
           <CSVLink 
-            className='px-2 py-1 border flex gap-2 items-center text-primary text-sm border-primary rounded cursor-pointer'
+            className='px-2 py-1 border flex gap-2 items-center text-primary text-sm border-primary rounded cursor-pointer CSVAct'
             data={fiteredUsers}
             filename='users.csv'
              >
@@ -242,8 +242,8 @@ function Users() {
               <IoCloudDownload className='' />
             </span>
           </CSVLink>
-          <button className='px-2 py-1 bg-primary rounded text-white cursor-pointer text-sm'> + New</button>
-          <button className='px-2 py-1 border border-primary  rounded text-primary cursor-pointer'>
+          <button className='px-2 py-1 bg-primary rounded text-white cursor-pointer text-sm CSVAct'> + New</button>
+          <button className='px-2 py-1 border border-primary  rounded text-primary cursor-pointer CSVAct'>
             <IoEllipsisVerticalSharp className='' />
           </button>
          </div>
@@ -296,7 +296,7 @@ function Users() {
              animate={{opacity: 1, scale: 1}}
              exit={{opacity: 0, scale: 0.95}}
              transition={{ duration: 0.3 }}>
-              <table className='w-full border-collapse text-sm md:text-base'>
+              <table className='w-full border-collapse text-sm md:text-base userTable'>
                 <thead className='border-t-[1.5px] border-b-[1.5px] border-gray-400'>
                   <tr>
                     <th className='p-2 text-left font-light'>#</th>
@@ -369,7 +369,7 @@ function Users() {
                 </tbody>
               </table>
 
-              <div className='flex flex-col md:flex-row justify-between items-center mt-4 gap-2'>
+              <div className='flex flex-col md:flex-row justify-between items-center mt-4 gap-2 navigator'>
                 <button
                   disabled={page === 1}
                   onClick={() => setPage(page - 1)}
