@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './profile.css';
 import { toast, Toaster } from 'react-hot-toast';
 import { useProfile } from '../../Hooks/useProfile';
@@ -48,6 +48,14 @@ function CreateBuyerProfile() {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
   const avatarRef = useRef();
 
   const MAX_IMG_SIZE = 5;
@@ -62,7 +70,12 @@ function CreateBuyerProfile() {
       return;
     }
     setAvatar(file);
-    setPreview(URL.createObjectURL(file));
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
+    const newPreview = URL.createObjectURL(file);
+    setPreview(newPreview);
   };
 
   const handleChange = async (e) => {
@@ -118,12 +131,19 @@ function CreateBuyerProfile() {
     setIsLoading(true);
 
     try{
-      const { url, fileId } = await UploadProfileImg(avatar, role)
+     let avatarData = {};
+
+     if (avatar) {
+      const { url, fileId } = await UploadProfileImg(avatar, role);
+      avatarData = {
+        avatar: url,
+        avatarId: fileId
+      };
+     }
 
       const payload = {
         ...form,
-        avatar: url,
-        avatarId: fileId,
+        ...avatarData
       };
 
       console.log(payload);
@@ -132,6 +152,7 @@ function CreateBuyerProfile() {
       setAvatar(null);
       setForm(IntialFormState);
       setSuccess('Profile Saved');
+      setPreview(null);
       toast.success('Profile Saved');
       setTimeout(() => setSuccess(''), 5000);
     } catch (error) {
@@ -160,7 +181,7 @@ function CreateBuyerProfile() {
         <form className='flex flex-col mt-2 mb-2 w-full' onSubmit={handleSubmit}>
           <div className='flex flex-col gap-3 my-1'>
             <p className='text-xs leading-relaxed my-1'>
-              maximum single image file size is 5MB
+            {`Maximum single image file size is ${MAX_IMG_SIZE}MB`}
               {ImgErr && <p className='text-red-600'>{ImgErr}</p>}
             </p>
           </div>

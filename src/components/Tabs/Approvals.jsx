@@ -23,6 +23,7 @@ function Approvals() {
     return name.slice(0,2).toUpperCase()
   }
 
+  console.log('Testing vendor:', data?.map(v => v.storeName));
   const formatDate = (isoString) => {
     const date = new Date(isoString);
 

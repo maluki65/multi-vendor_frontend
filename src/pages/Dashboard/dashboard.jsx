@@ -21,7 +21,7 @@ function Dashboard() {
   if (isLoading) return <p>Loading...</p>
 
   const showProfileForm = (!isVendor || isVendorApproved) && needsProfile(me);
-  const ProfileComponent = getProfileFormByRole(me.role);
+  const ProfileComponent = getProfileFormByRole(me?.role);
 
   const user = {
     fullName: userData.username || userData.storename,

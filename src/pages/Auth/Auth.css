@@ -77,10 +77,13 @@
   }
 }
 
-@media(max-width: 376px){
+@media(max-width: 426px){
   .passInputs{
     grid-template-columns: repeat(1, 1fr);
   }
+}
+
+@media(max-width: 376px){
   .signInText{
     font-size: 14px;
   }
