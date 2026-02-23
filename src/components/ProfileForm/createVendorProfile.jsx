@@ -9,49 +9,41 @@ import { FaCamera } from 'react-icons/fa';
 import { GiTatteredBanner } from "react-icons/gi";
 
 const InitialFormState = {
-  businessInfo: [
-    {
+  businessInfo: {
       legalName: '',
       registrationNumber: '',
       taxId: '',
+    },
+  store:  {
+    //storeName: '',
+    description: '',
+    contactEmail: '',
+    contactPhone: '',
+    addresses:  {
+      country: '',
+      city: '',
+      street: '',
+      postal: '',
     }
-  ],
-  store: [
-    {
-      //storeName: '',
-      description: '',
-      contactEmail: '',
-      contactPhone: '',
-      addresses: [
-        {
-          country: '',
-          city: '',
-          street: '',
-          postal: '',
-        }
-      ]
-    }
-  ],
-  payout: [
-    {
-      method: '',
-      accountName: '',
-      accountNumber: '',
-      provider: '',
-      paybill: '',
-      paybillAcc: '',
-      tillNumber: '',
-      pochiLaBiashara: '',
-    }
-  ],
-  socialLinks: [
-    {
-      instagram: '',
-      facebook: '',
-      x: '',
-      website: ''
-    }
-  ],
+  },
+  payout: {
+    method: '',
+    bank: '',
+    accountName: '',
+    accountNumber: '',
+    provider: '',
+    paybill: '',
+    paybillAcc: '',
+    tillNumber: '',
+    pochiLaBiashara: '',
+  },
+  socialLinks: {
+    instagram: '',
+    facebook: '',
+    x: '',
+    tiktok: '',
+    //website: ''
+  },
   /*logo: '',
   logoId: '',
   banner: '',
@@ -297,7 +289,7 @@ function CreateVendorProfile() {
                 </div>
             </div>
 
-            <div className='flex gap-2 mt-4'>
+            <div className='flex gap-2 my-4'>
               <div 
                 onDrop={(e) => handleDrop('banner', e)}
                 onDragOver={(e) => handleDragOver('banner', e)}
@@ -347,6 +339,345 @@ function CreateVendorProfile() {
                 </div>
             </div>
 
+            <div className='grid grid-cols-3 gap-2 my-3 space-y-2'>
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>Store legalName <span className='text-red-600'>*</span></label>
+                <input
+                  type='text'
+                  name='businessInfo.0.legalName'
+                  placeholder='Sellory'
+                  required
+                  value={form.businessInfo.legalName}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>Registration number {/*<span className='text-red-600'>*</span>*/}</label>
+                <input
+                  type='text'
+                  name='businessInfo.0.registrationNumber'
+                  placeholder='A0884..'
+                  value={form.businessInfo.registrationNumber}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>TaxId<span className='text-red-600'>*</span></label>
+                <input
+                  type='text'
+                  name='businessInfo.0.taxId'
+                  required
+                  placeholder='KRA pin A0793...'
+                  value={form.businessInfo.taxId}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>Store description<span className='text-red-600'>*</span></label>
+                <input
+                  type='text'
+                  name='store.0.description'
+                  required
+                  placeholder='we sell...'
+                  value={form.store.description}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>Contact email<span className='text-red-600'>*</span></label>
+                <input
+                  type='text'
+                  name='store.0.contactEmail'
+                  required
+                  placeholder='store@gmail.com'
+                  value={form.store.contactEmail}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>Contact phone<span className='text-red-600'>*</span></label>
+                <input
+                  type='text'
+                  name='store.0.contactPhone'
+                  required
+                  placeholder='+254 7...'
+                  value={form.store.contactPhone}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>Country<span className='text-red-600'>*</span></label>
+                <input
+                  type='text'
+                  name='store.0.addresses.country'
+                  required
+                  placeholder='Kenya..'
+                  value={form.store.addresses.country}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>City<span className='text-red-600'>*</span></label>
+                <input
+                  type='text'
+                  name='store.0.addresses.city'
+                  required
+                  placeholder='Nairobi'
+                  value={form.store.addresses.city}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>Street<span className='text-red-600'>*</span></label>
+                <input
+                  type='text'
+                  name='store.0.addresses.street'
+                  required
+                  placeholder='Kenyatta ave..'
+                  value={form.store.addresses.street}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center gap-2 text-sm'>Postal code<span className='text-red-600'>*</span></label>
+                <input
+                  type='text'
+                  name='store.0.addresses.postal'
+                  required
+                  placeholder='00100'
+                  value={form.store.addresses.postal}
+                  onChange={handleChange}
+                  className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                  />
+              </div>
+            </div>
+
+            <div className='cols-span-3 mt-6 border-t pt-4'>
+              <h2 className='text-lg font-medium mb-3'>
+                Payout method <span className='text-red-600'>*</span>
+              </h2>
+
+              <div className='flex gap-6 mb-4'>
+                <label className='flex items-center gap-2 cursor-pointer'>
+                  <input 
+                    type='radio'
+                    name='payout.method'
+                    value='mobile_money'
+                    checked={form.payout.method === 'mobile_money'}
+                    onChange={handleChange}
+                  />
+                  M-pesa
+                </label>
+
+                <label className='flex items-center gap-2 cursor-pointer'>
+                  <input 
+                    type='radio'
+                    name='payout.method'
+                    value='Bank'
+                    checked={form.payout.method === 'Bank'}
+                    onChange={handleChange}
+                  />
+                  Bank account
+                </label>
+              </div>
+
+              {form.payout.method === 'mobile_money' && (
+                <div className='grid grid-cols-3 gap-3'>
+                  <div className='flex flex-col gap-1'>
+                    <label className='text-sm'>Provider</label>
+                    <input 
+                      type='text'
+                      name='payout.provider'
+                      placeholder='Safaricom'
+                      value={form.payout.provider}
+                      onChange={handleChange}
+                      className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                  </div>
+
+                  <div className='flex flex-col gap-1'>
+                    <label className='text-sm'>Till Number</label>
+                    <input 
+                      type='text'
+                      name='payout.tillNumber'
+                      placeholder='123456'
+                      value={form.payout.tillNumber}
+                      onChange={handleChange}
+                      className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                  </div>
+
+                  <div className='flex flex-col gap-1'>
+                    <label className='text-sm'>Paybill business no</label>
+                    <input
+                      type='text'
+                      name='payout.paybill'
+                      placeholder='400200'
+                      value={form.payout.paybill}
+                      onChange={handleChange}
+                      className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                  </div>
+
+                  <div className='flex flex-col gap-1'>
+                    <label className='text-sm'>Paybill account no</label>
+                    <input
+                      type='text'
+                      name='payout.paybillAcc'
+                      placeholder='ACC123'
+                      value={form.payout.paybillAcc}
+                      onChange={handleChange}
+                      className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                  </div>
+
+                  <div className='flex flex-col gap-1'>
+                    <label className='text-sm'>Pochi la Biashara</label>
+                    <input
+                      type='text'
+                      name='payout.pochiLaBiashara'
+                      placeholder='07XXXXXXXX'
+                      value={form.payout.pochiLaBiashara}
+                      onChange={handleChange}
+                      className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                  </div>
+                </div>
+              )}
+
+              {form.payout.method === 'Bank' && (
+                <div className='grid grid-cols-3 gap-3'>
+                  <div className='flex flex-col gap-1'>
+                    <label className='text-sm'>Bank Name</label>
+                    <input
+                      type='text'
+                      name='payout.bank'
+                      placeholder='Equity Bank'
+                      value={form.payout.bank}
+                      onChange={handleChange}
+                      className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                  </div>
+
+                  <div className='flex flex-col gap-1'>
+                    <label className='text-sm'>Account Name</label>
+                    <input
+                      type='text'
+                      name='payout.accountName'
+                      placeholder='John Doe'
+                      value={form.payout.accountName}
+                      onChange={handleChange}
+                      className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                  </div>
+
+                  <div className='flex flex-col gap-1'>
+                    <label className='text-sm'>Account number</label>
+                    <input
+                      type='text'
+                      name='payout.accountNumber'
+                      placeholder='0123456789'
+                      value={form.payout.accountNumber}
+                      onChange={handleChange}
+                      className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className='cols-span-3 mt-6 border-t pt-4'>
+              <h2 className='text-lg font-medium mb-3'>
+                Social Links{/*<span className='text-red-600'>*</span>*/}
+              </h2>
+
+              <div className='mb-4 grid grid-cols-3 gap-3'>
+                <div className='flex flex-col gap-1'>
+                  <label className='flex items-center gap-2 text-sm'> Instagram {/*<span className='text-red-600'>*</span>*/}</label>
+                  <input
+                    type='text'
+                    name='socialLinks.instagram'
+                    placeholder='https://www.instagram.com/selloryecommerce/'
+                    required
+                    value={form.socialLinks.instagram}
+                    onChange={handleChange}
+                    className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                </div>
+
+                <div className='flex flex-col gap-1'>
+                  <label className='flex items-center gap-2 text-sm'> FaceBook {/*<span className='text-red-600'>*</span>*/}</label>
+                  <input
+                    type='text'
+                    name='socialLinks.facebook'
+                    placeholder='https://www.facebook.com/profile.php?id=61586947749716'
+                    required
+                    value={form.socialLinks.facebook}
+                    onChange={handleChange}
+                    className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                </div>
+
+                <div className='flex flex-col gap-1'>
+                  <label className='flex items-center gap-2 text-sm'> X{/*<span className='text-red-600'>*</span>*/}</label>
+                  <input
+                    type='text'
+                    name='socialLinks.x'
+                    placeholder='https://x.com/Selloryke'
+                    required
+                    value={form.socialLinks.x}
+                    onChange={handleChange}
+                    className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                </div>
+
+                <div className='flex flex-col gap-1'>
+                  <label className='flex items-center gap-2 text-sm'> TikTok{/*<span className='text-red-600'>*</span>*/}</label>
+                  <input
+                    type='text'
+                    name='socialLinks.tiktok'
+                    placeholder='https://www.tiktok.com/@selloryecommerce'
+                    required
+                    value={form.socialLinks.tiktok}
+                    onChange={handleChange}
+                    className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                </div>
+
+                {/*<div className='flex flex-col gap-1'>
+                  <label className='flex items-center gap-2 text-sm'> Website{/*<span className='text-red-600'>*</span></label>
+                  <input
+                    type='text'
+                    name='socialLinks.website'
+                    placeholder='https://www.sellory.com'
+                    required
+                    value={socialLinks.website}
+                    onChange={handleChange}
+                    className='p-2 outline-none focus:bg-[#cbcaca] focus:border-[1.5px] rounded-lg bg-[#d7d7d7]'
+                    />
+                </div>*/}
+              </div>
+            </div>
+
+            <button
+              type='submit'
+              className='px-3 py-2 rounded-md text-white bg-primary my-4 cursor-pointer'>
+                Create profile
+            </button>
           </form>
         </div>
       )}
