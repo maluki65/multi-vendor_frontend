@@ -1,4 +1,19 @@
-@media(min-width: 2560px){}
+@media(min-width: 2560px){
+  .VendImg{
+    height: 10vw;
+    width: 10vw;
+    border: dashed 3px;
+  }
+  .VenIcon{
+    height: 60px;
+    width: 60px;
+  }
+  .VenBanner{
+    height: 13vw;
+    border: dashed 3px;
+    border-radius: 20px;
+  }
+}
 
 @media(max-width: 769px){
   .addresses{
@@ -11,10 +26,21 @@
   display: flex;
   flex-wrap: wrap;
   }
+  .VenImgCon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .markedT{
+    font-size: 13px;
+  }
+  .VenRegCon, .MonVenPayCon, .BanVenPayCon, .VenSocialCon{
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media(max-width: 376px){
-  .addresses, .names, .notification{
+  .addresses, .names, .notification, .VenRegCon, .MonVenPayCon, .BanVenPayCon, .VenSocialCon{
   grid-template-columns: repeat(1, 1fr);
   }
 }

@@ -13,6 +13,8 @@ function Dashboard() {
   const  { userData } = useAuth();
   const { data: me, isLoading } = useCurrentUser();
 
+  const isAdmin = me?.role === 'Admin';
+  const isBuyer = me?.role === 'Buyer';
   const isVendor = me?.role === 'Vendor';
   const isVendorPending = isVendor && me?.status === 'pending';
   const isVendorApproved = isVendor && me?.status === 'approved';
@@ -67,7 +69,12 @@ function Dashboard() {
         (isVendorPending && tab === 'verification')
       ) && (
         <>
-          {tab === 'overview' && <Overview/>}
+          {/*tab === 'overview' && isAdmin && <Overview/>*
+             {tab === 'overview' && isAdmin && <AdminOverview />}
+             {tab === 'overview' && isVendor && <VendorOverview />}
+             {tab === 'overview' && isBuyer && <BuyerOverview />}
+          */}
+          {tab === 'overview' && <Overview role={me?.role} />}
           {tab === 'Add-admin' && <AddAdmin/>}
           {tab === 'Approvals' && <Approvals/> }
           {tab === 'verification' && isVendor && <VendorVerification/>}

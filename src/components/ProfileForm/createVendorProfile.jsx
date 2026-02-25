@@ -228,23 +228,23 @@ function CreateVendorProfile() {
           <h1 className='text-medium text-xl text-dark'>
             Add Profile
           </h1>
-          <p className='text-normal text-md text-dark flex items-center gap-1'>
+          <p className='text-normal text-md text-dark flex items-center gap-1 markedT'>
             All fields marked with <span className='text-red-600'>*</span> are required
           </p>
           <form className='flex flex-col mt-2 mb-2 w-full' onSubmit={handleSubmit}>
             <div className='flex flex-col gap-3 my-1'>
-              <p className='text-md font-normal leading-relaxed my-1'>
+              <p className='text-md font-normal leading-relaxed my-1 markedT'>
                 {`Maximum single image file size is ${MAX_IMG_SIZE}MB`}
                 {error && <p className='text-red-600'>{error}</p>}
               </p>
             </div>
 
-            <div className='flex gap-2'>
+            <div className='flex gap-2 VenImgCon'>
               <div 
                 onDrop={(e) => handleDrop('logo', e)}
                 onDragOver={(e) => handleDragOver('logo', e)}
                 onDragLeave={() => handleDragLeave('logo', e)}
-                className={`relative flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed rounded-full cursor-pointer transition ${images.logo.dragging ? 'border-dark bg-[#405889]' : 'border-gray-300'}`}
+                className={`relative flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed rounded-full cursor-pointer transition VendImg ${images.logo.dragging ? 'border-dark bg-[#405889]' : 'border-gray-300'}`}
                 onClick={() => logoRef.current.click()}
                 >
                   {images.logo.preview ? (
@@ -268,7 +268,7 @@ function CreateVendorProfile() {
                     </>
                   ) : (
                     <div className='flex flex-col items-center justify-center w-full h-full cursor-pointer'>
-                      <FaCamera className='text-gray-400' size={20} />
+                      <FaCamera className='text-gray-400 VenIcon' size={20} />
                       <p className=' text-xs text-gray-500 mt-1 flex items-center'> 
                         Upload logo <span className='text-red-600'>*</span>
                       </p>
@@ -294,7 +294,7 @@ function CreateVendorProfile() {
                 onDrop={(e) => handleDrop('banner', e)}
                 onDragOver={(e) => handleDragOver('banner', e)}
                 onDragLeave={() => handleDragLeave('banner', e)}
-                className={`relative flex flex-col items-center justify-center w-full h-35 border-2 border-dashed rounded-md cursor-pointer transition ${images.banner.dragging ? 'border-dark bg-[#405889]' : 'border-gray-300'}`}
+                className={`relative flex flex-col items-center justify-center w-full h-35 border-2 border-dashed rounded-md cursor-pointer transition VenBanner ${images.banner.dragging ? 'border-dark bg-[#405889]' : 'border-gray-300'}`}
                 onClick={() => bannerRef.current.click()}
                 >
                   {images.banner.preview ? (
@@ -339,12 +339,12 @@ function CreateVendorProfile() {
                 </div>
             </div>
 
-            <div className='grid grid-cols-3 gap-2 my-3 space-y-2'>
+            <div className='grid grid-cols-3 gap-2 my-3 space-y-2 VenRegCon'>
               <div className='flex flex-col gap-1'>
                 <label className='flex items-center gap-2 text-sm'>Store legalName <span className='text-red-600'>*</span></label>
                 <input
                   type='text'
-                  name='businessInfo.0.legalName'
+                  name='businessInfo.legalName'
                   placeholder='Sellory'
                   required
                   value={form.businessInfo.legalName}
@@ -356,7 +356,7 @@ function CreateVendorProfile() {
                 <label className='flex items-center gap-2 text-sm'>Registration number {/*<span className='text-red-600'>*</span>*/}</label>
                 <input
                   type='text'
-                  name='businessInfo.0.registrationNumber'
+                  name='businessInfo.registrationNumber'
                   placeholder='A0884..'
                   value={form.businessInfo.registrationNumber}
                   onChange={handleChange}
@@ -367,7 +367,7 @@ function CreateVendorProfile() {
                 <label className='flex items-center gap-2 text-sm'>TaxId<span className='text-red-600'>*</span></label>
                 <input
                   type='text'
-                  name='businessInfo.0.taxId'
+                  name='businessInfo.taxId'
                   required
                   placeholder='KRA pin A0793...'
                   value={form.businessInfo.taxId}
@@ -380,7 +380,7 @@ function CreateVendorProfile() {
                 <label className='flex items-center gap-2 text-sm'>Store description<span className='text-red-600'>*</span></label>
                 <input
                   type='text'
-                  name='store.0.description'
+                  name='store.description'
                   required
                   placeholder='we sell...'
                   value={form.store.description}
@@ -392,7 +392,7 @@ function CreateVendorProfile() {
                 <label className='flex items-center gap-2 text-sm'>Contact email<span className='text-red-600'>*</span></label>
                 <input
                   type='text'
-                  name='store.0.contactEmail'
+                  name='store.contactEmail'
                   required
                   placeholder='store@gmail.com'
                   value={form.store.contactEmail}
@@ -404,7 +404,7 @@ function CreateVendorProfile() {
                 <label className='flex items-center gap-2 text-sm'>Contact phone<span className='text-red-600'>*</span></label>
                 <input
                   type='text'
-                  name='store.0.contactPhone'
+                  name='store.contactPhone'
                   required
                   placeholder='+254 7...'
                   value={form.store.contactPhone}
@@ -417,7 +417,7 @@ function CreateVendorProfile() {
                 <label className='flex items-center gap-2 text-sm'>Country<span className='text-red-600'>*</span></label>
                 <input
                   type='text'
-                  name='store.0.addresses.country'
+                  name='store.addresses.country'
                   required
                   placeholder='Kenya..'
                   value={form.store.addresses.country}
@@ -430,7 +430,7 @@ function CreateVendorProfile() {
                 <label className='flex items-center gap-2 text-sm'>City<span className='text-red-600'>*</span></label>
                 <input
                   type='text'
-                  name='store.0.addresses.city'
+                  name='store.addresses.city'
                   required
                   placeholder='Nairobi'
                   value={form.store.addresses.city}
@@ -443,7 +443,7 @@ function CreateVendorProfile() {
                 <label className='flex items-center gap-2 text-sm'>Street<span className='text-red-600'>*</span></label>
                 <input
                   type='text'
-                  name='store.0.addresses.street'
+                  name='store.addresses.street'
                   required
                   placeholder='Kenyatta ave..'
                   value={form.store.addresses.street}
@@ -456,7 +456,7 @@ function CreateVendorProfile() {
                 <label className='flex items-center gap-2 text-sm'>Postal code<span className='text-red-600'>*</span></label>
                 <input
                   type='text'
-                  name='store.0.addresses.postal'
+                  name='store.addresses.postal'
                   required
                   placeholder='00100'
                   value={form.store.addresses.postal}
@@ -496,7 +496,7 @@ function CreateVendorProfile() {
               </div>
 
               {form.payout.method === 'mobile_money' && (
-                <div className='grid grid-cols-3 gap-3'>
+                <div className='grid grid-cols-3 gap-3 MonVenPayCon'>
                   <div className='flex flex-col gap-1'>
                     <label className='text-sm'>Provider</label>
                     <input 
@@ -560,7 +560,7 @@ function CreateVendorProfile() {
               )}
 
               {form.payout.method === 'Bank' && (
-                <div className='grid grid-cols-3 gap-3'>
+                <div className='grid grid-cols-3 gap-3 BanVenPayCon'>
                   <div className='flex flex-col gap-1'>
                     <label className='text-sm'>Bank Name</label>
                     <input
@@ -605,7 +605,7 @@ function CreateVendorProfile() {
                 Social Links{/*<span className='text-red-600'>*</span>*/}
               </h2>
 
-              <div className='mb-4 grid grid-cols-3 gap-3'>
+              <div className='mb-4 grid grid-cols-3 gap-3 VenSocialCon'>
                 <div className='flex flex-col gap-1'>
                   <label className='flex items-center gap-2 text-sm'> Instagram {/*<span className='text-red-600'>*</span>*/}</label>
                   <input

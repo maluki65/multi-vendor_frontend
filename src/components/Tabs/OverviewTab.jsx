@@ -12,7 +12,7 @@ import { FaRecordVinyl } from "react-icons/fa";
 import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosSearch } from "react-icons/io";
 
-function OverviewTab() {
+function OverviewTab({ role }) {
   const [now, setNow] = React.useState(new Date());
   
   const { data, isLoading, isError } = usePendingVendors();
@@ -29,6 +29,8 @@ function OverviewTab() {
     return name.slice(0,2).toUpperCase();
   }
 
+  const isAdmin = role === 'Admin';
+  
   const formatDate = (date) => {
     const day = date.getDate();
     const year = date.getFullYear();
@@ -132,30 +134,32 @@ function OverviewTab() {
             exit={{opacity: 0, scale: 0.95}}
             transition={{duration: 0.3}}
            className='grid grid-cols-2 gap-2 my-2 overflow-y-auto overflow-x-hidden PaymentChart'>
-            <div className='rounded-xl border-2 border-gray-300 p-2 flex flex-col gap-1 paymentsReq'>
-              <div className='flex justify-between items-center'>
-              <h1 className='text-md text-dark'>Payment requests</h1>
-              <BsThreeDots className='cursor-pointer Icon' size={20}/>
+            {isAdmin && (
+              <div className='rounded-xl border-2 border-gray-300 p-2 flex flex-col gap-1 paymentsReq'>
+                <div className='flex justify-between items-center'>
+                  <h1 className='text-md text-dark'>Payment requests</h1>
+                  <BsThreeDots className='cursor-pointer Icon' size={20}/>
+                </div>
+                <div className="relative flex w-full py-2 h-[52px] PayIn">
+                  <input
+                    type='text'
+                    placeholder='search for payment requests'
+                    required
+                    className="w-full p-2 border-[1.5px] border-gray-400 rounded-md focus:outline-none"
+                  />
+                  <span
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-700"
+                  >
+                    <IoIosSearch className='Icon' size={20}/>
+                  </span>
+                </div>
+                <div className='flex flex-col gap-2 max-h-[180px] overflow-y-auto pr-1 PayItems'>
+                  {PaymentsRequests.map((items, index) =>(
+                    <PaymentItem key={index} payments={items}/>
+                  ))}
+                </div>
               </div>
-              <div className="relative flex w-full py-2 h-[52px] PayIn">
-                <input
-                  type='text'
-                  placeholder='search for payment requests'
-                  required
-                  className="w-full p-2 border-[1.5px] border-gray-400 rounded-md focus:outline-none"
-                />
-                <span
-                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-700"
-                >
-                  <IoIosSearch className='Icon' size={20}/>
-                </span>
-              </div>
-              <div className='flex flex-col gap-2 max-h-[180px] overflow-y-auto pr-1 PayItems'>
-                {PaymentsRequests.map((items, index) =>(
-                  <PaymentItem key={index} payments={items}/>
-                ))}
-              </div>
-            </div>
+            )}
             <div className='flex flex-col gap-2 max-h-[200px]'>
               <div className='bg-white rounded-xl p-2 shadow-sm w-full charts01'>
                 <h3 className='text-sn font-medium mb-3'>Revenue</h3>
@@ -194,50 +198,52 @@ function OverviewTab() {
             </div>
           </div>
         </div>
-        <div className='p-3 rounded-xl bg-muted vendors'>
-         <h1 className=''>Vendor Approvals</h1>
-         <div className='flex flex-col gap-2 max-h-[90px] overflow-y-auto pr-1 vendorItem'>
-            {isLoading ? (
-              <p className='text-dark'> loading vendor approvals...</p>
-            ) : isError ? (
-              <p className='text-dark text-sm  mt-2 flex flex-col justify-center items-center gap-2'>
-                <MdOutlineErrorOutline className='text-red-500' size={45} />
-                 Failed to load vendor approvals
-              </p>
-            ) : (
-              data.length === 0 ? (
-              <p className='text-dark text-sm  mt-2 flex flex-col justify-center items-center gap-2'>
-                <MdOutlineProductionQuantityLimits className='text-red-500' size={45} />
-                No vendors awaiting approval
-              </p>
-            ) : (
-              data.map((vendor) => (
-                <div
-                  key={vendor._id}
-                  className='flex justify-between items-center'
-                >
-                  <p className='rounded-full items-center p-1 text-xs text-white bg-dark'>
-                    {getFirstTwoChars(vendor.storeName || vendor.email)}
-                  </p>
+        {isAdmin && (
+          <div className='p-3 rounded-xl bg-muted vendors'>
+            <h1 className=''>Vendor Approvals</h1>
+            <div className='flex flex-col gap-2 max-h-[90px] overflow-y-auto pr-1 vendorItem'>
+              {isLoading ? (
+                <p className='text-dark'> loading vendor approvals...</p>
+              ) : isError ? (
+                <p className='text-dark text-sm  mt-2 flex flex-col justify-center items-center gap-2'>
+                  <MdOutlineErrorOutline className='text-red-500' size={45} />
+                  Failed to load vendor approvals
+                </p>
+              ) : (
+                data.length === 0 ? (
+                <p className='text-dark text-sm  mt-2 flex flex-col justify-center items-center gap-2'>
+                  <MdOutlineProductionQuantityLimits className='text-red-500' size={45} />
+                  No vendors awaiting approval
+                </p>
+              ) : (
+                data.map((vendor) => (
+                  <div
+                    key={vendor._id}
+                    className='flex justify-between items-center'
+                  >
+                    <p className='rounded-full items-center p-1 text-xs text-white bg-dark'>
+                      {getFirstTwoChars(vendor.storeName || vendor.email)}
+                    </p>
 
-                  <div className='flex flex-col gap-1'>
-                    <p className='text-xs font-medium text-dark'>
-                      {vendor.storeName || 'No store name'}
-                    </p>
-                    <p className='text-[#525151] text-xs'>
-                      {vendor.email}
-                    </p>
+                    <div className='flex flex-col gap-1'>
+                      <p className='text-xs font-medium text-dark'>
+                        {vendor.storeName || 'No store name'}
+                      </p>
+                      <p className='text-[#525151] text-xs'>
+                        {vendor.email}
+                      </p>
+                    </div>
+
+                    <BsThreeDotsVertical
+                      className='cursor-pointer Icon'
+                      size={20}
+                    />
                   </div>
-
-                  <BsThreeDotsVertical
-                    className='cursor-pointer Icon'
-                    size={20}
-                  />
-                </div>
-              ))
-            ))}
+                ))
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

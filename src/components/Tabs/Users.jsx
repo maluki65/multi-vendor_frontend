@@ -13,6 +13,7 @@ import useDeleteUser from '../Tabs/deleteUser';
 
 
 const ActionPopUp = ({ row, onDelete, onOpenUserModal, onOpenRoleModal }) => {
+
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -70,14 +71,18 @@ const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
     <div className='fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50'>
-      <div className='bg-white p-6 rounded-lg w-11/12 max-w-md'>
-        {children}
-        <button 
-          className='mt-4 px-3 py-1 bg-gray-500 text-white rounded cursor-pointer ml-2'
-          onClick={onClose}
-        >
-          Close
-        </button>
+      <div className='bg-white p-2 rounded-lg w-11/12 max-w-3xl max-h-[80vh] flex flex-col'>
+        <div className='p-2 overflow-y-auto'>
+          {children}
+        </div>
+        <div className='p-4 border-t'>
+          <button 
+            className='mt-4 px-3 py-1 bg-gray-500 text-white rounded cursor-pointer ml-2'
+            onClick={onClose}
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -92,6 +97,9 @@ function Users() {
   const [sortField, setSortField] = useState('username'|| 'storeName');
   const [sortOrder, setSortOrder] = useState('asc');
 
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileMessage, setProfileMessage] = useState('');
+  const [profileData, setProfileData] = useState(null);
   const [roleModal, setRoleModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
   const [selectUser, setSelectUser] = useState(null);
@@ -155,9 +163,41 @@ function Users() {
     setRoleModal(true);
   }
 
-  const openUserModal = (user) => {
+  const openUserModal = async (user) => {
     setSelectUser(user);
     setViewModal(true);
+
+    setProfileLoading(true);
+    setProfileData(null);
+    setProfileMessage('');
+
+    try {
+      let endPoint = '';
+
+      if (user.role === 'Vendor') {
+        endPoint = `/admin/vendors/${user._id}/profile`;
+      } else if (user.role === 'Buyer') {
+        endPoint = `/admin/buyers/${user._id}/profile`;
+      } else {
+        setProfileMessage('Admins do not have profiles.');
+        setProfileLoading(false);
+        return;
+      }
+
+      const res = await Api.get(endPoint);
+
+      if (!res.data.profile) {
+        setProfileMessage(res.data.message || 'This user does not a profile yet!');
+      } else {
+        setProfileData(res.data.profile);
+      }
+
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+      setProfileMessage('Failed to fetch profile');
+    } finally {
+      setProfileLoading(false);
+    }
   };
 
   const submitRoleUpdate = async () => {
@@ -219,10 +259,26 @@ function Users() {
             Update Role
           </button>
       </Modal>
-      <Modal isOpen={viewModal} onClose={() => setViewModal(false)}>
-        <h2 className='text-lg font-semibold mb-2'>Profile for {displayName}</h2>
+      <Modal  isOpen={viewModal} onClose={() => setViewModal(false)}>
+        <h2 className='text-lg font-normal mb-2'>Profile for {displayName}</h2>
         
-        <div className='bg-red-600 text-light'>Test Profile</div>
+        {profileLoading ? (
+          <p className=''>Loading profile...</p>
+        ) : profileMessage ? (
+          <p className='text-red-500'>
+            {profileMessage}
+          </p>
+        ) : profileData ? (
+          <div className='space-y-2 text-sm'>
+            <pre className='bg-gray-100 p-2 rounded'>
+              {JSON.stringify(profileData, null, 2)}
+            </pre>
+          </div>
+        ) : (
+          <p className=''>
+            No profile data available
+          </p>
+        )}
       </Modal>
 
       <div className='flex flex-col p-2 space-y-2 bg-white rounded-xl'>
