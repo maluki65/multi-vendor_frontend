@@ -10,6 +10,9 @@ import { HiOutlineUserCircle } from "react-icons/hi2";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useDeleteUser from '../Tabs/deleteUser';
+import { FaInstagram, FaFacebook, } from "react-icons/fa";
+import { FaXTwitter, FaTiktok } from "react-icons/fa6";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 
 const ActionPopUp = ({ row, onDelete, onOpenUserModal, onOpenRoleModal }) => {
@@ -71,13 +74,13 @@ const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
     <div className='fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50'>
-      <div className='bg-white p-2 rounded-lg w-11/12 max-w-3xl max-h-[80vh] flex flex-col'>
-        <div className='p-2 overflow-y-auto'>
+      <div className='bg-white p-1 rounded-2xl w-11/12 max-w-3xl max-h-[80vh] flex flex-col'>
+        <div className='overflow-y-auto'>
           {children}
         </div>
-        <div className='p-4 border-t'>
+        <div className='p-4'>
           <button 
-            className='mt-4 px-3 py-1 bg-gray-500 text-white rounded cursor-pointer ml-2'
+            className='mt-4 px-3 py-1 bg-gray-500 text-white rounded cursor-pointer ml-2 justify-end'
             onClick={onClose}
           >
             Close
@@ -260,7 +263,7 @@ function Users() {
           </button>
       </Modal>
       <Modal  isOpen={viewModal} onClose={() => setViewModal(false)}>
-        <h2 className='text-lg font-normal mb-2'>Profile for {displayName}</h2>
+        {/*<h2 className='text-lg font-normal mb-2'>Profile for {displayName}</h2>*/}
         
         {profileLoading ? (
           <p className=''>Loading profile...</p>
@@ -269,11 +272,193 @@ function Users() {
             {profileMessage}
           </p>
         ) : profileData ? (
-          <div className='space-y-2 text-sm'>
-            <pre className='bg-gray-100 p-2 rounded'>
-              {JSON.stringify(profileData, null, 2)}
-            </pre>
-          </div>
+            <div className='w-full bg-white rounded-2xl overflow-hidden relative'>
+              <div className='h-40 w-full relative'>
+                <img
+                  src={profileData?.banner}
+                  alt='banner'
+                  className='w-full h-full object-cover'
+                  loading='lazy'
+                />
+                {/*<button className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md text-gray-700 hover:scale-105 transition">
+                  pen
+                </button>*/}
+              </div>
+
+              <div className='relative px-8 pt-15'>
+                <div className='absolute -top-16 left-8'>
+                  <div className='w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-md'>
+                    <img 
+                      src={profileData?.logo}
+                      alt='logo'
+                      loading='lazy'
+                      className='w-full h-full object-cover'
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className='px-4 flex items-start justify-between'>
+                <div className='flex flex-col'>
+                  <h1 className='text-xl font-semibold text-dark flex items-center gap-2'>
+                    {profileData?.businessInfo.legalName}
+
+                    {profileData?.verification.isverified && (
+                      <div className='relative group'>
+                        <RiVerifiedBadgeFill className='text-blue-500 text-lg cursor-pointer' size={20}/>
+                        <span className='absolute -bottom-7 left-1/2 -translate-x-1/2 bg-dark text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition'>
+                          Verified Account
+                        </span>
+                      </div>
+                    )}
+                  </h1>
+                  <p className='text-sm text-muted'>
+                    {profileData.store.contactEmail}
+                  </p>
+                </div>
+                <p className='text-[#666666] text-sm'>TaxId: {profileData?.businessInfo.taxId}</p>
+              </div>
+
+              <div className='px-4 mt-3 grid grid-cols-4 gap-2 items-center'>
+                <div className='flex flex-col'>
+                  <p className='text-muted text-sm'>
+                    First seen
+                  </p>
+                  <p className='text-dark text-md'>
+                    {profileData?.createdAt && 
+                      new Date(profileData.createdAt)
+                       .toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                  </p>
+                </div>
+                <div className='flex flex-col'>
+                  <p className='text-muted text-sm'>
+                    City
+                  </p>
+                  <p className='text-dark text-md'>
+                    {profileData?.store.addresses.city}
+                  </p>
+                </div>
+                <div className='flex flex-col'>
+                  <p className='text-muted text-sm'>
+                    Street
+                  </p>
+                  <p className='text-dark text-md'>
+                    {profileData?.store.addresses.street}
+                  </p>
+                </div>
+                <div className='flex flex-col'>
+                  <p className='text-muted text-sm'>
+                    Postal Code
+                  </p>
+                  <p className='text-dark text-md'>
+                    {profileData?.store.addresses.postal}
+                  </p>
+                </div>
+              </div>
+
+              {profileData?.payout && (
+                <div className='mt-3 p-4'>
+                  <h2 className='text-md font-semibold mb-2 text-dark'>
+                    Payout Infomation
+                  </h2>
+
+                  <p className='text-sm mb-2'>
+                    <span className='font-medium'>Payment Method:</span> {profileData?.payout.method}
+                  </p>
+
+                  <ul className='text-sm text-dark space-y-1'>
+                    {profileData?.payout.method === 'Bank' && ['bank', 'accountName', 'accountNumber'].map((key) => {
+                      const value = profileData.payout[key];
+                      if (!value) return null;
+                      const labels = {
+                        bank: 'Bank Name',
+                        accountName: 'Account Name',
+                        accountNumber: 'Account Number',
+                      };
+
+                      return (
+                        <li key={key} className='flex justify-between'>
+                          <span className='font-semibold'>
+                            {labels[key]}
+                          </span>
+                          <span>
+                            {value}
+                          </span>
+                        </li>
+                      );
+                    })}
+
+                    {profileData.payout.method === 'mobile_money' && ['provider', 'paybill', 'paybillAcc', 'tillNumber', 'pochiLaBiashara'].map((key) => {
+                      const value = profileData.payout[key];
+                      if (!value) return null;
+                      const labels = {
+                        provider: 'Provider',
+                        paybill: 'Paybill',
+                        paybillAcc: 'Paybill Account',
+                        tillNumber: 'Till Number',
+                        pochiLaBiashara: 'Poch La Biashara',
+                      };
+                      return (
+                        <li key={key} className='flex justify-between'>
+                          <span className='font-semibold'>{labels[key]}</span>
+                          <span className='text-muted'>
+                            {value}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+
+              {profileData?.socialLinks && (
+                <div className='grid items-center my-3 px-4 grid-cols-4 gap-2'>
+                  {[
+                    { 
+                      name: 'Instagram', 
+                      icon: FaInstagram, 
+                      link: profileData?.socialLinks.instagram,
+                      className: 'text-white hover:text-light bg-primary px-2 py-1 rounded flex justify-center'
+                    },
+                    { 
+                      name: 'Facebook', 
+                      icon: FaFacebook, 
+                      link: profileData?.socialLinks.facebook,
+                      className: 'text-white hover:text-light bg-primary px-2 py-1 rounded flex justify-center' 
+                    },
+                    { 
+                      name: 'TikTok', 
+                      icon: FaTiktok, 
+                      link: profileData?.socialLinks.tiktok,
+                      className: 'bg-black text-white hover:text-light px-2 py-1 rounded flex justify-center'
+                    },
+                    { 
+                      name: '', 
+                      icon: FaXTwitter, 
+                      link: profileData?.socialLinks.x,
+                      className: 'bg-black text-white hover:text-light px-2 py-1 rounded flex justify-center'
+                    },
+                  ]
+                    .filter(item => item.link)
+                    .map((item, index) => (
+                      <a
+                        key={index}
+                        href={item.link}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className={`flex text-sm items-center gap-2 cursor-pointer hover:underline ${item.className}`}
+                       >
+                        <item.icon className='text-lg' />
+                        {item.name}
+                       </a>
+                    ))}
+                </div>
+              )}
+            </div>
         ) : (
           <p className=''>
             No profile data available
