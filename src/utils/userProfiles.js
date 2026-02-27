@@ -10,7 +10,7 @@ export const getUserProfileByRole = (user) => {
 export const needsProfile = (user) => {
   if (!user) return false;
 
-  if (user.role === 'Admin') return false;
+  //if (user.role === 'Admin') return false;
 
   if (user.role === 'Vendor' && user.status !== 'approved'){
     return false;

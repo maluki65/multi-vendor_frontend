@@ -23,3 +23,4 @@ export { default as VendorVerification } from './Tabs/vendorVerification';
 export { default as Approvals } from './Tabs/Approvals';
 export { default as AdminVerifications } from './Tabs/AdminVerification';
 export { default as VerifyDoc } from './Modals/verifyDoc';
+export { default as CreateAdminForm } from './ProfileForm/createAdminForm';

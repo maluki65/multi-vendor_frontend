@@ -105,6 +105,41 @@
   .Upop button{
     font-size: 1em
   }
+  .VenProModal{
+    max-width: 70vw;
+  }
+  .VenBanCon{
+    height: 15vw;
+    background-color: brown;
+  }
+  .bannerImg, .logoImg img{
+    height: 100%;
+    width: 100%;
+    background-position: center;
+  }
+  .logoImg{
+    width: 170px;
+    height: 170px;
+  }
+  .VenProcontent{
+    margin-top: 70px;
+  }
+  .VenBusiness div h1{
+    font-size: 3em;
+  }
+  .VenIcon, .VenSocialIcon{
+    height: 35px;
+    width: 100px;
+  }
+  .payout h2{
+    font-size: 2.8em;
+  }
+  .payout p, .payout ul li{
+    font-size: 2.3em;
+  }
+  .socials a{
+    font-size: 2.3em;
+  }
 }
 
 @media(max-width: 769px){
@@ -130,7 +165,7 @@
 }
 
 @media(max-width: 426px){
-  .AnaCards{
+  .AnaCards, .VenAddresses{
     grid-template-columns: repeat(2, 1fr);
   }
   .PaymentChart{
@@ -156,5 +191,15 @@
 @media(max-width: 376px){
   .AnaCards{
     grid-template-columns: repeat(1, 1fr);
+  }
+  .socials{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 321px){
+  .VenBusiness{
+    flex-wrap: wrap;
+    gap: 10px;
   }
 }

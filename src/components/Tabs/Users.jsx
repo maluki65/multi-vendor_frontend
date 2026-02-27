@@ -74,7 +74,7 @@ const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   return (
     <div className='fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50'>
-      <div className='bg-white p-1 rounded-2xl w-11/12 max-w-3xl max-h-[80vh] flex flex-col'>
+      <div className='bg-white p-1 rounded-2xl w-11/12 max-w-3xl max-h-[80vh] flex flex-col VenProModal'>
         <div className='overflow-y-auto'>
           {children}
         </div>
@@ -273,11 +273,11 @@ function Users() {
           </p>
         ) : profileData ? (
             <div className='w-full bg-white rounded-2xl overflow-hidden relative'>
-              <div className='h-40 w-full relative'>
+              <div className='h-40 w-full relative VenBanCon'>
                 <img
                   src={profileData?.banner}
                   alt='banner'
-                  className='w-full h-full object-cover'
+                  className='w-full h-full object-cover bannerImg'
                   loading='lazy'
                 />
                 {/*<button className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md text-gray-700 hover:scale-105 transition">
@@ -287,7 +287,7 @@ function Users() {
 
               <div className='relative px-8 pt-15'>
                 <div className='absolute -top-16 left-8'>
-                  <div className='w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-md'>
+                  <div className='w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-md logoImg'>
                     <img 
                       src={profileData?.logo}
                       alt='logo'
@@ -298,166 +298,168 @@ function Users() {
                 </div>
               </div>
 
-              <div className='px-4 flex items-start justify-between'>
-                <div className='flex flex-col'>
-                  <h1 className='text-xl font-semibold text-dark flex items-center gap-2'>
-                    {profileData?.businessInfo.legalName}
+              <div className='flex flex-col spac-y-2 VenProcontent'>
+                <div className='px-4 flex items-start justify-between VenBusiness'>
+                  <div className='flex flex-col'>
+                    <h1 className='text-xl font-semibold text-dark flex items-center gap-2'>
+                      {profileData?.businessInfo.legalName}
 
-                    {profileData?.verification.isverified && (
-                      <div className='relative group'>
-                        <RiVerifiedBadgeFill className='text-blue-500 text-lg cursor-pointer' size={20}/>
-                        <span className='absolute -bottom-7 left-1/2 -translate-x-1/2 bg-dark text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition'>
-                          Verified Account
-                        </span>
-                      </div>
-                    )}
-                  </h1>
-                  <p className='text-sm text-muted'>
-                    {profileData.store.contactEmail}
-                  </p>
+                      {profileData?.verification.isverified && (
+                        <div className='relative group'>
+                          <RiVerifiedBadgeFill className='text-blue-500 text-lg cursor-pointer VenIcon' size={20}/>
+                          <span className='absolute -bottom-7 left-1/2 -translate-x-1/2 bg-dark text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition'>
+                            Verified Account
+                          </span>
+                        </div>
+                      )}
+                    </h1>
+                    <p className='text-sm text-muted'>
+                      {profileData.store.contactEmail}
+                    </p>
+                  </div>
+                  <p className='text-[#666666] text-sm'>TaxId: {profileData?.businessInfo.taxId}</p>
                 </div>
-                <p className='text-[#666666] text-sm'>TaxId: {profileData?.businessInfo.taxId}</p>
-              </div>
 
-              <div className='px-4 mt-3 grid grid-cols-4 gap-2 items-center'>
-                <div className='flex flex-col'>
-                  <p className='text-muted text-sm'>
-                    First seen
-                  </p>
-                  <p className='text-dark text-md'>
-                    {profileData?.createdAt && 
-                      new Date(profileData.createdAt)
-                       .toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
+                <div className='px-4 mt-3 grid grid-cols-4 gap-2 items-center VenAddresses'>
+                  <div className='flex flex-col'>
+                    <p className='text-muted text-sm'>
+                      First seen
+                    </p>
+                    <p className='text-dark text-md'>
+                      {profileData?.createdAt && 
+                        new Date(profileData.createdAt)
+                        .toLocaleDateString('en-GB', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                    </p>
+                  </div>
+                  <div className='flex flex-col'>
+                    <p className='text-muted text-sm'>
+                      City
+                    </p>
+                    <p className='text-dark text-md'>
+                      {profileData?.store.addresses.city}
+                    </p>
+                  </div>
+                  <div className='flex flex-col'>
+                    <p className='text-muted text-sm'>
+                      Street
+                    </p>
+                    <p className='text-dark text-md'>
+                      {profileData?.store.addresses.street}
+                    </p>
+                  </div>
+                  <div className='flex flex-col'>
+                    <p className='text-muted text-sm'>
+                      Postal Code
+                    </p>
+                    <p className='text-dark text-md'>
+                      {profileData?.store.addresses.postal}
+                    </p>
+                  </div>
+                </div>
+
+                {profileData?.payout && (
+                  <div className='mt-3 p-4 payout'>
+                    <h2 className='text-md font-semibold mb-2 text-dark'>
+                      Payout Infomation
+                    </h2>
+
+                    <p className='text-sm mb-2'>
+                      <span className='font-medium'>Payment Method:</span> {profileData?.payout.method}
+                    </p>
+
+                    <ul className='text-sm text-dark space-y-1'>
+                      {profileData?.payout.method === 'Bank' && ['bank', 'accountName', 'accountNumber'].map((key) => {
+                        const value = profileData.payout[key];
+                        if (!value) return null;
+                        const labels = {
+                          bank: 'Bank Name',
+                          accountName: 'Account Name',
+                          accountNumber: 'Account Number',
+                        };
+
+                        return (
+                          <li key={key} className='flex justify-between'>
+                            <span className='font-semibold'>
+                              {labels[key]}
+                            </span>
+                            <span>
+                              {value}
+                            </span>
+                          </li>
+                        );
                       })}
-                  </p>
-                </div>
-                <div className='flex flex-col'>
-                  <p className='text-muted text-sm'>
-                    City
-                  </p>
-                  <p className='text-dark text-md'>
-                    {profileData?.store.addresses.city}
-                  </p>
-                </div>
-                <div className='flex flex-col'>
-                  <p className='text-muted text-sm'>
-                    Street
-                  </p>
-                  <p className='text-dark text-md'>
-                    {profileData?.store.addresses.street}
-                  </p>
-                </div>
-                <div className='flex flex-col'>
-                  <p className='text-muted text-sm'>
-                    Postal Code
-                  </p>
-                  <p className='text-dark text-md'>
-                    {profileData?.store.addresses.postal}
-                  </p>
-                </div>
+
+                      {profileData.payout.method === 'mobile_money' && ['provider', 'paybill', 'paybillAcc', 'tillNumber', 'pochiLaBiashara'].map((key) => {
+                        const value = profileData.payout[key];
+                        if (!value) return null;
+                        const labels = {
+                          provider: 'Provider',
+                          paybill: 'Paybill',
+                          paybillAcc: 'Paybill Account',
+                          tillNumber: 'Till Number',
+                          pochiLaBiashara: 'Poch La Biashara',
+                        };
+                        return (
+                          <li key={key} className='flex justify-between'>
+                            <span className='font-semibold'>{labels[key]}</span>
+                            <span className='text-muted'>
+                              {value}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+
+                {profileData?.socialLinks && (
+                  <div className='grid items-center my-3 px-4 grid-cols-4 gap-2 socials'>
+                    {[
+                      { 
+                        name: 'Instagram', 
+                        icon: FaInstagram, 
+                        link: profileData?.socialLinks.instagram,
+                        className: 'text-white hover:text-light bg-primary px-2 py-1 rounded flex justify-center'
+                      },
+                      { 
+                        name: 'Facebook', 
+                        icon: FaFacebook, 
+                        link: profileData?.socialLinks.facebook,
+                        className: 'text-white hover:text-light bg-primary px-2 py-1 rounded flex justify-center' 
+                      },
+                      { 
+                        name: 'TikTok', 
+                        icon: FaTiktok, 
+                        link: profileData?.socialLinks.tiktok,
+                        className: 'bg-black text-white hover:text-light px-2 py-1 rounded flex justify-center'
+                      },
+                      { 
+                        name: 'X', 
+                        icon: FaXTwitter, 
+                        link: profileData?.socialLinks.x,
+                        className: 'bg-black text-white hover:text-light px-2 py-1 rounded flex justify-center'
+                      },
+                    ]
+                      .filter(item => item.link)
+                      .map((item, index) => (
+                        <a
+                          key={index}
+                          href={item.link}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className={`flex text-sm items-center gap-2 cursor-pointer hover:underline ${item.className}`}
+                        >
+                          <item.icon className='text-lg VenSocialIcon' />
+                          {item.name}
+                        </a>
+                      ))}
+                  </div>
+                )}
               </div>
-
-              {profileData?.payout && (
-                <div className='mt-3 p-4'>
-                  <h2 className='text-md font-semibold mb-2 text-dark'>
-                    Payout Infomation
-                  </h2>
-
-                  <p className='text-sm mb-2'>
-                    <span className='font-medium'>Payment Method:</span> {profileData?.payout.method}
-                  </p>
-
-                  <ul className='text-sm text-dark space-y-1'>
-                    {profileData?.payout.method === 'Bank' && ['bank', 'accountName', 'accountNumber'].map((key) => {
-                      const value = profileData.payout[key];
-                      if (!value) return null;
-                      const labels = {
-                        bank: 'Bank Name',
-                        accountName: 'Account Name',
-                        accountNumber: 'Account Number',
-                      };
-
-                      return (
-                        <li key={key} className='flex justify-between'>
-                          <span className='font-semibold'>
-                            {labels[key]}
-                          </span>
-                          <span>
-                            {value}
-                          </span>
-                        </li>
-                      );
-                    })}
-
-                    {profileData.payout.method === 'mobile_money' && ['provider', 'paybill', 'paybillAcc', 'tillNumber', 'pochiLaBiashara'].map((key) => {
-                      const value = profileData.payout[key];
-                      if (!value) return null;
-                      const labels = {
-                        provider: 'Provider',
-                        paybill: 'Paybill',
-                        paybillAcc: 'Paybill Account',
-                        tillNumber: 'Till Number',
-                        pochiLaBiashara: 'Poch La Biashara',
-                      };
-                      return (
-                        <li key={key} className='flex justify-between'>
-                          <span className='font-semibold'>{labels[key]}</span>
-                          <span className='text-muted'>
-                            {value}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-
-              {profileData?.socialLinks && (
-                <div className='grid items-center my-3 px-4 grid-cols-4 gap-2'>
-                  {[
-                    { 
-                      name: 'Instagram', 
-                      icon: FaInstagram, 
-                      link: profileData?.socialLinks.instagram,
-                      className: 'text-white hover:text-light bg-primary px-2 py-1 rounded flex justify-center'
-                    },
-                    { 
-                      name: 'Facebook', 
-                      icon: FaFacebook, 
-                      link: profileData?.socialLinks.facebook,
-                      className: 'text-white hover:text-light bg-primary px-2 py-1 rounded flex justify-center' 
-                    },
-                    { 
-                      name: 'TikTok', 
-                      icon: FaTiktok, 
-                      link: profileData?.socialLinks.tiktok,
-                      className: 'bg-black text-white hover:text-light px-2 py-1 rounded flex justify-center'
-                    },
-                    { 
-                      name: '', 
-                      icon: FaXTwitter, 
-                      link: profileData?.socialLinks.x,
-                      className: 'bg-black text-white hover:text-light px-2 py-1 rounded flex justify-center'
-                    },
-                  ]
-                    .filter(item => item.link)
-                    .map((item, index) => (
-                      <a
-                        key={index}
-                        href={item.link}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className={`flex text-sm items-center gap-2 cursor-pointer hover:underline ${item.className}`}
-                       >
-                        <item.icon className='text-lg' />
-                        {item.name}
-                       </a>
-                    ))}
-                </div>
-              )}
             </div>
         ) : (
           <p className=''>

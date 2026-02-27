@@ -23,6 +23,7 @@ function Dashboard() {
   if (isLoading) return <p>Loading...</p>
 
   const showProfileForm = (!isVendor || isVendorApproved) && needsProfile(me);
+  const adminNeedsProfile = isAdmin && needsProfile(me);
   const ProfileComponent = getProfileFormByRole(me?.role);
 
   const user = {
@@ -38,6 +39,7 @@ function Dashboard() {
       role={user.role} 
       email={user.email}
       storeName={user.storeName}
+      disableNavigation={adminNeedsProfile}
       >
       {isVendorPending &&  tab !== 'verification' &&(
         <div className='bg-yellow-100 border border-yellow-400 text-yellow-800 p-4 rounded-lg my-4'>
@@ -74,7 +76,9 @@ function Dashboard() {
              {tab === 'overview' && isVendor && <VendorOverview />}
              {tab === 'overview' && isBuyer && <BuyerOverview />}
           */}
-          {tab === 'overview' && <Overview role={me?.role} />}
+          {tab === 'overview' && !adminNeedsProfile && (
+            <Overview role={me?.role} />
+          )}
           {tab === 'Add-admin' && <AddAdmin/>}
           {tab === 'Approvals' && <Approvals/> }
           {tab === 'verification' && isVendor && <VendorVerification/>}

@@ -7,26 +7,10 @@ import { Logo01, Logo02 } from '../../../assets';
 import { TbLogout2 } from "react-icons/tb";
 
 
-function Sidebar( { role }) {
+function Sidebar( { role, disableNavigation }) {
   const logout = useLogout();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'overview';
-
-  const Icon = ({ name, icon: Icon, label, isActive, handleClick }) => (
-    <div
-      onClick={handleClick}
-      className='relative group'
-      >
-      <div className={`w-10 h-10 rounded-lg flex items-center justify-center cursor-pointer Icons ${isActive === name ? 'bg-gray-200 text-orange-500' : 'text-gray-700'}`}
-       >
-        <Icon className='Iconz' size={20} />
-      </div>
-
-      <div className='absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap bg-dark text-white text-sm px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg'>
-        {label}
-      </div>
-    </div>
-  );
 
   const menuItems = menuRoleItems[role] || [];
 
@@ -40,6 +24,40 @@ function Sidebar( { role }) {
       console.log('Logout failed', error);
     }
   }
+
+  const Icon = ({ name, icon: Icon, label }) => {
+    const isActive = activeTab === name;
+    const isDisabled = disableNavigation;
+
+    return (
+      <div
+        onClick={() => {
+          if (isDisabled) return;
+          setSearchParams({ tab: name });
+        }}
+        className='relative group'
+        >
+        <div className={`w-10 h-10 rounded-lg flex items-center justify-center cursor-pointer transition-all duration-200 Icons 
+          ${isDisabled
+            ? 'opacity-40 cursor-not-allowed text-gray-400'
+            : isActive 
+              ? 'bg-gray-200 text-orange-500 cursor-pointer'
+              : 'text-gray-700 cursor-pointer hover:bg-gray-100'
+            }`}
+        >
+          <Icon className='Iconz' size={20} />
+        </div>
+
+        {!isDisabled &&(
+          <div className='absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap bg-dark text-white text-sm px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-lg'
+           >
+            {label}
+         </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className='flex justify-between items-center flex-col sticky top-5 h-[93vh]'>
       <Link to='/'>
@@ -56,11 +74,12 @@ function Sidebar( { role }) {
               key={link.value}
               name={link.value}
               label={link.label}
-              isActive={activeTab}
               icon={link.icon}   
+              /*isActive={activeTab}
               handleClick={() => {
+                if (disableNavigation) return;
                 setSearchParams({ tab: link.value});
-              }}
+              }}*/
             />
           ))}
         </div>
