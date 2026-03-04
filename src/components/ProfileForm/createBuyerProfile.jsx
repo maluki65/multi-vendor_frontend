@@ -146,7 +146,7 @@ function CreateBuyerProfile() {
         ...avatarData
       };
 
-      console.log(payload);
+      //console.log(payload);
 
       await createProfile(payload);
       setAvatar(null);
@@ -175,10 +175,10 @@ function CreateBuyerProfile() {
       <WLoader/>
      ): (
       <div className='rounded-xl bg-white mt-3 w-full p-4 overflow-y-auto'>
-        <h1 className='text-medium text-xl text-dark'>
+        <h1 className='font-medium text-xl text-dark'>
           Add Profile
         </h1>
-        <form className='flex flex-col mt-2 mb-2 w-full' onSubmit={handleSubmit}>
+        <form className='flex flex-col my-2 w-full' onSubmit={handleSubmit}>
           <div className='flex flex-col gap-3 my-1'>
             <p className='text-xs leading-relaxed my-1'>
             {`Maximum single image file size is ${MAX_IMG_SIZE}MB`}

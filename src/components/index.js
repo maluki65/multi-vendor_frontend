@@ -24,3 +24,4 @@ export { default as Approvals } from './Tabs/Approvals';
 export { default as AdminVerifications } from './Tabs/AdminVerification';
 export { default as VerifyDoc } from './Modals/verifyDoc';
 export { default as CreateAdminForm } from './ProfileForm/createAdminForm';
+export { default as AdLoader } from './AdLoader/AdLoader';

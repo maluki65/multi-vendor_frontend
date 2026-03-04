@@ -195,7 +195,7 @@ function CreateVendorProfile() {
         ...uploadedImages
       };
 
-      console.log('Payload', payload);
+      //console.log('Payload', payload);
       
       await createProfile(payload);
 

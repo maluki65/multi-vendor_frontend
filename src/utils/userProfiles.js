@@ -3,6 +3,7 @@ export const getUserProfileByRole = (user) => {
 
   if (user.role === 'Vendor') return user.vendorProfile;
   if (user.role === 'Buyer') return user.buyerProfile;
+  if (user.role === 'Admin') return user.adminProfile;
 
   return null;
 };

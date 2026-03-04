@@ -1,5 +1,5 @@
 export const PROFILE_ROUTES = {
-  Admin: null,
+  Admin: '/admin/profile',
   Vendor:'/vendor/profile',
   Buyer:'/buyer/profile',
 };

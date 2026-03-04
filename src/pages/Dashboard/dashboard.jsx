@@ -32,7 +32,9 @@ function Dashboard() {
     email: userData.email,
     storeName: userData.storeName
   }
-
+  console.log("ME:", me);
+  console.log("AdminProfile:", me?.adminProfile);
+  
   return (
     <DashboardLayout 
       fullName={user.fullName} 
