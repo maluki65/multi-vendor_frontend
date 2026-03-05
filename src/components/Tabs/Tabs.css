@@ -186,6 +186,19 @@
   .ApprovalCards{
     grid-template-columns: repeat(1, 1fr);
   }
+  .userIc{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr );
+    gap: 20px;
+  }
+  .userCSVs{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .userInp{
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 @media(max-width: 376px){

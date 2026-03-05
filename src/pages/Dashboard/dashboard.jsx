@@ -5,7 +5,8 @@ import { useCurrentUser } from '../../Hooks/useCurrentUser';
 import { needsProfile } from '../../utils/userProfiles';
 import { getProfileFormByRole } from '../../utils/profileforms';
 import { useAuth } from '../../Context/AuthContext';
-import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications } from '../../components';
+import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts } from '../../components';
+//import { AdLoader } from  '../../components'
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,8 +33,8 @@ function Dashboard() {
     email: userData.email,
     storeName: userData.storeName
   }
-  console.log("ME:", me);
-  console.log("AdminProfile:", me?.adminProfile);
+  //console.log("ME:", me);
+  //console.log("AdminProfile:", me?.adminProfile);
   
   return (
     <DashboardLayout 
@@ -81,11 +82,12 @@ function Dashboard() {
           {tab === 'overview' && !adminNeedsProfile && (
             <Overview role={me?.role} />
           )}
+          {tab === 'Users' && <Users />}
           {tab === 'Add-admin' && <AddAdmin/>}
           {tab === 'Approvals' && <Approvals/> }
+          {tab === 'Add-Product' && <AddProducts/> }
           {tab === 'verification' && isVendor && <VendorVerification/>}
           {tab === 'verification' && me?.role === 'Admin' && <AdminVerifications/>}
-          {tab === 'Users' && <Users />}
         </>
       )}
     </DashboardLayout>

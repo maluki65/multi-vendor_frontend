@@ -13,7 +13,7 @@ import useDeleteUser from '../Tabs/deleteUser';
 import { FaInstagram, FaFacebook, } from "react-icons/fa";
 import { FaXTwitter, FaTiktok } from "react-icons/fa6";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-
+import  { AdLoader } from '..';
 
 const ActionPopUp = ({ row, onDelete, onOpenUserModal, onOpenRoleModal }) => {
 
@@ -266,9 +266,11 @@ function Users() {
         {/*<h2 className='text-lg font-normal mb-2'>Profile for {displayName}</h2>*/}
         
         {profileLoading ? (
-          <p className=''>Loading profile...</p>
+          <div className='fixed inset-0 flex items-center justify-center bg-white/40 z-50'>
+            <AdLoader/>
+          </div>
         ) : profileMessage ? (
-          <p className='text-red-500'>
+          <p className='text-red-500 p-4'>
             {profileMessage}
           </p>
         ) : profileData ? (
@@ -469,12 +471,12 @@ function Users() {
       </Modal>
 
       <div className='flex flex-col p-2 space-y-2 bg-white rounded-xl'>
-        <div className='p-2 flex justify-between items-center'>
+        <div className='p-2 flex justify-between items-center userIc'>
          <div className='flex items-center gap-3'>
           <HiOutlineUserCircle  className='' size={40} strokeWidth={1}/>
           <h2 className='font-semibold text-xl'>Users</h2>
          </div>
-         <div className='flex items-center gap-3'>
+         <div className='flex items-center gap-3 userCSVs'>
           <CSVLink 
             className='px-2 py-1 border flex gap-2 items-center text-primary text-sm border-primary rounded cursor-pointer CSVAct'
             data={fiteredUsers}
@@ -493,7 +495,7 @@ function Users() {
         </div>
         <AnimatePresence mode='wait'>
           <div className='flex flex-col gap-3 px-4'>
-           <div className='flex items-end justify-between'>
+           <div className='flex items-end justify-between userInp'>
             <div className='relative'>
               <div className='relative flex items-center gap-2 flex-1'>
                   <IoSearch className='absolute left-3 text-gray-400 pointer-events-none text-sm' />
@@ -630,7 +632,7 @@ function Users() {
                       Next
                   </button>
               </div>
-             </motion.div>
+            </motion.div>
           </div>
         </AnimatePresence>
       </div>

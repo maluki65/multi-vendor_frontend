@@ -35,7 +35,7 @@ function VendorVerification() {
 
   if (userStatus === 'approved') {
     return (
-      <div className='p-4 bg-green-50 border border-green-400 rounded-lg'>
+      <div className='p-4 bg-green-50 border border-green-400 rounded-lg mt-5'>
         <h3 className='font-semibold text-green-800 mb-2'>
          Your vendor account is approved
         </h3>
