@@ -1,7 +1,7 @@
 import { MdOutlineAdminPanelSettings, MdOutlinePayments, MdOutlineDomainVerification } from "react-icons/md";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { HiOutlinePlusCircle } from "react-icons/hi2";
-import { RiShoppingCartLine } from "react-icons/ri";
+import { RiShoppingCartLine, RiBox2Line, RiCheckboxMultipleBlankFill } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
 import { CgProfile } from "react-icons/cg";
@@ -13,6 +13,7 @@ export const menuRoleItems = {
     { label: 'Add admin', value: 'Add-admin', icon: MdOutlineAdminPanelSettings, link: "?tab=add-admin" },
     { label: 'Users', value: 'Users', icon: LuUsers, link: "?tab=users" },
     { label: 'Approvals', value: 'Approvals', icon: IoCheckmarkDoneCircleOutline, link: "?tab=approvals" },
+    { label: 'Products', value: 'product-approval', icon: RiCheckboxMultipleBlankFill, link: "?tab=product-approvals" },
     { label: 'Orders', value: 'Orders', icon: RiShoppingCartLine, link: "?tab=orders" },
     { label: 'Payments', value: 'Payments', icon: MdOutlinePayments, link: '?tab=payments'},
     //{ label: 'Profile', value: 'Profile', icon: CgProfile, link: "?tab=profile"},

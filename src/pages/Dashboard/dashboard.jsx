@@ -5,7 +5,7 @@ import { useCurrentUser } from '../../Hooks/useCurrentUser';
 import { needsProfile } from '../../utils/userProfiles';
 import { getProfileFormByRole } from '../../utils/profileforms';
 import { useAuth } from '../../Context/AuthContext';
-import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts } from '../../components';
+import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductApproval } from '../../components';
 //import { AdLoader } from  '../../components'
 
 function Dashboard() {
@@ -87,6 +87,7 @@ function Dashboard() {
           {tab === 'Approvals' && <Approvals/> }
           {tab === 'Add-Product' && <AddProducts/> }
           {tab === 'verification' && isVendor && <VendorVerification/>}
+          {tab === 'product-approval' && isAdmin && <ProductApproval/>}
           {tab === 'verification' && me?.role === 'Admin' && <AdminVerifications/>}
         </>
       )}

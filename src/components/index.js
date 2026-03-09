@@ -26,3 +26,4 @@ export { default as VerifyDoc } from './Modals/verifyDoc';
 export { default as CreateAdminForm } from './ProfileForm/createAdminForm';
 export { default as AdLoader } from './AdLoader/AdLoader';
 export { default as AddProducts } from './VendorTabs/AddProducts';
+export { default as ProductApproval } from './Tabs/ProductApproval';
