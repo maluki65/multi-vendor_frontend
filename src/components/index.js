@@ -27,3 +27,5 @@ export { default as CreateAdminForm } from './ProfileForm/createAdminForm';
 export { default as AdLoader } from './AdLoader/AdLoader';
 export { default as AddProducts } from './VendorTabs/AddProducts';
 export { default as ProductApproval } from './Tabs/ProductApproval';
+export { default as ProductCategory } from './Tabs/ProductCategory';
+export { default as Category } from './Tabs/Category';

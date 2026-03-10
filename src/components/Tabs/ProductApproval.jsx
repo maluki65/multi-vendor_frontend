@@ -46,7 +46,7 @@ function ProductApproval() {
       <Toaster position='top-right' reverseOrder={false}/>
       <div className='product-approval-container'>   
         {products?.length === 0 && (
-          <div className='flex justify-center items-center h-[80vh]'>
+          <div className='flex justify-center items-center h-[70vh]'>
             <div className='flex flex-col gap-3  items-center justify-center'>
               <MdOutlineRemoveShoppingCart className='text-red-500' size={50}/>
               <p className=''> No products found</p>

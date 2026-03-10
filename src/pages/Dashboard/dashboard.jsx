@@ -5,7 +5,7 @@ import { useCurrentUser } from '../../Hooks/useCurrentUser';
 import { needsProfile } from '../../utils/userProfiles';
 import { getProfileFormByRole } from '../../utils/profileforms';
 import { useAuth } from '../../Context/AuthContext';
-import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductApproval } from '../../components';
+import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductCategory } from '../../components';
 //import { AdLoader } from  '../../components'
 
 function Dashboard() {
@@ -19,6 +19,7 @@ function Dashboard() {
   const isVendor = me?.role === 'Vendor';
   const isVendorPending = isVendor && me?.status === 'pending';
   const isVendorApproved = isVendor && me?.status === 'approved';
+  const isVendorRejected = isVendor && me?.status === 'rejected';
 
   
   if (isLoading) return <p>Loading...</p>
@@ -42,8 +43,29 @@ function Dashboard() {
       role={user.role} 
       email={user.email}
       storeName={user.storeName}
-      disableNavigation={adminNeedsProfile}
+      disableNavigation={adminNeedsProfile || isVendorPending || isVendorRejected}
       >
+      {isVendorRejected &&  tab !== 'verification' && (
+        <div className='bg-red-100 border-red-400 text-red-800 p-4 rounded-lg my-4'>
+          <h3 className='font-semibold'>
+            Vendor application rejected
+          </h3>
+          <p className='text-sm'>
+            Unfortunately your vendor application was not approved.
+            Please contact support or submit a new verification request.
+          </p>
+          <button 
+           onClick={() => {
+            setSearchParams({
+              tab: 'verification'
+            })
+           }}
+           className='mt-2 px-4 py-2 bg-orange-500 text-white rounded cursor-pointer'
+           >
+            Resubmit verification
+          </button>
+        </div>
+      )}
       {isVendorPending &&  tab !== 'verification' &&(
         <div className='bg-yellow-100 border border-yellow-400 text-yellow-800 p-4 rounded-lg my-4'>
           <h3 className='font-semibold'>
@@ -70,8 +92,9 @@ function Dashboard() {
       )}
 
       {(
-        (!isVendorPending && !showProfileForm ) ||
-        (isVendorPending && tab === 'verification')
+        (!isVendorPending && !showProfileForm && !isVendorRejected) ||
+        (isVendorPending && tab === 'verification') ||
+        (isVendorRejected && tab === 'verification')
       ) && (
         <>
           {/*tab === 'overview' && isAdmin && <Overview/>*
@@ -85,9 +108,9 @@ function Dashboard() {
           {tab === 'Users' && <Users />}
           {tab === 'Add-admin' && <AddAdmin/>}
           {tab === 'Approvals' && <Approvals/> }
-          {tab === 'Add-Product' && <AddProducts/> }
+          {tab === 'Add-Product' && isVendorApproved && <AddProducts/> }
           {tab === 'verification' && isVendor && <VendorVerification/>}
-          {tab === 'product-approval' && isAdmin && <ProductApproval/>}
+          {tab === 'product-approval' && isAdmin && <ProductCategory/>}
           {tab === 'verification' && me?.role === 'Admin' && <AdminVerifications/>}
         </>
       )}
