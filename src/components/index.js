@@ -29,3 +29,4 @@ export { default as AddProducts } from './VendorTabs/AddProducts';
 export { default as ProductApproval } from './Tabs/ProductApproval';
 export { default as ProductCategory } from './Tabs/ProductCategory';
 export { default as Category } from './Tabs/Category';
+export { default as CategoryForm } from './Forms/CategoryForm';

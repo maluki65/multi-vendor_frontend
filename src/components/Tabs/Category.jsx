@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react';
+import './Tabs.css';
+import useCategory from '../../Hooks/useCategory';
+import { CategoryForm } from '..';
 
 function Category() {
   return (
-    <div>Category</div>
+    <CategoryForm />
   )
 }
 

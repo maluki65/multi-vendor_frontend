@@ -44,7 +44,7 @@ function ProductCategory({ role, userId }) {
   const [prodCategories, setProductCategories] = useState('Product verification');
   
   return (
-    <section className='p-4 flex flex-col gap-3 bg-gray-100 rounded-xl'>
+    <section className='my-2 p-4 flex flex-col gap-3 bg-white rounded-xl'>
       <Toaster position='top-right' reverseOrder = {false} />
       <ProductCategoryTabs
         prodCategories={prodCategories}
