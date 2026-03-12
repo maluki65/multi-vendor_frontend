@@ -3,18 +3,19 @@ import { useCurrentUser } from "./useCurrentUser";
 import toast  from 'react-hot-toast';
 import { Api } from '../utils';
 
-const useCategory = (categoryId) => {
+const useCategory = (categoryId, page) => {
   const queryClient = useQueryClient();
   const { data: me } = useCurrentUser();
   
   const getAllCategories = useQuery({
-    queryKey: ['categories'],
+    queryKey: ['categories', page],
     queryFn: async () => {
-      const { data } = await Api.get('/admin/categories')
+      const { data } = await Api.get(`/admin/categories?page=${page}&limit=10`);
       return data.categories;
     },
     enabled: me?.role === 'Admin',
     staleTime: 1000 * 60,
+    keepPreviousData: true,
     onError: (error) => {
       toast.error(
         error?.response?.data?.message || 'Failed to get categories'
@@ -90,7 +91,7 @@ const useCategory = (categoryId) => {
 
   const updateCategory = useMutation({
     mutationFn: async ({ id, updateData }) => {
-      const { data } = await Api.patch(`/admin/categories/${id}`, updateData);
+      const { data } = await Api.patch(`/admin/categories/update/${id}`, updateData);
       return data;
     },
 
@@ -154,6 +155,28 @@ const useCategory = (categoryId) => {
     }
   });
 
+  const toggleStatusMutation = useMutation({
+    mutationFn: async (category) => {
+      const { data } = await Api.patch(`/admin/categories/${category._id}/status`,{ 
+        isActive: !category.isActive,
+      });
+      return data;
+    }, 
+    onMutate: () => {
+      const toastId = toast.loading('Updating category status...');
+      return { toastId };
+    },
+    onSuccess: (data, variables, context) => {
+      toast.success(data.message, { id: context.toastId });
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ['activeCategories'] });
+    },
+    onError: (error, variables, context) => {
+      toast.error(error?.response?.data?.message || 'Failed to update category', { id: context.toastId });
+      console.error('Failed to update category', error);
+    }
+  })
+
   return {
     getAllCategories,
     getActiveCategories,
@@ -161,6 +184,7 @@ const useCategory = (categoryId) => {
     updateCategory,
     deactivateCategory,
     getCategoryAttributes,
+    toggleStatusMutation
   };
 };
 

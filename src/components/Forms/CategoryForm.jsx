@@ -75,11 +75,11 @@ function CategoryForm() {
   
   return (
     <form className='p-4 space-y-2 flex flex-col category-form' onSubmit={handleSubmit}>
-      <div className='flex flex-col gap-2 mb-4'>
-        <h2 className='flex items-center gap-2 text-dark text-xl'>
+      <div className='flex flex-col gap-2 my-4'>
+        {/*<h2 className='flex items-center gap-2 text-dark text-xl underline'>
           <TbCategoryFilled className='text-secondary' size={25} />
-          Add Category 
-        </h2>
+            Add Category 
+        </h2>*/}
         <p className='text-dark'>
           All fields marked with 
           <span className='text-red-600'>*</span> 

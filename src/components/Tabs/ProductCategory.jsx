@@ -21,7 +21,7 @@ function ProductCategoryTabs({ prodCategories, setProductCategories}){
           onClick={() => {
             setProductCategories(item.name)
           }}
-          className={`group flex items-center text-sm gap-3 font-medium p-2 ${prodCategories === item.name
+          className={`group flex items-center text-sm gap-3 font-medium py-1 px-2 ${prodCategories === item.name
             ? 'bg-primary rounded-full'
             : ''}`}>
               <div className='text-dark'>
