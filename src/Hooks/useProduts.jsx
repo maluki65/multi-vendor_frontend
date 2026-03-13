@@ -24,6 +24,101 @@ const useProducts = () => {
     }
   });
 
+  // On getting vendor products
+  const getVendorProducts = (vendorId) => useQuery({
+    queryKey: ['vendorProducts', vendorId],
+    queryFn: async () => {
+      const { data } = await Api.get(`/vendor/products/${vendorId}`);
+      return data.products;
+    },
+    enabled: !!vendorId,
+    staleTime: 1000 * 60,
+    onError: (error) =>{
+      toast.error(
+        error?.response?.data?.message || 'Failed to fetch vendor products'
+      );
+      console.error('Failed to fetch vendor products', error);
+    }
+  });
+
+  // On getting all products with visibility: published (buyers)
+  const getAllProducts = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const { data } = await Api.get('/buyer/products');
+      return data.products;
+    },
+    enabled: me?.role === 'Buyer',
+    staleTime: 1000 * 60,
+    onError: (error) =>{
+      toast.error(
+        error?.response?.data?.message || 'Failed to fetch products'
+      );
+      console.error('Failed to fetch products', error);
+    }
+  });
+
+  // On getting product by Id
+  const getProductById = (productId) => useQuery({
+    queryKey: ['product', productId],
+    queryFn: async () => {
+      const { data } = await Api.get(`/product/${productId}`);
+      return data;
+    },
+    enabled: !!productId,
+    staleTime: 1000 * 60,
+    onError: (error) =>{
+      toast.error(
+        error?.response?.data?.message || 'Failed to fetch product'
+      );
+      console.error('Failed to fetch product', error);
+    }
+  });
+
+  // On getting recommendations
+  const getSmartRecommendations = (productId) => useQuery({
+    queryKey: ['recommendations', productId],
+    queryFn: async () => {
+      const { data } = await Api.get(`/buyer/products/smart/${productId}`);
+      return data.recommendations;
+    },
+    enabled: !!productId,
+    onError: (error) =>{
+      toast.error(
+        error?.response?.data?.message || 'Failed to fetch recommendations'
+      );
+      console.error('Failed to fetch recommendations', error);
+    }
+  });
+
+  const createProduct = useMutation({
+    mutationFn: async (payload) => {
+      const { data } = await Api.post('/vendor/add-product/', payload);
+      return data;
+    },
+
+    onMutate: () => {
+      const id = toast.loading('Creating product...');
+      return { toastId: id };
+    },
+
+    onSuccess: (data, variables, context) => {
+      toast.success('Product created successfullt', { id: context.toastId });
+
+      queryClient.invalidateQueries({
+        queryKey: ['vendorProducts']
+      });
+    },
+
+    onError: (error, variable, context) => {
+      toast.error(
+        error?.response?.data?.message || 'Failed to create product',
+        { id: context.toastId }
+      );
+      console.error('Failed to create product', error);
+    }
+  });
+
   // On approving products
   const approveProducts = useMutation({
     mutationFn: async (productId) => {
@@ -41,6 +136,10 @@ const useProducts = () => {
 
       queryClient.invalidateQueries({
         queryKey: ['pendingProducts']
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['products']
       });
     },
 
@@ -77,10 +176,71 @@ const useProducts = () => {
     }
   });
 
+  // On updatingProduct
+  const updateProduct = useMutation({
+    mutationFn: async ({ id, payload }) => {
+      const { data } = await Api.patch(`/vendor/product/update/${id}`, payload);
+      return data;
+    },
+    onMutate: () => {
+      const id = toast.loading('Updating product...');
+      return { toastId: id };
+    },
+
+    onSuccess: () => {
+      toast.success('Product updated');
+  
+      queryClient.invalidateQueries({ queryKey: ['vendorProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['product'] });
+    },
+
+    onError: (error, variables, context) => {
+      toast.error(
+        error?.response?.data?.message || 'Failed to update product', { id: context.toastId }
+      );
+
+      console.error('Failed to update product', error);
+    }
+  });
+
+  //On deleting product
+  const deleteProduct = useMutation({
+    mutationFn: async (id) => {
+      const { data } = await Api.delete(`/vendor/product/delete/${id}`);
+      return data;
+    },
+    onMutate: () => {
+      const id = toast.loading('Deleting product...');
+      return { toastId: id };
+    },
+  
+    onSuccess: () => {
+      toast.success('Product deleted');
+  
+      queryClient.invalidateQueries({ queryKey: ['vendorProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+
+    onError: (error, variables, context) => {
+      toast.error(
+        error?.response?.data?.message || 'Failed to delete product', { id: context.toastId }
+      );
+
+      console.error('Failed to delete product', error);
+    }
+  });
+
   return { 
     getPendingProducts,
+    getVendorProducts,
+    getAllProducts,
+    getProductById,
+    getSmartRecommendations,
+    createProduct,
     approveProducts,
-    rejectProducts
+    rejectProducts,
+    updateProduct,
+    deleteProduct
   };
 };
 
