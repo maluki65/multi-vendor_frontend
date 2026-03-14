@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './verifyDoc.css';
+import './VerifyDoc.css';
 import useCategory from '../../Hooks/useCategory';
 import toast from 'react-hot-toast';
 
