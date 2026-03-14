@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import './Tabs.css';
 import useCategory from '../../Hooks/useCategory';
-import { CategoryForm, ActionPopUp, Table, VerifyDoc, EditCategoryModal } from '..';
+import { CategoryForm, ActionPopUp, Table, VerifyDoc, EditCategoryModals } from '..';
 
 function Category() {
   const { getAllCategories, toggleStatusMutation } = useCategory();
@@ -157,12 +157,12 @@ function Category() {
             </div>
         </VerifyDoc>
 
-        <EditCategoryModal
+        <EditCategoryModals
           isOpen={editModalOpen}
           onClose={() => setEditModalOpen(false)}
           category={selectedEditCategory}
           allCategories={categories}
-        />          
+        />     
       </div>
     </div>
   );

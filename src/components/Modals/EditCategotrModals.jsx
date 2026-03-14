@@ -3,7 +3,7 @@ import './verifyDoc.css';
 import useCategory from '../../Hooks/useCategory';
 import toast from 'react-hot-toast';
 
-const EditCategoryModal = ({ isOpen, onClose, category, allCategories }) => {
+const EditCategoryModals = ({ isOpen, onClose, category, allCategories }) => {
   const { updateCategory } = useCategory();
   const [formData, setFormData] = useState({
     name: '',
@@ -129,4 +129,4 @@ const EditCategoryModal = ({ isOpen, onClose, category, allCategories }) => {
   );
 };
 
-export default EditCategoryModal
+export default EditCategoryModals

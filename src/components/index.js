@@ -32,4 +32,4 @@ export { default as Category } from './Tabs/Category';
 export { default as CategoryForm } from './Forms/CategoryForm';
 export { default as Table } from './Tables/Table';
 export { default as ActionPopUp } from './Tables/ActionPopUp';
-export { default as EditCategoryModal } from './Modals/EditCategoryModal';
+export { default as EditCategoryModals } from './Modals/EditCategotrModals';
