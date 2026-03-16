@@ -9,7 +9,7 @@ const imagekit = axios.create({
   withCredentials: false,
 });
 
-const uploadToImageKit = async (files, vendorId) => {
+const uploadProductImgs = async (files, vendorId) => {
   const fileArray = Array.isArray(files) ? files : [files];
 
   const folder = import.meta.env.VITE_IMAGEKIT_VENDOR_PRODUCTS;
@@ -55,4 +55,4 @@ const uploadToImageKit = async (files, vendorId) => {
   return Array.isArray(files) ? results : results[0];
 };
 
-export default uploadToImageKit;
+export default uploadProductImgs;
