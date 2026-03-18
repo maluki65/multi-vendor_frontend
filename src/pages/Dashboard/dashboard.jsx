@@ -108,7 +108,7 @@ function Dashboard() {
           {tab === 'Users' && <Users />}
           {tab === 'Add-admin' && <AddAdmin/>}
           {tab === 'Approvals' && <Approvals/> }
-          {tab === 'Add-Product' && isVendorApproved && <AddProducts/> }
+          {tab === 'Add-Product' && isVendorApproved && <AddProducts vendorId={userData._id}/> }
           {tab === 'verification' && isVendor && <VendorVerification/>}
           {tab === 'product-approval' && isAdmin && <ProductCategory/>}
           {tab === 'verification' && me?.role === 'Admin' && <AdminVerifications/>}

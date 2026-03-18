@@ -97,10 +97,10 @@ const useProducts = () => {
       return data;
     },
 
-    onMutate: () => {
+    /*onMutate: () => {
       const id = toast.loading('Creating product...');
       return { toastId: id };
-    },
+    },*/
 
     onSuccess: (data, variables, context) => {
       toast.success('Product created successfullt', { id: context.toastId });
