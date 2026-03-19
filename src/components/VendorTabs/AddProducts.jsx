@@ -5,6 +5,7 @@ import { FaCameraRetro } from "react-icons/fa6";
 import { toast, Toaster } from 'react-hot-toast';
 import useProducts from '../../Hooks/useProduts';
 import useCategory from '../../Hooks/useCategory';
+import { useQueryClient } from '@tanstack/react-query';
 import uploadProductImgs from '../../utils/productImgs';
 
 const InitialFormStatus = {
@@ -18,14 +19,22 @@ const InitialFormStatus = {
 
 function AddProducts({ vendorId }) {
   const { createProduct } = useProducts();
-  const { getActiveCategories } = useCategory();
-  const { data: categories, isLoding } = getActiveCategories;
-
+  const { getActiveCategories, useCategoryAttributes, fetchCategoryAttributes } = useCategory();
+  const { data: categories, isLoading: categoriesLoading } = getActiveCategories;
+  const queryClient = useQueryClient();
+  
   const [form, setForm] = useState(InitialFormStatus);
+  const [attributeValues, setAttributesValues] = useState({});
   const [images, setImages] = useState({
     mainImg: { file: null, preview: null, error: '', dragging: false },
     supportImg: { file: [], preview: [], error: '', dragging: false }
   });
+
+  const {
+    data: attributes = [],
+    isLoading: attributesloading
+  } = useCategoryAttributes(form.category)
+  
 
   const [uploading, setUploading] = useState(false);
 
@@ -41,6 +50,26 @@ function AddProducts({ vendorId }) {
       images.supportImg.preview.forEach((p) => URL.revokeObjectURL(p));
     };
   }, [images]);
+
+  useEffect(() => {
+    if (!form.category) return;
+
+    queryClient.prefetchQuery({
+      queryKey: ['categoryAttributes', form.category],
+      queryFn: () => fetchCategoryAttributes(form.category),
+    });
+  }, [form.category])
+
+  useEffect(() => {
+    if (!attributes.length) return;
+
+    const initialValue = {};
+    attributes.forEach(attr => {
+      initialValue[attr._id] = '';
+    });
+
+    setAttributesValues(initialValue);
+  }, [attributes])
 
   /*useEffect(() => {
     console.log('Updated previews:', images.supportImg.preview);
@@ -59,7 +88,9 @@ function AddProducts({ vendorId }) {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; 
+
+    console.log('CHANGE:', name, value);  
 
     setForm((prev) => ({
       ...prev,
@@ -168,6 +199,9 @@ function AddProducts({ vendorId }) {
     }));
   };
 
+  console.log('category:', form.category);
+  console.log('attributes:', attributes);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -181,6 +215,12 @@ function AddProducts({ vendorId }) {
       return;
     }
 
+    const formattedAttributes = attributes.map(attr => ({
+      attributeId: attr._id,
+      name: attr.name,
+      value: attributeValues[attr._id]
+    }));
+
     try{
       setUploading(true);
 
@@ -191,8 +231,14 @@ function AddProducts({ vendorId }) {
         supportUpload = await uploadProductImgs(images.supportImg.file, vendorId);
       }
 
+      /*if (isError) {
+        toast.error('Cannot submit product. Failed to load attributes.');
+        return;
+      }*/
+
       const payload = {
         ...form,
+        attributes: formattedAttributes,
 
         MainIMg: mainUpload[0].url,
         MainIMgId: mainUpload[0].fileId,
@@ -218,7 +264,7 @@ function AddProducts({ vendorId }) {
     }
   }
 
-  if(isLoding) return <div>Loading categories...</div>;
+  if(categoriesLoading) return <div>Loading categories...</div>;
 
   return (
     <>
@@ -236,74 +282,117 @@ function AddProducts({ vendorId }) {
 
           <form onSubmit={handleSubmit} className='flex flex-col my-3 space-y-4'>
             
-            <div className='grid grid-cols-2 gap-2'>
-              <div className='flex flex-col gap-1'>
-                <label className='flex items-center text-sm gap-1'>Product name <span className='text-red-600'>*</span></label>
-                <input 
-                  type='text'
-                  name='name'
-                  placeholder='Samsung S26 Ultra'
-                  value={form.name}
-                  onChange={handleChange}
-                  required
-                  className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
-                />
-              </div>
-              <div className='flex flex-col gap-1'>
-                <label className='flex items-center text-sm gap-1'>Product Price <span className='text-red-600'>*</span></label>
-                <input 
-                  type='number'
-                  name='price'
-                  placeholder='96,000'
-                  value={form.price}
-                  onChange={handleChange}
-                  required
-                  className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
-                />
-              </div>
+            <div className='flex flex-col gap-1'>
+              <label className='flex items-center text-sm gap-1'>Product name <span className='text-red-600'>*</span></label>
+              <input 
+                type='text'
+                name='name'
+                placeholder='Samsung S26 Ultra'
+                value={form.name}
+                onChange={handleChange}
+                required
+                className='p-2 outline-none w-[60%] focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+              />
             </div>
 
-            <div className='grid grid-cols-3 gap-2 items-center rounded-md bg-primary p-3'>
-              <div className='flex flex-col gap-1'>
-                <label className='flex items-center text-sm text-white gap-1'>Tags <span className='text-white'>*</span></label>
-                <input 
-                  type='text'
-                  name='tags'
-                  placeholder='Tags(comma separated) android, samsung'
-                  value={form.tags.join(',')}
-                  onChange={handleTags}
-                  required
-                  className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
-                />
+            <div className='flex flex-col rounded-md bg-primary p-3 space-y-2'>
+              <div className='grid grid-cols-3 gap-2 items-center'>
+                <div className='flex flex-col gap-1'>
+                  <label className='flex items-center text-sm text-white gap-1'>Tags <span className='text-white'>*</span></label>
+                  <input 
+                    type='text'
+                    name='tags'
+                    placeholder='Tags(comma separated) android, samsung'
+                    value={form.tags.join(',')}
+                    onChange={handleTags}
+                    required
+                    className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
+                  />
+                </div>
+                <div className='flex flex-col gap-1'>
+                  <label className='flex items-center text-sm text-white gap-1'>Product Price <span className='text-white'>*</span></label>
+                  <input 
+                    type='number'
+                    name='price'
+                    placeholder='96,000'
+                    value={form.price}
+                    onChange={handleChange}
+                    required
+                    className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                  />
+                </div>              
+                <div className='flex flex-col gap-1'>
+                  <label className='flex items-center text-sm text-white gap-1'>Quantity <span className='text-white'>*</span></label>
+                  <input 
+                    type='number'
+                    name='quantity'
+                    placeholder='100'
+                    value={form.quantity}
+                    onChange={handleChange}
+                    required
+                    className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
+                  />
+                </div>
               </div>
-              <div className='flex flex-col gap-1'>
-                <label className='flex items-center text-sm text-white gap-1'>Category <span className='text-white'>*</span></label>
-                <select
-                  name='category'
-                  value={form.category}
-                  onChange={handleChange}
-                  required
-                  className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
-                    >
-                    <option value=''>Select Category</option>
-                    {categories?.map(cat => (
-                      <option key={cat._id} value={cat._id}>
-                        {cat.name}
-                      </option>
+              <div className=''>
+                <div className='flex flex-col gap-1'>
+                  <label className='flex items-center text-sm text-white gap-1'>Category <span className='text-white'>*</span></label>
+                  <select
+                    name='category'
+                    value={form.category}
+                    onChange={handleChange}
+                    required
+                    className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
+                      >
+                      <option value=''>Select Category</option>
+                      {categories?.map(cat => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                {attributes.length > 0 && (
+                  <div className='grid grid-cols-3 gap-3 my-3 items-center'>
+                    {attributes.map(attr => (
+                      <div key={attr._id} className='flex flex-col'>
+                        <label className='text-sm text-white'>
+                          {attr.name} {attr.required && '*'}
+                        </label>
+
+                        {attr.type === 'select' ? (
+                          <select
+                            value= {attributeValues[attr._id] || ''}
+                            onChange={(e) => 
+                              setAttributesValues(prev => ({
+                              ...prev,
+                              [attr._id]: e.target.value
+                              }))
+                            }
+                            className='p-2 outline-nonefocus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
+                          >
+                            <option value=''>Select {attr.name}</option>
+                            {(attr.options || []).map((opt, i) => (
+                              <option key={i} value={opt}>{opt}</option>
+                            ))}
+                          </select>
+                        ) : (
+                          <input
+                            type={attr.type === 'number' ? 'number' : 'text'}
+                            value={attributeValues[attr._id] || ''}
+                            onChange={(e) => 
+                              setAttributesValues(prev => ({
+                                ...prev,
+                                [attr._id]: e.target.value
+                              }))
+                            }
+                            className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
+                          />
+                        )}
+                      </div>
                     ))}
-                </select>
-              </div>
-              <div className='flex flex-col gap-1'>
-                <label className='flex items-center text-sm text-white gap-1'>Quantity <span className='text-white'>*</span></label>
-                <input 
-                  type='number'
-                  name='quantity'
-                  placeholder='100'
-                  value={form.quantity}
-                  onChange={handleChange}
-                  required
-                  className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
-                />
+                  </div>
+                )}
               </div>
             </div>
 

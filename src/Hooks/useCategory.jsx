@@ -28,7 +28,7 @@ const useCategory = (categoryId, page) => {
     queryKey: ['categoryAttributes', categoryId],
     queryFn: async () => {
       if (!categoryId) return [];
-      const { data } = await Api.get(`/vendor/category-Attributes/${categoryId}`);
+      const { data } = await Api.get(`/category-Attributes/${categoryId}`);
       return data.attributes;
     },
     enabled: !!categoryId,
@@ -55,6 +55,38 @@ const useCategory = (categoryId, page) => {
      console.error('Failed to get active categories', error);
     }
   });
+
+  const fetchCategoryAttributes = async (categoryId) => {
+    if(!categoryId) return [];
+
+    try{
+      const { data } = await Api.get(`/category-Attributes/${categoryId}`);
+      return data.attributes;
+    } catch (error) {
+      console.error('Error fetchin category attributes:', error);
+
+      const message = error?.response?.data?.message || 'Failed to fetch category attributes';
+
+      throw new Error(message);
+    }
+  };
+
+  const useCategoryAttributes = (categoryId) => {
+    return useQuery({
+      queryKey: ['categoryAttributes', categoryId],
+      queryFn: () => fetchCategoryAttributes(categoryId),
+      enabled: !!categoryId,
+      staleTime: 1000 * 60 * 5,
+      retry: 1,
+      onError: (error) => {
+        console.error('React query error', error);
+
+        toast.error(
+          error.message || 'Failed to load category attributes'
+        );
+      }
+    });
+  };
 
   const addCategory = useMutation({
     mutationFn: async (categoryData) => {
@@ -180,6 +212,8 @@ const useCategory = (categoryId, page) => {
   return {
     getAllCategories,
     getActiveCategories,
+    fetchCategoryAttributes,
+    useCategoryAttributes,
     addCategory,
     updateCategory,
     deactivateCategory,

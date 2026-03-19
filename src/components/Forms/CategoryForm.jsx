@@ -68,7 +68,7 @@ function CategoryForm() {
       name: form.name,
       commissionRate: form.commissionRate,
       parent: form.parent || null,
-      attribute: form.attributes,
+      attributes: form.attributes,
     });
     setForm(InitialStateForm)
   };
