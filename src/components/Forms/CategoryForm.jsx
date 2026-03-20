@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './forms.css';
 import useCategory from '../../Hooks/useCategory';
-import { TbCategoryFilled } from "react-icons/tb";
 
 const InitialStateForm = {
   name:'',
@@ -74,7 +73,7 @@ function CategoryForm() {
   };
   
   return (
-    <form className='p-4 space-y-2 flex flex-col category-form' onSubmit={handleSubmit}>
+    <form className='p-2 space-y-2 flex flex-col category-form overflow-x-auto' onSubmit={handleSubmit}>
       <div className='flex flex-col gap-2 my-4'>
         {/*<h2 className='flex items-center gap-2 text-dark text-xl underline'>
           <TbCategoryFilled className='text-secondary' size={25} />
@@ -87,7 +86,7 @@ function CategoryForm() {
         </p>
       </div>
 
-      <div className='grid grid-cols-3 gap-3'>
+      <div className='grid grid-cols-3 gap-3 catCon'>
         <div className='flex flex-col gap-1'>
           <label className='text-dark flex items-center gap-2'>Category Name <span className='text-red-600'>*</span></label>
           <input
@@ -133,7 +132,7 @@ function CategoryForm() {
 
       <div className='flex flex-col gap-1'>
         <h2 className='text-dark flex items-center gap-2'>Attributes<span className='text-red-600'>*</span></h2>
-        <div className='grid grid-cols-4 gap-2'>
+        <div className='grid grid-cols-4 attCon gap-2'>
           <input
             type='text'
             name='name'

@@ -140,6 +140,57 @@
   .socials a{
     font-size: 2.3em;
   }
+  .catStatus{
+    font-size: 1em;
+    padding: 10px 15px;
+  }
+  .CatNav button{
+    padding: 15px 20px;
+  }
+  .CatNav span{
+    font-size: 1.5em;
+  }
+  .catHeadIcon{
+    height: 50px;
+    width: 50px;
+  }
+  .catHead{
+    font-weight: normal;
+    font-size: 1em;
+  }
+  .PROD{
+    padding: 5px;
+  }
+  .PromainImg{
+    height: 15vw;
+    width: 100%;
+  }
+  .PROD a{
+    font-size: 1.5em;
+  }
+  .modal-content, .suppImgComp{
+    width: 950px;
+  }
+  .modal-content h3, .suppImgComp h3{
+    font-size: 2.5em;
+  }
+  .modal-content textarea{
+    font-size: 2em;
+  }
+  .suppImgComp .mainIMg {
+    width: 100%;
+    height: 17vw;
+  }
+  .suppImgComp .suppIMg{
+    width: 100%;
+    height: 200px;
+  }
+}
+
+@media(max-width: 901px){
+  .procuctContainer{
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media(max-width: 769px){
@@ -159,7 +210,7 @@
   .verImg{
     height: 200px;
   }
-  .ApprovalCards{
+  .ApprovalCards, .procuctContainer{
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -177,7 +228,7 @@
   .Agreement{
     font-size: 13px;
   }
-  .verifyImg{
+  .verifyImg, .procuctContainer{
     grid-template-columns: repeat(1, 1fr);
   }
   .verImg{
@@ -199,13 +250,16 @@
     display: flex;
     flex-direction: column;
   }
+  .venProdpend{
+    flex-wrap: wrap;
+  }
 }
 
 @media(max-width: 376px){
   .AnaCards{
     grid-template-columns: repeat(1, 1fr);
   }
-  .socials{
+  .socials, .suppImgCon{
     grid-template-columns: repeat(2, 1fr);
   }
 }

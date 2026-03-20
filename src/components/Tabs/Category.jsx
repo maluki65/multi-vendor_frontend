@@ -39,7 +39,7 @@ function Category() {
       field: 'isActive',
       render: (row) => (
         <span
-          className={`px-2 py-1 text-xs rounded-full text-white ${row.isActive ? 'bg-green-500' : 'bg-red-500'}`}
+          className={`px-2 py-1 text-xs rounded-full text-white catStatus ${row.isActive ? 'bg-green-500' : 'bg-red-500'}`}
           >
             {row.isActive ? 'Active' : 'Inactive'}
         </span>
@@ -85,7 +85,7 @@ function Category() {
         <h2 className='text-xl font-semibold'>Categories</h2>
         <button
           onClick={() => setShowForm(true)}
-          className='bg-primary text-white px-2 py-1 cursor-pointer rounded'>
+          className='bg-primary text-white px-2 py-1 cursor-pointer rounded addCat'>
             + Add Category
           </button>
       </div>
@@ -108,7 +108,7 @@ function Category() {
         )}
       />
 
-      <div className='flex justify-between items-center mt-4'>
+      <div className='flex justify-between items-center CatNav mt-4'>
         <button
           disabled={page === 1}
           onClick={() => setPage(page - 1)}

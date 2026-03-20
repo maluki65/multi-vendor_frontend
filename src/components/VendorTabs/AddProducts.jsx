@@ -199,8 +199,8 @@ function AddProducts({ vendorId }) {
     }));
   };
 
-  console.log('category:', form.category);
-  console.log('attributes:', attributes);
+  //console.log('category:', form.category);
+  //console.log('attributes:', attributes);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -291,12 +291,12 @@ function AddProducts({ vendorId }) {
                 value={form.name}
                 onChange={handleChange}
                 required
-                className='p-2 outline-none w-[60%] focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                className='p-2 outline-none proName w-[60%] focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
               />
             </div>
 
             <div className='flex flex-col rounded-md bg-primary p-3 space-y-2'>
-              <div className='grid grid-cols-3 gap-2 items-center'>
+              <div className='grid grid-cols-3 gap-2 items-center line1'>
                 <div className='flex flex-col gap-1'>
                   <label className='flex items-center text-sm text-white gap-1'>Tags <span className='text-white'>*</span></label>
                   <input 
@@ -353,7 +353,7 @@ function AddProducts({ vendorId }) {
                   </select>
                 </div>
                 {attributes.length > 0 && (
-                  <div className='grid grid-cols-3 gap-3 my-3 items-center'>
+                  <div className='grid grid-cols-3 gap-3 my-3 items-center line2'>
                     {attributes.map(attr => (
                       <div key={attr._id} className='flex flex-col'>
                         <label className='text-sm text-white'>
@@ -396,15 +396,18 @@ function AddProducts({ vendorId }) {
               </div>
             </div>
 
-            <textarea
-              name='description'
-              value={form.description}
-              onChange={handleChange}
-              placeholder='Product description'
-              required
-              className='my-3 p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
-              rows={5}
-            />
+            <div className='flex flex-col gap-1 my-3'>
+              <label className='flex items-center text-sm gap-1'>Product description<span className='text-red-600'>*</span></label>
+              <textarea
+                name='description'
+                value={form.description}
+                onChange={handleChange}
+                placeholder='Product description'
+                required
+                className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
+                rows={8}
+              />
+            </div>
 
             <div className='flex flex-col my-3 gap-1'>
               <label className='flex items-center gap-1 text-sm'>Main product img <span className='text-red-600'>*</span></label>
@@ -412,7 +415,7 @@ function AddProducts({ vendorId }) {
                 onDrop={(e) => handleDrop('mainImg', e)}
                 onDragOver={(e) => handleDragOver('mainImg', e)}
                 onDragLeave={(e) => handleDragLeave('mainImg', e)}
-                className={`relative flex flex-col items-center justify-center max-w-64 h-50 bg-[#ebe7e7] border border-dashed rounded cursor-pointer transition-all duration-200 
+                className={`relative flex flex-col items-center justify-center max-w-64 h-50 bg-[#ebe7e7] border border-dashed mainImgCon rounded cursor-pointer transition-all duration-200 
                 ${
                   images.mainImg.dragging 
                     ? 'border-blue-400 bg-[#ebe7e7] scale-105'
@@ -426,7 +429,7 @@ function AddProducts({ vendorId }) {
                         <img
                           src={images.mainImg.preview}
                           alt='Product main img'
-                          className='w-full h-full object-cover rounded shadow-md'
+                          className='w-full h-full object-cover MainprevImg rounded shadow-md'
                           loading='lazy'
                         />
                         <button
@@ -442,7 +445,7 @@ function AddProducts({ vendorId }) {
                       </>
                     ) : (
                       <div className='flex flex-col items-center justify-center w-full h-full cursor-pointer'>
-                        <FaCameraRetro className='text-gray-400' size={25}/>
+                        <FaCameraRetro className='text-gray-400 imgIcon' size={25}/>
                         <p className='text-xs text-gray-500 mt-1 flex items-center'>
                           Upload main img <span className='text-red-600'>*</span>
                         </p>
@@ -474,7 +477,7 @@ function AddProducts({ vendorId }) {
                 onDrop={(e) => handleDrop('supportImg', e)}
                 onDragOver={(e) => handleDragOver('supportImg', e)}
                 onDragLeave={(e) => handleDragLeave('supportImg', e)}
-                className={`flex flex-col items-center justify-center max-w-full h-50 bg-[#ebe7e7] border border-dashed rounded transition-all duration-200 
+                className={`flex flex-col items-center justify-center suppImgCon max-w-full h-50 bg-[#ebe7e7] border border-dashed rounded transition-all duration-200 
                 ${
                   images.supportImg.dragging 
                     ? 'border-blue-400 bg-[#ebe7e7] scale-105'
@@ -488,7 +491,7 @@ function AddProducts({ vendorId }) {
                     className='flex flex-col items-center cursor-pointer justify-center w-full h-full'
                     >
                       <FaCameraRetro className='text-gray-400' size={25}/>
-                      <p className='text-xs text-gray-500 mt-1 flex items-center'>
+                      <p className='text-xs text-gray-500 mt-1 flex items-center suppText'>
                         Upload supporting img(s) <span className='text-red-600'>*</span>
                       </p>
                     </label>
@@ -509,7 +512,7 @@ function AddProducts({ vendorId }) {
                     <img 
                       src={src}
                       alt={`Supporting img ${i}`}
-                      className='w-24 h-24 object-cover rounded'
+                      className='w-24 supportPrevImg h-24 object-cover rounded'
                     />
                     <button
                       type='button'

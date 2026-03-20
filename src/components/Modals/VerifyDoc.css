@@ -6,6 +6,12 @@
   .modalT{
     font-size: 3em;
   }
+  .popCon {
+    width: 50vw;
+  }
+  .popCon h3, .popCon label{
+    font-weight: normal;
+  }
 }
 
 @media(max-width:376px){

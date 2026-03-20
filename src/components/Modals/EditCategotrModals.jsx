@@ -48,7 +48,7 @@ const EditCategoryModals = ({ isOpen, onClose, category, allCategories }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center backdrop-blur-sm items-center z-50">
-      <div className="bg-white rounded-lg p-6 w-96 shadow-lg">
+      <div className="bg-white rounded-lg p-6 w-96 popCon shadow-lg">
         <h3 className="text-lg font-semibold mb-4">Edit Category: {category?.name}</h3>
 
         <div className="flex flex-col gap-3">

@@ -168,10 +168,18 @@ const useProducts = () => {
     },
 
     onSuccess: (data, variables, context) => {
+      toast.success('Product rejected successfully', { id: context.toastId });
+    
+      queryClient.invalidateQueries({
+        queryKey: ['pendingProducts']
+      });
+    },
+    onError: (error, variables, context) => {
       toast.error(
-        error?.response?.data?.message || 'Failed to reject product', { id: context.toastId }
+        error?.response?.data?.message || 'Failed to reject product',
+        { id: context.toastId }
       );
-
+    
       console.error('Failed to reject product', error);
     }
   });

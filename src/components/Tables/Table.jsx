@@ -9,12 +9,12 @@ function Table({
       <table className='w-full border-collapse text-sm'>
         <thead className='border-y-[1.5px] border-gray-400'>
           <tr>
-            <th className='p-2 text-left'>#</th>
+            <th className='p-2 text-left hash'>#</th>
 
             {columns.map(({ label, field }) => (
               <th
                 key={field}
-                className='p-2 text-left cursor-pointer'
+                className='p-2 text-left titleTable cursor-pointer'
                 onClick={() => {
                   if (!setSortField) return;
 
@@ -32,7 +32,7 @@ function Table({
             ))}
 
             {renderActions && (
-              <th className='p-2 text-left'>Actions</th>
+              <th className='p-2 text-left act'>Actions</th>
             )}
           </tr>
         </thead>

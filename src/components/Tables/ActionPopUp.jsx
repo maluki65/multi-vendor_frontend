@@ -25,7 +25,7 @@ const ActionPopUp = ({ row, onEdit, onToggleStatus }) => {
   return ( 
     <div className='relative' ref={menuRef}>
       <button 
-        className='p-2 cursor-pointer font-semibold'
+        className='p-2 cursor-pointer ellipseVert font-semibold'
         onClick={(e) => {
           e.stopPropagation();
           setOpen(prev => !prev);
@@ -35,18 +35,18 @@ const ActionPopUp = ({ row, onEdit, onToggleStatus }) => {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-1 w-36 bg-white border shadow-lg rounded z-10"
+        <div className="absolute right-0 mt-1 w-36 bg-white border shadow-lg rounded z-10 openPop"
              onClick={(e) => e.stopPropagation()}
         >
           <button
             onClick={() => handleAction('Edit')}
-            className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100 text-sm cursor-pointer"
+            className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100 text-sm editBtn cursor-pointer"
           >
             Edit
           </button>
           <button
             onClick={() => handleAction('ToggleStatus')}
-            className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100 text-sm cursor-pointer"
+            className="block w-full text-left px-3 py-1 rounded hover:bg-gray-100 border-t border-black text-sm cursor-pointer actBtn"
           >
             {row.isActive ? 'Deactivate' : 'Activate'}
           </button>

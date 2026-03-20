@@ -1,0 +1,29 @@
+@media(min-width: 2560px){
+  table{
+    margin-top: 3em;
+  }
+  .titleTable,.hash,.act{
+    font-size: 2em;
+    font-weight: normal;
+  }
+  tbody tr td{
+    font-size: 2em;
+  }
+  .ellipseVert{
+    font-size: normal;
+  }
+  .openPop{
+    width:fit-content;
+    border-radius: 20px;
+  }
+  .editBtn,.actBtn{
+    font-weight: normal;
+    font-size: 1.5em;
+  }
+  .addCat{
+    font-weight: normal;
+    font-size: 1.8em;
+    border-radius: 20px;
+    padding: 5px 10px;
+  }
+}

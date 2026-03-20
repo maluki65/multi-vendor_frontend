@@ -24,14 +24,14 @@ function ProductCategoryTabs({ prodCategories, setProductCategories}){
           className={`group flex items-center text-sm gap-3 font-medium py-1 px-2 ${prodCategories === item.name
             ? 'bg-primary rounded-full'
             : ''}`}>
-              <div className='text-dark'>
+              <div className='text-dark '>
                 {React.createElement(item?.icon, { size: '25' })}
               </div>
               <h2
                 style={{
                   transitionDelay: `${index + 2 }00ms`
                 }}
-                className='whitespace-pre  font-medium cursor-pointer'>
+                className='whitespace-pre font-medium cursor-pointer catHead'>
                   {item?.name}
                 </h2>
         </button>
