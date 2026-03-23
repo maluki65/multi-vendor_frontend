@@ -19,3 +19,9 @@
     display: none;
   }
 }
+
+@media(max-width: 426px) {
+  .mainCon{
+    padding: 2px;
+  }
+}

@@ -5,7 +5,9 @@ import { useCurrentUser } from '../../Hooks/useCurrentUser';
 import { needsProfile } from '../../utils/userProfiles';
 import { getProfileFormByRole } from '../../utils/profileforms';
 import { useAuth } from '../../Context/AuthContext';
-import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductCategory } from '../../components';
+import { useProfile } from '../../Hooks/useProfile';
+import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductCategory, VendorProducts } from '../../components';
+import useProducts from '../../Hooks/useProduts';
 //import { AdLoader } from  '../../components'
 
 function Dashboard() {
@@ -13,6 +15,9 @@ function Dashboard() {
   const tab = searchParams.get('tab')|| 'overview';
   const  { userData } = useAuth();
   const { data: me, isLoading } = useCurrentUser();
+  const { profile } = useProfile(me?.role);
+
+  //console.log('vendor profile', profile);
 
   const isAdmin = me?.role === 'Admin';
   const isBuyer = me?.role === 'Buyer';
@@ -112,6 +117,9 @@ function Dashboard() {
           {tab === 'verification' && isVendor && <VendorVerification/>}
           {tab === 'product-approval' && isAdmin && <ProductCategory/>}
           {tab === 'verification' && me?.role === 'Admin' && <AdminVerifications/>}
+          {tab === 'products' && profile?._id && (
+            <VendorProducts vendorId={profile._id} />
+          )}
         </>
       )}
     </DashboardLayout>

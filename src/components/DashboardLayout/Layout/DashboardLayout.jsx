@@ -5,7 +5,7 @@ import Navbar from "./navbar";
 
 export default function DashboardLayout ({ fullName, storeName, role, email,  children, disableNavigation}){
   return(
-      <div className='relative sm:-8 p-4 bg-gray-100 min-h-screen flex flex-row'>
+      <div className='relative sm:-8 px-2 py-4 bg-gray-100 min-h-screen flex flex-row'>
         <div className='sm:flex hidden mr-10 relative'>
           <Sidebar
             role={role}
@@ -20,7 +20,7 @@ export default function DashboardLayout ({ fullName, storeName, role, email,  ch
             email={email}
             storeName={storeName}
           />
-          <main className="flex-1 px-4 overflow-y-auto bg-transparent rounded-xl">
+          <main className="flex-1 px-4 overflow-y-auto bg-transparent rounded-xl mainCon">
             {children}
           </main>
         </div>

@@ -17,14 +17,17 @@ function Navbar({ role, fullName, email, storeName }) {
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const activeTab = searchParams.get('tab') || 'overview';
-  const profile = role === 'Admin' ? null : useProfile(role).profile;
+  //const profile = role === 'Admin' ? null : useProfile(role).profile;
+  const { profile } = useProfile(role);
 
 
   const menuItems = menuRoleItems[role] || [];
 
   const displayName = role === 'Vendor'
-   ? profile?.storeName ?? storeName
-   : profile?.fullname ?? fullName;
+   ? profile?.store?.storeName ?? storeName
+   : role === 'Admin'
+   ? profile?.fullnames ?? fullName
+   : profile?.fullname ?? fullName
 
 
   useEffect(() => {
@@ -64,6 +67,10 @@ function Navbar({ role, fullName, email, storeName }) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const profileImage = role === 'Vendor'
+    ? profile?.logo ||  ImgP
+    : profile?.avatar || ImgP;
 
   return (
     <>
@@ -143,7 +150,7 @@ function Navbar({ role, fullName, email, storeName }) {
                 )}
               </div>
             <img 
-              src={profile?.avatar ?? ImgP} 
+              src={profile?.avatar || ImgP} 
               alt='user'
               className='rounded-full object-cover h-10 w-10'
               loading='lazy'
@@ -153,11 +160,11 @@ function Navbar({ role, fullName, email, storeName }) {
 
         {/* On small screen navigation*/}
         <div className='sm:hidden flex justify-between items-center relative'>
-          <div className='w-10 h-10 rounded-[10px] bg-[#2c2f32] flex justify-center items-center cursor-pointer'>
+          <div className='w-10 h-10 rounded-full bg-[#2c2f32] flex justify-center items-center cursor-pointer'>
             <img 
-              src={profile?.avatar ?? ImgP}
+              src={profile?.avatar || ImgP}
               alt='user'
-              className='w-[60%] h-[60%] object-contain rounded-full'
+              className='h-10 w-10 object-cover rounded-full'
               loading='lazy'
             />
           </div>

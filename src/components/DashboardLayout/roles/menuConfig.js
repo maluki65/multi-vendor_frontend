@@ -3,6 +3,7 @@ import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { HiOutlinePlusCircle } from "react-icons/hi2";
 import { RiShoppingCartLine, RiBox2Line, RiCheckboxMultipleBlankFill } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
+import { FiShoppingBag } from "react-icons/fi";
 import { RxDashboard } from "react-icons/rx";
 import { CgProfile } from "react-icons/cg";
 import { LuUsers } from "react-icons/lu";
@@ -23,6 +24,7 @@ export const menuRoleItems = {
   Vendor: [
     { label: 'Dashboard', value: 'overview', icon: RxDashboard, link: "?tab=overview" },
     { label: 'Add Product', value: 'Add-Product', icon: HiOutlinePlusCircle, link: '?tab=addProduct'},
+    { label: 'Products', value: 'products', icon: FiShoppingBag, link: '?tab=myproducts'},
     { label: 'Orders', value: 'orders', icon: RiShoppingCartLine, requiresApproval: true, link: "?tab=orders" },
     { label: 'Payments', value: 'payments', icon: MdOutlinePayments, requiresApproval: true, link: "?tab=payments" },
     { label: 'Verification', value: 'verification', icon: MdOutlineDomainVerification, requiresApproval: true, link: "?tab=verification" },

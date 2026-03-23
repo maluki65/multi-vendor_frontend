@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './vendorTabs.css';
-import { AdLoader } from '..';
+import '../vendorTabs.css';
+import { AdLoader } from '../..';
 import { FaCameraRetro } from "react-icons/fa6";
 import { toast, Toaster } from 'react-hot-toast';
-import useProducts from '../../Hooks/useProduts';
-import useCategory from '../../Hooks/useCategory';
+import useProducts from '../../../Hooks/useProduts';
+import useCategory from '../../../Hooks/useCategory';
 import { useQueryClient } from '@tanstack/react-query';
-import uploadProductImgs from '../../utils/productImgs';
+import uploadProductImgs from '../../../utils/productImgs';
 
 const InitialFormStatus = {
   category: '',
@@ -277,7 +277,7 @@ function AddProducts({ vendorId }) {
         <div className='bg-white rounded-xl mt-4 p-4'>
           <h2 className=''>Add Products</h2>
           <p className='flex items-center gap-1 text-sm my-2'>All fields marked with <span className='text-red-600'>*</span> are required!</p>
-          <p className='flex items-center gap-1 text-sm my-2 text-red-400'>When uploading product images, please ensure that all images have a white background and are centered for review.
+          <p className='flex items-center gap-1 text-sm my-2 text-red-400'>All product images must have a white or transparent background, with the product clearly centered for proper review.
           </p>
 
           <form onSubmit={handleSubmit} className='flex flex-col my-3 space-y-4'>

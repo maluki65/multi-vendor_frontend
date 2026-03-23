@@ -26,6 +26,25 @@
     height: 10vw;
     border-radius: 10px;
   }
+  .venProdCard{
+    height: 550px;
+  }
+  .venProdCard img{
+    height: 100%;
+    width: 100%;
+  }
+}
+
+@media(max-width: 900px){
+  .prodCardsV{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media(max-width: 625px){
+  .prodCardsV{
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media(max-width: 426px){
@@ -33,6 +52,12 @@
     width: 100%;
   }
   .line1, .line2{
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media(max-width: 376px){
+  .prodCardsV{
     grid-template-columns: repeat(1, 1fr);
   }
 }
