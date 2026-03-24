@@ -25,11 +25,11 @@ const useProducts = () => {
   });
 
   // On getting vendor products
-  const getVendorProducts = (vendorId) => useQuery({
-    queryKey: ['vendorProducts', vendorId],
+  const getVendorProducts = (vendorId, page = 1, search = '') => useQuery({
+    queryKey: ['vendorProducts', vendorId, page, search],
     queryFn: async () => {
-      const { data } = await Api.get(`/vendor/products/${vendorId}`);
-      return data.products;
+      const { data } = await Api.get(`/vendor/products/${vendorId}?page=${page}&search=${encodeURIComponent(search)}`);
+      return data;
     },
     enabled: !!vendorId,
     staleTime: 1000 * 60,

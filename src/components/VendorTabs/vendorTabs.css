@@ -26,9 +26,9 @@
     height: 10vw;
     border-radius: 10px;
   }
-  .venProdCard{
+  /*.venProdCard{
     height: 550px;
-  }
+  }*/
   .venProdCard img{
     height: 100%;
     width: 100%;
@@ -38,6 +38,9 @@
 @media(max-width: 900px){
   .prodCardsV{
     grid-template-columns: repeat(3, 1fr);
+  }
+  .SeaProd{
+    width: 60%;
   }
 }
 
@@ -53,6 +56,9 @@
   }
   .line1, .line2{
     grid-template-columns: repeat(1, 1fr);
+  }
+  .SeaProd{
+    width: 100%;
   }
 }
 
