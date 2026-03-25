@@ -33,6 +33,29 @@
     height: 100%;
     width: 100%;
   }
+  .selectImg{
+    width: 100%;
+    height: 15vw;
+  }
+  .selectImgArr{
+    width: 450px;
+    height: 250px;
+  }
+  .editImg{
+    width: 450px;
+    height: 250px;
+  }
+  .selectImgArr img{
+    width: 100%;
+    height: 100%;
+  }
+  .attrName{
+    font-size: 2.5em;
+    font-weight: normal;
+  }
+  .attrVal{
+    font-size: 2em;
+  }
 }
 
 @media(max-width: 900px){
@@ -44,8 +67,8 @@
   }
 }
 
-@media(max-width: 625px){
-  .prodCardsV{
+@media(max-width: 626px){
+  .prodCardsV, .selectChar{
     grid-template-columns: repeat(2, 1fr);
   }
 }

@@ -20,7 +20,7 @@ const useProducts = () => {
       toast.error(
         error?.response?.data?.message || 'Failed to fetch pending products'
       );
-      console.error('Failed to get fetching products', error);
+      //console.error('Failed to get fetching products', error);
     }
   });
 
@@ -190,13 +190,13 @@ const useProducts = () => {
       const { data } = await Api.patch(`/vendor/product/update/${id}`, payload);
       return data;
     },
-    onMutate: () => {
+    /*onMutate: () => {
       const id = toast.loading('Updating product...');
       return { toastId: id };
-    },
+    },*/
 
     onSuccess: () => {
-      toast.success('Product updated');
+      toast.success('Product updated successfully!');
   
       queryClient.invalidateQueries({ queryKey: ['vendorProducts'] });
       queryClient.invalidateQueries({ queryKey: ['product'] });
@@ -213,11 +213,11 @@ const useProducts = () => {
 
   //On deleting product
   const deleteProduct = useMutation({
-    mutationFn: async (id) => {
-      const { data } = await Api.delete(`/vendor/product/delete/${id}`);
+    mutationFn: async (ProductId) => {
+      const { data } = await Api.delete(`/vendor/product/delete/${ProductId}`);
       return data;
     },
-    onMutate: () => {
+    /*onMutate: () => {
       const id = toast.loading('Deleting product...');
       return { toastId: id };
     },
@@ -235,7 +235,7 @@ const useProducts = () => {
       );
 
       console.error('Failed to delete product', error);
-    }
+    }*/
   });
 
   return { 

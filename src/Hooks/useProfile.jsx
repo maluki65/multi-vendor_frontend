@@ -19,7 +19,7 @@ export const useProfile = (role) => {
       if (!route) return null;
       try {
         const res = await Api.get(route /*'/users/auth/profile'*/);
-        console.log('Profile API response:', res.data);
+        //console.log('Profile API response:', res.data);
         return res.data.profile;
       } catch (error) {
         if (error?.response?.status == 404) {
