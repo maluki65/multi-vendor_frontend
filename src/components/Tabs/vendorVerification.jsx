@@ -129,7 +129,7 @@ function VendorVerification() {
       return toast.error('Please upload your verification documents!');
 
     try{
-      const toastId = toast.loading('Submitting verification docs...');
+      //const toastId = toast.loading('Submitting verification docs...');
 
       const uploadedFiles = await UploadVerificationImgs(
         verificationFiles.map((item) => item.file)
@@ -147,7 +147,7 @@ function VendorVerification() {
       };
 
       const onSuccess = () => {
-        toast.success('verification submitted. Awaiting Admin approval', { id: toastId});
+        //toast.success('verification submitted. Awaiting Admin approval', { id: toastId});
         setVerificationFiles([]);
         setSignature('');
         setTermsAccepted(false);
@@ -160,7 +160,7 @@ function VendorVerification() {
       }
     } catch(error){
       console.error('Verification docs upload failed', error);
-      toast.error('Failed to upload verification docs!');
+      //toast.error('Failed to upload verification docs!');
     }
   };
   return (
@@ -297,7 +297,7 @@ function VendorVerification() {
 
           <button 
             type='submit'
-            className='px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:opacity-50'
+            className='px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:opacity-50 cursor-pointer'
             disabled={submitVerification.isLoading || resubmitVerification.isLoading}
             >
               {userStatus === 'rejected' ? 'Resubmit verification' : 'Submit verification'}

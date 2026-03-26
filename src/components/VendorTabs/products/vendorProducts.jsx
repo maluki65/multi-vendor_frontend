@@ -73,6 +73,18 @@ function vendorProducts({ vendorId }) {
     setModalOpen(true);
   }
 
+  const rejectionReason = () => {
+    if(!selectedProduct?.rejectionReason){
+      return (
+        <span className='text-sm text-dark'>
+          No rejection reason: product approved
+        </span>
+      );
+    }
+
+    return selectedProduct?.rejectionReason;
+  }
+
   return (
     <>
       <Toaster position='top-right' reverseOrder={false}/>
@@ -217,6 +229,14 @@ function vendorProducts({ vendorId }) {
                 <p className='text-sm text-dark flex items-center gap-3'> <span className='font-semibold'>Price:</span>Ksh:{selectedProduct?.price?.toLocaleString()}</p>
                 </div>
                 <p className='text-sm text-dark flex flex-col'> <span className='font-semibold'>Description:</span>{selectedProduct?.description}</p>
+                <p className='text-sm text-dark font-semibold flex flex-col'>
+                  Rejection Reason:
+                  <span className='font-normal text-red-600'>
+                    {selectedProduct?.rejectionReason
+                      ? selectedProduct.rejectionReason
+                      : <span className='text-green-500'>No rejection reason: product approved/pending</span>}
+                  </span>
+                </p>
                 {selectedProduct?.attributes?.map((attr, index) => (
                   <div key={index} className='flex flex-col text-sm'>                    
                     <span className='font-semibold capitalize attrName'>

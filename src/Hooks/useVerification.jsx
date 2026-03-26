@@ -57,8 +57,10 @@ const useVerification = () => {
       queryClient.invalidateQueries({ queryKey: ['myVerification'] });
     },
     onError: (error, variables, context) => {
-      toast.error(error?.response?.data?.message || 'Failed to resubmit verification info!', { id: context.toastId });
-      console.error('Failed to resubmit verification info!', error);
+      toast.error(
+        error?.response?.data?.message || 'Failed to resubmit verification info!', 
+        { id: context.toastId }
+      );
     },
   });
 

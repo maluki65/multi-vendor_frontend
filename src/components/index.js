@@ -34,3 +34,4 @@ export { default as Table } from './Tables/Table';
 export { default as ActionPopUp } from './Tables/ActionPopUp';
 export { default as EditCategoryModals } from './Modals/EditCategotrModals';
 export { default as VendorProducts } from './VendorTabs/products/vendorProducts';
+export { default as BuyerDashboard } from './BuyerTabs/BuyerDashboard';
