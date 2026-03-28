@@ -2,13 +2,12 @@ import React from 'react';
 import './BuyerTabs.css';
 import { Inner } from '../../commons';
 
-function BuyerDashboard() {
-
+function Cart() {
   return (
     <Inner>
-      <div className='text-red-600'>BuyerDashboard</div>
+      <div>Cart</div>
     </Inner>
   )
 }
 
-export default BuyerDashboard
+export default Cart

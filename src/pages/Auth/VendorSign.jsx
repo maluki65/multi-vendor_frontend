@@ -48,7 +48,12 @@ function VendorSign() {
       role: 'Vendor',
     }
 
-    await registerUser(payload);
+    try{
+      await registerUser(payload);
+      navigate('/dashboard')
+    } catch (error){
+      console.log(error);
+    }
   };
 
   const handleNavigate = () => {

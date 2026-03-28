@@ -44,13 +44,6 @@ function Dashboard() {
   
   return (
     <>
-      {isBuyer ? (
-        buyerNeedsProfile && ProfileComponent ? (
-          <ProfileComponent />
-        ) : (
-          <BuyerDashboard />
-        )
-      ): (
         <DashboardLayout 
           fullName={user.fullName} 
           role={user.role} 
@@ -131,7 +124,6 @@ function Dashboard() {
             </>
           )}
         </DashboardLayout>
-      )}
     </>
   )
 }

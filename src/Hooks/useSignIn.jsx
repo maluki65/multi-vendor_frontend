@@ -12,8 +12,8 @@ function useSignIn() {
       setError('');
       setIsLoading(true);
 
-      await login(values.email, values.password);
-      return true;
+      const res = await login(values.email, values.password);
+      return res;
     } catch (error) {
       setError(error.response?.data?.message || 'Invalid email or password');
       return false

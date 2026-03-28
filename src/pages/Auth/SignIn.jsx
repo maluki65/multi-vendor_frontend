@@ -31,17 +31,25 @@ function SignIn() {
     }));
   };
 
-  const handleSignIn  = async(e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-
+  
     const { email, password } = form;
-    
-    const payload = {
-      email,
-      password
+  
+    try {
+      const res = await SignInUser({ email, password });
+  
+      const role = res?.user?.role;
+  
+      if (role === 'Buyer') {
+        navigate('/buyer');
+      } else {
+        navigate('/dashboard');
+      }
+  
+    } catch (error) {
+      console.log(error);
     }
-    await SignInUser(payload);
-    //console.log('user logged In');
   };
 
   const handleNavigate = () => {

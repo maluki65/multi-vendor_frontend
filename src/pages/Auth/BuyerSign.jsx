@@ -51,7 +51,12 @@ function BuyerSign() {
 
     //console.log('Payload', payload);
 
-    await registerUser(payload);
+    try {
+      await registerUser(payload);
+      navigate('/Buyer?=dashboard');
+    } catch(error){
+      console.log(error);
+    }
   };
 
   const handleNavigate = () => {

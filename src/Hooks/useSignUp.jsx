@@ -19,10 +19,9 @@ function useSignUp() {
       setError('');
       setIsLoading(true);
 
-      await signup(values);
-
+      const res = await signup(values);
       setSuccess('Account created successfully!');
-      return true;
+      return res;
     } catch (error) {
       setError(error.response?.data?.message || 'Failed to create account');
       return false

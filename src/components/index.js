@@ -35,3 +35,5 @@ export { default as ActionPopUp } from './Tables/ActionPopUp';
 export { default as EditCategoryModals } from './Modals/EditCategotrModals';
 export { default as VendorProducts } from './VendorTabs/products/vendorProducts';
 export { default as BuyerDashboard } from './BuyerTabs/BuyerDashboard';
+export { default as Cart } from './BuyerTabs/Cart';
+export { default as BuyerLayout } from './BuyerTabs/BuyerLayout';
