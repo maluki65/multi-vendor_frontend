@@ -42,6 +42,7 @@ export const useProfile = (role) => {
     },
     onSuccess: (data) => {
       queryClient.setQueryData(PROFILE_KEY, data.profile);
+      queryClient.invalidateQueries(['profile', role]);
     },
   });
 

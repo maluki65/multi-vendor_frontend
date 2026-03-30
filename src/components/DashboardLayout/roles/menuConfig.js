@@ -7,6 +7,10 @@ import { FiShoppingBag } from "react-icons/fi";
 import { RxDashboard } from "react-icons/rx";
 import { CgProfile } from "react-icons/cg";
 import { LuUsers } from "react-icons/lu";
+import { CiUser, CiHeart } from "react-icons/ci";
+import { LiaShoppingCartSolid } from "react-icons/lia";
+import { RiShoppingBagLine } from "react-icons/ri";
+
 
 export const menuRoleItems = {
   Admin: [
@@ -30,5 +34,10 @@ export const menuRoleItems = {
     { label: 'Verification', value: 'verification', icon: MdOutlineDomainVerification, requiresApproval: true, link: "?tab=verification" },
     { label: 'Settings', value: 'Settings', icon: IoSettingsOutline, link: "?tab=settings"},
   ],
-  Buyer:[]
+ Buyer: [
+  //{ label: 'Dashboard', value: 'dashboard', icon: RiShoppingBagLine, link: '/dashboard' },
+  { label: 'Profile', value: 'profile', icon: CiUser, link: '/profile' },
+  { label: 'Wishlist', value: 'wishlist', icon: CiHeart, link: '/wishlist' },
+  { label: 'Cart', value: 'cart', icon: LiaShoppingCartSolid, link: '/cart' },
+]
 }

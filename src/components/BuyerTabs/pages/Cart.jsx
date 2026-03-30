@@ -1,11 +1,11 @@
 import React from 'react';
-import './BuyerTabs.css';
-import { Inner } from '../../commons';
+import '../BuyerTabs.css';
+import { Inner } from '../../../commons';
 
 function Cart() {
   return (
     <Inner>
-      <div>Cart</div>
+      <div>cart</div>
     </Inner>
   )
 }

@@ -1,39 +1,102 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Inner } from '../../commons';
-import { Link, useLocation, useNavigate} from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams, Outlet} from 'react-router-dom';
 import { FaBarsStaggered, FaXmark } from 'react-icons/fa6';
 import { useLogout } from '../../Hooks/useLogout';
+import { useCurrentUser } from '../../Hooks/useCurrentUser';
+import { getProfileFormByRole } from '../../utils/profileforms';
+import { useProfile } from '../../Hooks/useProfile';
+import { getUserProfileByRole, needsProfile } from '../../utils/userProfiles';
 import { CiSearch, CiUser, CiHeart } from "react-icons/ci";
 import { LiaShoppingCartSolid } from "react-icons/lia";
+import { Cart, Profile, Wishlist, BuyerDashboard } from '../../components';
+import { menuRoleItems } from '../DashboardLayout/roles/menuConfig';
 
 function BuyerLayout({ children }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const logout = useLogout();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLogout = async () => {
+  const { data: me, isLoading } = useCurrentUser();
+
+  const role = me?.role;
+
+  const { profile, isLoading: profileLoading } = useProfile(role);
+
+  const buyerNeedsProfile = useMemo(() => {
+    return role === 'Buyer' && !profile;
+  }, [role, profile]);
+
+  const ProfileComponent = useMemo(
+    () => getProfileFormByRole(role),
+    [role]
+  );
+
+  const currentPath = location.pathname + location.hash;
+
+  const handleLogout = useCallback(async () => {
     await logout();
-    navigate('/');
-  };
+    navigate('/signin');
+  }, [logout, navigate]);
+
+  useEffect(() => {
+    if(location.hash){
+      const id = location.hash.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+  }, [location.hash]);
+
+  const menuItems = useMemo(() => {
+    return menuRoleItems[role] || [];
+  }, [role]);
+
+  /*const BuyerNavs = useMemo(() => [
+    { link: '/profile', icon: CiUser },
+    { link: '/wishlist', icon: CiHeart },
+    { link: '/cart', icon: LiaShoppingCartSolid }
+  ], []);
+
+  const fullNav = menuOpen ? [
+    ...BuyerNavs,
+    {}
+  ]
+  : BuyerNavs;*/
+
+  if (isLoading || profileLoading){
+    return <div className='p-4'>Loading...</div>
+  }
 
   return (
-    <Inner >
-      <nav className="flex justify-between items-center p-4 shadow-md">
-        <h1 className="font-bold text-lg cursor-pointer" onClick={() => navigate('/')}>
-          Store
-        </h1>
-
-        <div className="flex gap-4">
-          <Link to="/cart">Cart</Link>
-          <Link to="/orders">Orders</Link>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      </nav>
+    <>
+      <div className="flex gap-4">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link key={item.value} to={`/buyer${item.link}`}>
+              <div className="flex items-center gap-1 cursor-pointer">
+                <Icon className='' size={25} />
+                {/*<span>{item.label}</span>*/}
+              </div>
+            </Link>
+          );
+        })}
+        <button className='cursor-pointer' onClick={handleLogout}>Logout</button>
+      </div>
 
       <div className="p-4">
-        {children}
+        {buyerNeedsProfile && ProfileComponent ? (
+          <ProfileComponent />
+        ) : (
+          <Outlet/>
+        )}
       </div>
-    </Inner>
+    </>
   );
 }
 
-export default BuyerLayout;
+export default React.memo(BuyerLayout);

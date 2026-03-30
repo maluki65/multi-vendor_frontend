@@ -1,6 +1,6 @@
 import React from 'react';
-import './BuyerTabs.css';
-import { Inner } from '../../commons';
+import '../BuyerTabs.css';
+import { Inner } from '../../../commons';
 
 function BuyerDashboard() {
 
