@@ -1,0 +1,32 @@
+.hamburger{
+  font-size: 1.3rem;
+  font-weight: 500;
+  display: none;
+}
+
+@media(min-width: 2560px){
+  /*.navbar .logo img{
+    width: 150px;
+    height:150px; 
+  }*/
+  .navlinks ul li a{
+    margin-left: 2rem;
+    font-size: 2rem;
+    font-weight: 500;
+  }
+}
+
+@media (min-width:2560px){
+  .regBtn{
+    font-size: 2.3rem;
+  }
+  .navbar .logo img{
+    width: 150px;
+    height:150px; 
+  }
+  .navlinks ul li a {
+    margin-left: 2rem;
+    font-size: 2.5rem;
+    font-weight: 500;
+  }
+}

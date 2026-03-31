@@ -9,7 +9,7 @@ import { CgProfile } from "react-icons/cg";
 import { LuUsers } from "react-icons/lu";
 import { CiUser, CiHeart } from "react-icons/ci";
 import { LiaShoppingCartSolid } from "react-icons/lia";
-import { RiShoppingBagLine } from "react-icons/ri";
+import { GoHeart } from "react-icons/go";
 
 
 export const menuRoleItems = {
@@ -36,8 +36,8 @@ export const menuRoleItems = {
   ],
  Buyer: [
   //{ label: 'Dashboard', value: 'dashboard', icon: RiShoppingBagLine, link: '/dashboard' },
-  { label: 'Profile', value: 'profile', icon: CiUser, link: '/profile' },
-  { label: 'Wishlist', value: 'wishlist', icon: CiHeart, link: '/wishlist' },
+  //{ label: 'Profile', value: 'profile', icon: CiUser, link: '/profile' },
+  { label: 'Wishlist', value: 'wishlist', icon: GoHeart, link: '/wishlist' },
   { label: 'Cart', value: 'cart', icon: LiaShoppingCartSolid, link: '/cart' },
 ]
 }
