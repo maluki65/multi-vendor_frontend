@@ -23,7 +23,7 @@ function ProfileDropDown({ onLogout }) {
     <div className='relative' ref={ref}>
       <PiUser
         size={25}
-        className='cursor-pointer'
+        className='cursor-pointer Navicon'
         onClick={() => setOpen(prev => !prev)}
       />
 

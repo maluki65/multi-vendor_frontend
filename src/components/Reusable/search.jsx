@@ -29,7 +29,7 @@ function SearchBar({ onSearch }) {
     </AnimatePresence>
 
       <IoIosSearch
-        className='cursor-pointer'
+        className='cursor-pointer Navicon'
         size={25}
         onClick={() => setOpen(prev => !prev)}
       />      

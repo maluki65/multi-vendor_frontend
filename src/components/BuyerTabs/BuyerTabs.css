@@ -1,32 +1,83 @@
-.hamburger{
-  font-size: 1.3rem;
-  font-weight: 500;
-  display: none;
+.fixed-nav {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+  background: rgb(234, 233, 233);
+  /*box-shadow: 0 2px 10px rgba(0,0,0,0.08);*/
 }
 
-@media(min-width: 2560px){
-  /*.navbar .logo img{
-    width: 150px;
-    height:150px; 
-  }*/
-  .navlinks ul li a{
-    margin-left: 2rem;
-    font-size: 2rem;
-    font-weight: 500;
-  }
+.desktop-navbar {
+  width: 100%;
 }
 
-@media (min-width:2560px){
-  .regBtn{
-    font-size: 2.3rem;
-  }
-  .navbar .logo img{
-    width: 150px;
-    height:150px; 
-  }
-  .navlinks ul li a {
-    margin-left: 2rem;
-    font-size: 2.5rem;
-    font-weight: 500;
-  }
+.mobile-navbar {
+  padding: 10px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.nav-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-bottom {
+  margin-top: 8px;
+}
+
+.icons {
+  display: flex;
+  gap: 12px;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 75%;
+  height: 100%;
+  background: white;
+  transition: 0.3s ease;
+  z-index: 1000;
+}
+
+.drawer.open {
+  left: 0;
+}
+
+.drawer-header {
+  padding: 16px;
+}
+
+.drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 999;
+}
+
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+}
+
+/* Optional: nice blur effect */
+.sticky-nav {
+  backdrop-filter: blur(10px);
+}
+
+/* Optional shadow when scrolling (we’ll enhance below) */
+.sticky-shadow {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
