@@ -1,0 +1,25 @@
+@media(min-width:2560px){
+  .DashImg901 img{
+    min-height: 35vw;
+    width: 40vw;
+  }
+}
+
+@media (max-width: 626px){
+  .DashHeading h1{
+    font-size: larger;
+  }
+  .DashHeading p{
+    font-size: 13px;
+  }
+}
+
+@media(max-width: 426px){
+  .DashItems{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .DashImg901 img{
+    height: 250px;
+    width: 30vw;
+  }
+}

@@ -44,4 +44,4 @@ export { default as SearchBar } from './Reusable/search';
 export { default as DesktopNav } from './Reusable/DesktopNav';
 export { default as MobileNav } from './Reusable/mobileNav';
 export { default as SideDrawer } from './Reusable/SideDrawer';
-export { default as HomeSwiper } from './BuyerTabs/BuyerItems/homeSwiper';
+export { default as HomeSwiperItems } from './BuyerTabs/BuyerItems/homeSwiper';

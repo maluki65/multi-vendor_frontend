@@ -34,15 +34,15 @@ function BuyerLayout() {
 
   return (
     <div className=''>
-      <div className="hidden md:block">
+      <div className='hidden md:block'>
         <DesktopNav />
       </div>
 
-      <div className="block md:hidden">
+      <div className='block md:hidden'>
         <MobileNav />
       </div>
 
-      <div className='px-4'>
+      <div className=' overflow-hidden '>
         {buyerNeedsProfile && ProfileComponent ? (
           <ProfileComponent />
         ) : (

@@ -12,25 +12,25 @@ function SearchBar({ onSearch }) {
 
   return (
     <div className='flex items-center relative'>
-    <AnimatePresence>
-      {open && (
-        <motion.input
-          initial={{ width: 0, opacity: 0 }}
-          animate={{ width: 400, opacity:1 }}
-          exit={{ width: 0, opacity: 0 }}
-          transition={{ dyration: 0.3 }}
-          type='text'
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          placeholder='Search product...'
-          className='ml-2 px-3 py-1 outline-none  focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg'
-        />
-      )}
-    </AnimatePresence>
+      <AnimatePresence>
+        {open && (
+          <motion.input
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 400, opacity:1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            type='text'
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            placeholder='Search product by name or brand'
+            className='ml-2 px-3 py-1 outline-none  focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg max-w-full'
+          />
+        )}
+      </AnimatePresence>
 
       <IoIosSearch
         className='cursor-pointer Navicon'
-        size={25}
+        size={22}
         onClick={() => setOpen(prev => !prev)}
       />      
     </div>

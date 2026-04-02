@@ -1,6 +1,6 @@
 import { shoe1, shoe2, clothe1, clothe2, HPhone1, HPhone2, FHome1, FHome2 } from "../../assets";
 
-const dashProducts = [
+const DashProducts = [
   {
     category: 'Electronics',
     title: 'TECH TO POWER YOUR LIFE',
@@ -9,9 +9,9 @@ const dashProducts = [
   },
   {
     category: 'Fashion',
-    title: 'FASHION THAT SPEAAKS TO YOU',
+    title: 'FASHION THAT SPEAKS TO YOU',
     pTag: 'Discover the latest trends and timeless styles curated just for you. Upgrade your wardrobe effortlessly!',
-    img :clothe1,
+    img :clothe2,
   },
   {
     category: 'Home & Living',
@@ -23,8 +23,8 @@ const dashProducts = [
     category: 'Fashion',
     title: 'STEP INTO STYLE',
     pTag: 'Walk with confidence—shop sneakers, heels, and everyday footwear designed for comfort and flair.',
-    img :shoe1
+    img :shoe2
   },
 ]
 
-export default dashProducts;
+export default DashProducts;

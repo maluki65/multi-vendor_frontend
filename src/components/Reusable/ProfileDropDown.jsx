@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
-import { LuUserRound } from "react-icons/lu";
 import { PiUser } from "react-icons/pi";
 function ProfileDropDown({ onLogout }) {
   const [open, setOpen] = useState(false);
@@ -22,7 +21,7 @@ function ProfileDropDown({ onLogout }) {
   return (
     <div className='relative' ref={ref}>
       <PiUser
-        size={25}
+        size={22}
         className='cursor-pointer Navicon'
         onClick={() => setOpen(prev => !prev)}
       />

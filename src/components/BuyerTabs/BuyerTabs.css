@@ -72,12 +72,49 @@
   background: white;
 }
 
-/* Optional: nice blur effect */
 .sticky-nav {
   backdrop-filter: blur(10px);
 }
 
-/* Optional shadow when scrolling (we’ll enhance below) */
 .sticky-shadow {
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  width: 20px; 
+  border-radius: 10px;
+}
+
+@media(max-width: 900px){
+  .swiper-pagination-bullet{
+    display: none;
+  }
+  .BuyeWHY{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 426px){
+  .whyText p{
+    font-size: 15px;
+  }
+  .BuyeWHY{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 376px){
+  .whyText h1{
+    font-size: 13px;
+  }
+  .whyText p{
+    font-size: 10px;
+  }
 }
