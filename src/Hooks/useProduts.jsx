@@ -42,11 +42,11 @@ const useProducts = () => {
   });
 
   // On getting all products with visibility: published (buyers)
-  const getAllProducts = useQuery({
-    queryKey: ['products'],
+  const getAllProducts = (params) => useQuery({
+    queryKey: ['products', params],
     queryFn: async () => {
-      const { data } = await Api.get('/buyer/products');
-      return data.products;
+      const { data } = await Api.get('/buyer/products', { params });
+      return data;
     },
     enabled: me?.role === 'Buyer',
     staleTime: 1000 * 60,
