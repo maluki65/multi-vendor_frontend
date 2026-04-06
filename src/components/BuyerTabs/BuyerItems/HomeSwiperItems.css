@@ -5,6 +5,15 @@
   }
 }
 
+@media(max-width: 768px) {
+  .priCart{
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    align-items: start;
+  }
+}
+
 @media (max-width: 626px){
   .DashHeading h1{
     font-size: larger;
