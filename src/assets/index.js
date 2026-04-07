@@ -61,5 +61,11 @@ import HPhone1 from './HPhone1.png';
 import HPhone2 from './HPhone2.png';
 import FHome1 from './FHome1.png';
 import FHome2 from './FHome2.png';
+import Axis from './Axis.png';
+import fan from './fan.png';
+import vision from './vision.png';
+import  hp from './HP.png';
+import Tv from './Tv.png';
+import Lazuli from './Lazuli.png';
 
-export { round01, round02, round03, HImg01, HImg02, HImg03, HImg04, HImg05, Prod01, Prod02, Prod03, Prod04, Prod05, Prod06, WPink, WYellow, Create, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013, BB01,BB02, BP01, BP02, BS01, BS02, PKo01, PKo02, PKo03, PJo01, PJo02, PTo01, PLo01, Amina, Brian, Daniel, Kevin, Linda, Sarah, Logo01, Logo02, Kenyan, SIbc01, SIbc02, SignIn01, SignIn02, ImgP, shoe1, shoe2, clothe1, clothe2, HPhone1, HPhone2, FHome1, FHome2 };
+export { round01, round02, round03, HImg01, HImg02, HImg03, HImg04, HImg05, Prod01, Prod02, Prod03, Prod04, Prod05, Prod06, WPink, WYellow, Create, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013, BB01,BB02, BP01, BP02, BS01, BS02, PKo01, PKo02, PKo03, PJo01, PJo02, PTo01, PLo01, Amina, Brian, Daniel, Kevin, Linda, Sarah, Logo01, Logo02, Kenyan, SIbc01, SIbc02, SignIn01, SignIn02, ImgP, shoe1, shoe2, clothe1, clothe2, HPhone1, HPhone2, FHome1, FHome2, Axis, fan, vision, hp, Tv, Lazuli };

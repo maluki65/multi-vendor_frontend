@@ -7,7 +7,6 @@
   background: rgb(234, 233, 233);
   /*box-shadow: 0 2px 10px rgba(0,0,0,0.08);*/
 }
-
 .desktop-navbar {
   width: 100%;
 }
@@ -91,7 +90,26 @@
   width: 20px; 
   border-radius: 10px;
 }
-
+@media(min-width: 2560px){
+  .logo, .cat908 h2{
+    font-size: 3.3rem;
+  }
+  .wHyIcons{
+    width: 60px;
+    height: 60px;
+  }
+  .itemHeading, .cat908 p{
+    font-size: 2em;
+  }
+  .pdosC{
+    font-size: 3em;
+    text-decoration: underline;
+  }
+  .cat908 img{
+    height: 20vw;
+    width: 50%;
+  }
+}
 @media(max-width: 900px){
   .swiper-pagination-bullet{
     display: none;
@@ -99,7 +117,27 @@
   .BuyeWHY{
     grid-template-columns: repeat(2, 1fr);
   }
+  .cat908{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .catHead{
+    font-size: 2.5em;
+  }
+  .catPara{
+    font-size: 13px;
+  }
 }
+
+@media(max-width: 626px){
+  .catTitles{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .catHead{
+    width: 100%;
+    font-size: 1.5em;
+  }
+}
+
 
 @media(max-width: 426px){
   .whyText p{
@@ -107,6 +145,16 @@
   }
   .BuyeWHY{
     grid-template-columns: repeat(2, 1fr);
+  }
+  .catLastCon{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .fanImgs{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .overImg{
+    display: none;
   }
 }
 

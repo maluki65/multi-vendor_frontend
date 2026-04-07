@@ -1,18 +1,35 @@
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
 @media(min-width:2560px){
   .DashImg901 img{
     min-height: 35vw;
     width: 40vw;
   }
-}
-
-@media(max-width: 768px) {
-  .priCart{
-    display: flex;
-    justify-content: start;
-    flex-direction: column;
-    align-items: start;
+  .prodCon009{
+    height: 400px;
+  }
+  .ProdCarImg{ 
+    height: 100%;
+    width: 100%;
+  }
+  .prodName{
+    font-size: 2em;
   }
 }
+
+@media(max-width: 768px) {}
 
 @media (max-width: 626px){
   .DashHeading h1{
