@@ -4,6 +4,7 @@ import { menuRoleItems } from '../DashboardLayout/roles/menuConfig';
 import { SearchBar, ProfileDropDown } from '../';
 import { useLogout } from '../../Hooks/useLogout';
 import  useStickyNav  from '../../Hooks/useStickyNav';
+import { CiGrid32 } from "react-icons/ci";
 
 function DesktopNavbar() {
   const navigate = useNavigate();
@@ -15,12 +16,32 @@ function DesktopNavbar() {
     navigate('/signin');
   };
 
+  const BuyerNavs = [
+    { name: 'All', value: '/products', icon: CiGrid32 },
+    { name: "Today's peak", value: '/deals', icon: null },
+    { name: 'Gift cards', value: '/', icon: null},
+    { name: 'Registry & Gifting', value: '/products', icon: null },
+  ]
+
   return (
     <div className={`desktop-navbar flex items-center justify-between py-2.5 px-[3%] ${isSticky ? 'fixed-nav' : ''}`}>
 
       <h1 className='text-orange-400 text-[1.4em] font-goodly cursor-pointer logo'>
         Sell<span className='text-primary'>ory</span>
       </h1>
+
+      {/*<div className='flex gap-3 items-center'>
+        <ul className='list-none flex itams-center gap-3'>
+          {BuyerNavs.map((nav) => {
+            const BuyIcon = nav.icon;
+            return (
+              <Link key={nav.value} to={`/buyer${nav.value}`}>
+                <li className='flex items-center hover:underline'>{BuyIcon && <BuyIcon strokeWidth={1} size={20}/>} <span className=''>{nav.name}</span></li>
+              </Link>
+            )
+          })}
+        </ul>
+      </div>*/}
 
       <div className='icons'>
         <SearchBar />

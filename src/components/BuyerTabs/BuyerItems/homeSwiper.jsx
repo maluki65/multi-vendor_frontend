@@ -20,7 +20,7 @@ function HomeSwiperItems({ DashItem }) {
         <img
           src={DashItem.img}
           alt={DashItem.title}
-          className='max-h-[450px] object-contain'
+          className='max-h-[450px] object-cover'
         />
       </div>
     </div>

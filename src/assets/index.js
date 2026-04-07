@@ -67,5 +67,12 @@ import vision from './vision.png';
 import  hp from './HP.png';
 import Tv from './Tv.png';
 import Lazuli from './Lazuli.png';
-
-export { round01, round02, round03, HImg01, HImg02, HImg03, HImg04, HImg05, Prod01, Prod02, Prod03, Prod04, Prod05, Prod06, WPink, WYellow, Create, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013, BB01,BB02, BP01, BP02, BS01, BS02, PKo01, PKo02, PKo03, PJo01, PJo02, PTo01, PLo01, Amina, Brian, Daniel, Kevin, Linda, Sarah, Logo01, Logo02, Kenyan, SIbc01, SIbc02, SignIn01, SignIn02, ImgP, shoe1, shoe2, clothe1, clothe2, HPhone1, HPhone2, FHome1, FHome2, Axis, fan, vision, hp, Tv, Lazuli };
+import CatFur from './CatFur.jpg';
+import CatJel from './CatJel.jpg';
+import CatMen from './CatMen.jpg';
+import CatSne from './CatSne.jpg';
+import CatToy from './CatToy.jpg';
+import CatWat from './CatWat.jpg';
+import CatWom from './CatWom.jpg';
+import Sub from  './Sub.png';
+export { round01, round02, round03, HImg01, HImg02, HImg03, HImg04, HImg05, Prod01, Prod02, Prod03, Prod04, Prod05, Prod06, WPink, WYellow, Create, Hand, wSec01, wSec02, wSec03, wSec04, wSec05, wSec06, wSec07, wSec011, wSec012, wSec013, BB01,BB02, BP01, BP02, BS01, BS02, PKo01, PKo02, PKo03, PJo01, PJo02, PTo01, PLo01, Amina, Brian, Daniel, Kevin, Linda, Sarah, Logo01, Logo02, Kenyan, SIbc01, SIbc02, SignIn01, SignIn02, ImgP, shoe1, shoe2, clothe1, clothe2, HPhone1, HPhone2, FHome1, FHome2, Axis, fan, vision, hp, Tv, Lazuli, CatFur, CatJel, CatMen, CatSne, CatToy, CatWat, CatWom, Sub };

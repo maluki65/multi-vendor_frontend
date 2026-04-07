@@ -11,7 +11,10 @@ import ProductCard from '../BuyerItems/productCard';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductSkeleton from '../BuyerItems/productSkeleton';
-import { Axis, fan, vision, hp, Tv, Lazuli } from '../../../assets';
+import { Axis, fan, vision, hp, Tv, Lazuli, Sub } from '../../../assets';
+import BuyerCategories from '../../../commons/Data/BuyerCategories';
+import { MdArrowRightAlt } from "react-icons/md";
+import { Footer } from '../../';
 
 function BuyerDashboard() {
   const [startIndex, setStartIndex] = useState(0);
@@ -196,7 +199,7 @@ function BuyerDashboard() {
 
         </section>
 
-        <section className='min-h-[30vh] px-[2%] my-10 flex flex-col catCon89'>
+        <section className='min-h-[30vh] px-[2%] my-10 flex flex-col overflow-hidden catCon89'>
           <div className='grid grid-cols-[70%_30%] gap-2 catTitles'>
             <h1 className='text-6xl font-semibold catHead'>From Streets to Screens: Your Marketplace, Anywhere</h1>
             <p className='text-gray-500 text-left pt-7 catPara'>
@@ -265,7 +268,73 @@ function BuyerDashboard() {
           </div>
         </section>
 
-        <section className='min-h-[30vh] px-[2%] my-6  flex flex-col'>fjh</section>
+        <section className='min-h-[30vh] px-[2%] my-6 flex flex-col gap-4 overflow-hidden catCon001'>
+          <div className='flex items-center justify-between CatTexts001'>
+            <h2 className='font-semibold text-xl flex items-center gap-1 mb-4 pdosC'>
+              <span className='underline decoration-secondary decoration-2 underline-offset-4'>
+                Shop
+              </span>
+              <span>By Categories</span>
+            </h2>
+
+            <a className='text-base cursor-pointer text-dark hover:text-primary hover:underline'>
+              view all products
+            </a>
+          </div>
+
+          <div className='grid grid-cols-7 gap-2 CanCards'>
+            {BuyerCategories.map((category) => (
+              <div key={category.id} className='flex flex-col gap-2'>
+                <div className='rounded-md h-[150px] CatImg001'>
+                  <img
+                    src={category.img}
+                    alt={category.name}
+                    loading='lazy'
+                    className='h-full w-full rounded-md objec-cover CatImg002'
+                  />
+                </div>
+                <div className='p-2 flex flex-col items-center justify-center'>
+                  <h4 className='font-medium text-base test-dark flex items-center'>
+                    {category.name}
+                    <MdArrowRightAlt className='' />
+                  </h4>
+                  <p className='text-muted text-base'>
+                    {category.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className='min-h-[40vh] px-[2%] my-6 flex flex-col gap-4 overflow-hidden'>
+          <div className='bg-yellow-100 flex flex-1/2 gap-2 items-center justify-center rounded-md Subscribe'>
+            <div className='flex flex-col gap-2 p-2'>
+              <p className='text-muted text-sm'>
+                Stay updated!
+              </p>
+              <h2 className='text-dark font-semibold text-4xl capitalize'>
+                subscribe to the news
+              </h2>
+              <p className='text-muted text-base'>
+               Stay updated with the latest news, trends, and exclusive updates delivered straight to your inbox.
+              </p>
+              <button 
+                className='px-2 py-1 border text-base rounded cursor-pointer w-fit hover:border-primary hover:text-secondary'>
+                  Subscribe
+              </button>
+            </div>
+            <div className='h-[300px] px-3 SubImg'>
+              <img
+                src={Sub}
+                alt='Subscribe'
+                className='h-full w-full object-cover'
+              />
+            </div>
+          </div>
+        </section>
+
+        <Footer />
       </ReactLenis>
     </>
 

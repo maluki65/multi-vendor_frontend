@@ -91,7 +91,7 @@
   border-radius: 10px;
 }
 @media(min-width: 2560px){
-  .logo, .cat908 h2{
+  .logo, .cat908 h2, .Subscribe h2{
     font-size: 3.3rem;
   }
   .wHyIcons{
@@ -109,7 +109,28 @@
     height: 20vw;
     width: 50%;
   }
+  .CatImg001{
+    width: 100%;
+    height: 15vw;
+  }
+  .CatImg002, .Subscribe img{
+    width: 100%;
+    height: 100%;
+  }
+  .catCon001 a, .catCon001 h4, .Subscribe p{
+    font-size: 2em;
+  }
+  .SubImg{
+    height: 30vw;
+  }
 }
+
+@media(max-width: 1024px){
+  .CanCards{
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
 @media(max-width: 900px){
   .swiper-pagination-bullet{
     display: none;
@@ -126,6 +147,9 @@
   .catPara{
     font-size: 13px;
   }
+  .CanCards{
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 @media(max-width: 626px){
@@ -135,6 +159,9 @@
   .catHead{
     width: 100%;
     font-size: 1.5em;
+  }
+  .CanCards{
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -156,6 +183,18 @@
   .overImg{
     display: none;
   }
+  .CatTexts001{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  .CanCards{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .Subscribe{
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 @media(max-width: 376px){
@@ -164,5 +203,8 @@
   }
   .whyText p{
     font-size: 10px;
+  }
+  .CanCards h4, .CanCards p{
+    font-size: 13px;
   }
 }
