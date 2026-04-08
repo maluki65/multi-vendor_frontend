@@ -44,7 +44,7 @@ const useCategory = (categoryId, page) => {
   const getActiveCategories = useQuery({
     queryKey:['activeCategories'],
     queryFn: async () => {
-      const { data } = await Api.get('/vendor/categories')
+      const { data } = await Api.get('/categories')
       return data.categories;
     },
     staleTime: 1000 * 60 * 5,

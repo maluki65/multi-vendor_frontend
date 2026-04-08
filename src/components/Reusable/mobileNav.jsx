@@ -17,7 +17,7 @@ function mobileNav() {
     { name: 'All', value: '/products', icon: CiGrid32 },
     { name: "Today's peak", value: '/deals', icon: null },
     { name: 'Gift cards', value: '/', icon: null},
-    { name: 'Registry', value: '/registry', icon: null },
+    { name: 'Orders', value: '/orders', icon: null },
   ]
 
   return (

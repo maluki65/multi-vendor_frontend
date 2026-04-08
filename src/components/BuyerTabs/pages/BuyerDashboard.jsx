@@ -177,10 +177,10 @@ function BuyerDashboard() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: index * 0.05 }}
-                      className="relative"
+                      className='relative'
                       >
                       {!product && (
-                        <div className="absolute inset-0 z-10">
+                        <div className='absolute inset-0 z-10'>
                           <ProductSkeleton />
                         </div>
                       )}
