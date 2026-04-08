@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollToHashElement from './components/scrollToHashElemet';
 import { Home, Contact, SignIn, SignUp, Dashboard } from './pages';
-import { NotFound, BuyerLayout, BuyerDashboard, Cart, Profile, Wishlist  } from './components';
+import { NotFound, BuyerLayout, BuyerDashboard, Cart, Profile, Wishlist, Products } from './components';
 import ProtectedRoute from './Hooks/ProtectedRoute';
 import { AuthProvider } from './Context/AuthContext';
 
@@ -40,6 +40,7 @@ function AnimatedRoutes () {
             <Route path='profile' element={<Profile />} />
             <Route path='wishlist' element={<Wishlist />} />
             <Route path='cart' element={<Cart />} />
+            <Route path='Products' element={<Products/>} />
           </Route>
         </Route>
 

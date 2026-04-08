@@ -15,6 +15,8 @@ const InitialFormStatus = {
   tags: [],
   price: '',
   quantity: '',
+  brand: '',
+  discount: '',
 }
 
 function AddProducts({ vendorId }) {
@@ -282,17 +284,43 @@ function AddProducts({ vendorId }) {
 
           <form onSubmit={handleSubmit} className='flex flex-col my-3 space-y-4'>
             
-            <div className='flex flex-col gap-1'>
-              <label className='flex items-center text-sm gap-1'>Product name <span className='text-red-600'>*</span></label>
-              <input 
-                type='text'
-                name='name'
-                placeholder='Samsung S26 Ultra'
-                value={form.name}
-                onChange={handleChange}
-                required
-                className='p-2 outline-none proName w-[60%] focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
-              />
+            <div className='grid grid-cols-3 gap-3 line1'>
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center text-sm gap-1'>Product name <span className='text-red-600'>*</span></label>
+                <input 
+                  type='text'
+                  name='name'
+                  placeholder='Samsung S26 Ultra'
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                  className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center text-sm gap-1'>Brand <span className='text-red-600'>*</span></label>
+                <input 
+                  type='text'
+                  name='brand'
+                  placeholder='Samsung, Apple, Hotpoint'
+                  value={form.brand}
+                  onChange={handleChange}
+                  required
+                  className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
+              <div className='flex flex-col gap-1'>
+                <label className='flex items-center text-sm gap-1'>Discount <span className='text-red-600'>*</span></label>
+                <input 
+                  type='text'
+                  name='discount'
+                  placeholder='value: 1 - 100'
+                  value={form.discount}
+                  onChange={handleChange}
+                  required
+                  className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
             </div>
 
             <div className='flex flex-col rounded-md bg-primary p-3 space-y-2'>

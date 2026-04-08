@@ -20,17 +20,32 @@ function DesktopNavbar() {
     { name: 'All', value: '/products', icon: CiGrid32 },
     { name: "Today's peak", value: '/deals', icon: null },
     { name: 'Gift cards', value: '/', icon: null},
-    { name: 'Registry & Gifting', value: '/products', icon: null },
+    { name: 'Registry & Gifting', value: '/registry', icon: null },
   ]
 
   return (
-    <div className={`desktop-navbar flex items-center justify-between py-2.5 px-[3%] ${isSticky ? 'fixed-nav' : ''}`}>
+    <div className={`desktop-navbar flex flex-col gap-2 py-2.5 px-[3%] ${isSticky ? 'fixed-nav' : ''}`}>
 
-      <h1 className='text-orange-400 text-[1.4em] font-goodly cursor-pointer logo'>
-        Sell<span className='text-primary'>ory</span>
-      </h1>
+      <div className='flex items-center justify-between'>
+        <h1 className='text-orange-400 text-[1.4em] font-goodly cursor-pointer logo'>
+          Sell<span className='text-primary'>ory</span>
+        </h1>
+        
+        <div className='icons'>
+          <SearchBar />
+          <ProfileDropDown onLogout={handleLogout} />        
+          {menuRoleItems['Buyer']?.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link key={item.value} to={`/buyer${item.link}`}>
+                <Icon size={22} />
+              </Link>
+            );
+          })}
+        </div>
+      </div>
 
-      {/*<div className='flex gap-3 items-center'>
+      <div className='flex gap-3 items-center'>
         <ul className='list-none flex itams-center gap-3'>
           {BuyerNavs.map((nav) => {
             const BuyIcon = nav.icon;
@@ -41,19 +56,6 @@ function DesktopNavbar() {
             )
           })}
         </ul>
-      </div>*/}
-
-      <div className='icons'>
-        <SearchBar />
-        <ProfileDropDown onLogout={handleLogout} />        
-        {menuRoleItems['Buyer']?.map((item) => {
-          const Icon = item.icon;
-          return (
-            <Link key={item.value} to={`/buyer${item.link}`}>
-              <Icon size={22} />
-            </Link>
-          );
-        })}
       </div>
 
     </div>

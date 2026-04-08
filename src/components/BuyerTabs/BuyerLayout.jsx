@@ -4,7 +4,7 @@ import { useLocation, Outlet} from 'react-router-dom';
 import { useCurrentUser } from '../../Hooks/useCurrentUser';
 import { getProfileFormByRole } from '../../utils/profileforms';
 import { useProfile } from '../../Hooks/useProfile';
-import { DesktopNav, MobileNav } from '../'; 
+import { DesktopNav, MobileNav, AdLoader } from '../'; 
 
 function BuyerLayout() {
 
@@ -29,7 +29,9 @@ function BuyerLayout() {
 
 
   if (isLoading || profileLoading){
-    return <div className='p-4'>Loading...</div>
+    return <div className='fixed inset-0 flex items-center justify-center bg-white/40 z-50'>
+          <AdLoader/>
+        </div>
   }
 
   return (

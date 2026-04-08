@@ -41,9 +41,23 @@ function ProductCard({ product }) {
         <p className='text-sm line-clamp-2'>{shortDescription}</p>
 
         <div className='flex flex-col'>
-          <p className='text-md font-semibold text-secondary'>
-            Ksh{Number(product?.price).toLocaleString()}
-          </p>
+          <div className='flex items-center justify-between gap-2 DisCardText'>
+            {product?.discount > 0 ? (
+              <>
+                <p className='text-md font-semibold text-secondary'>
+                  Ksh{new Intl.NumberFormat('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product?.discountPrice / 100)}
+                </p>
+
+                <p className='text-sm font-medium text-red-500 line-through'>
+                  Ksh{new Intl.NumberFormat('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product?.price / 100)}
+                </p>                
+              </>
+            ) : (
+              <p className='text-md font-semibold text-secondary'>
+                Ksh{new Intl.NumberFormat('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product?.price / 100)}
+              </p>
+            )}
+          </div>
           <button className='px-2 py-1 bg-primary rounded-full text-sm text-gray-100 cursor-pointer'>
             Add to cart
           </button>

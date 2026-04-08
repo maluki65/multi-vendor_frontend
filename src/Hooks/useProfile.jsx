@@ -29,7 +29,7 @@ export const useProfile = (role) => {
       }
     },
     enabled: isAuthenticated && !!role && !!route,
-    staleTime: 15 * 60 * 1000,
+    staleTime: 40 * 60 * 1000,
     refetchOnWindowFocus: true,
     retry: false,
   });

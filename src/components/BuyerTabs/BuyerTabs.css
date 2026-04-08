@@ -207,4 +207,10 @@
   .CanCards h4, .CanCards p{
     font-size: 13px;
   }
+  .LinkCon{
+    flex-wrap: wrap;
+  }
+  .LinkTexts09{
+    font-size: 13px;
+  }
 }
