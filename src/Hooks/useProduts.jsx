@@ -58,6 +58,18 @@ const useProducts = () => {
     }
   });
 
+  // On getting product brands
+  const getBrands = () => {
+    return useQuery({
+      queryKey: ['brands'],
+      queryFn: async () => {
+        const { data } = await Api.get('/buyer/brands');
+        return data.brands;
+      },
+      staleTime: 1000 * 60 * 10,
+    });
+  };
+
   // On getting product by Id
   const getProductById = (productId) => useQuery({
     queryKey: ['product', productId],
@@ -242,6 +254,7 @@ const useProducts = () => {
     getPendingProducts,
     getVendorProducts,
     getAllProducts,
+    getBrands,
     getProductById,
     getSmartRecommendations,
     createProduct,

@@ -1,32 +1,49 @@
 import React, { useState } from 'react';
-//import { IoIosSearch } from "react-icons/io";
-//import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-function SearchBar({ onSearch }) {
-  //const [open, setOpen] = useState(false);
+function SearchBar() {
   const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleSearch = () => {
-    if (onSearch) onSearch(query);
-  }; 
+  const handleSearch = (searchQuery) => {
+    if (!searchQuery.trim()) return;
+
+    const params = new URLSearchParams();
+    params.set('search', searchQuery);
+    params.set('page', 1);
+
+    const targetUrl = `/buyer/products?${params.toString()}`;
+
+    if (location.pathname !== '/buyer/products'){
+      navigate(targetUrl);
+    } else {
+      navigate({
+        pathname: '/buyer/products',
+        search: params.toString(),
+      });
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      handleSearch(query);
+    }
+  };
 
   return (
-    <div className='flex items-center'>
+    <div className='relative flex items-center w-full'>
       <input
         type='text'
+        value={query}
         onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-        placeholder='Search product by name or brand'
-        className='ml-2 px-3 py-1 outline-none  focus:bg-[#dfdede] w-[300px] border focus:border-[1.5px] focus:border-orange-400 rounded-lg max-w-full'
+        onKeyDown={handleKeyDown}
+        placeholder='Search by name or brand'
+        className='ml-2 px-3 py-1 outline-none border focus:bg[#dfdede] w-full focus:border-[1.5px] focus:border-orange-400 rounded-lg'
       />
-
-      {/*<IoIosSearch
-        className='cursor-pointer Navicon'
-        size={22}
-        onClick={() => setOpen(prev => !prev)}
-      />    */}
     </div>
   );
-};
+}
 
 export default SearchBar

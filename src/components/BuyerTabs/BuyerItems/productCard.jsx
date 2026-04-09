@@ -11,7 +11,7 @@ function ProductCard({ product }) {
   }, [product?.description]);
 
   return (
-    <div className='rounded-md bg-yellow-50 flex flex-col space-y-2 overflow-hidden'>
+    <div className='rounded-md bg-yellow-50 flex flex-col space-y-2 shadow-lg overflow-hidden'>
       
       <div className='h-[170px] relative overflow-hidden prodCon009'>
 
