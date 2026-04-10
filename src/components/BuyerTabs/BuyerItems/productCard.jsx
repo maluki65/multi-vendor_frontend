@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import './HomeSwiperItems.css';
+import { SiGithubsponsors } from "react-icons/si";
 
 function ProductCard({ product }) {
   const [loaded, setLoaded] = useState(false);
@@ -11,9 +12,9 @@ function ProductCard({ product }) {
   }, [product?.description]);
 
   return (
-    <div className='rounded-md bg-yellow-50 flex flex-col space-y-2 shadow-lg overflow-hidden'>
+    <div className='rounded-md bg-white flex flex-col space-y-2 shadow-lg overflow-hidden py-2'>
       
-      <div className='h-[170px] relative overflow-hidden prodCon009'>
+      <div className='h-[200px] relative overflow-hidden prodCon009'>
 
         <img
           src={product?.MainIMg}
@@ -27,10 +28,20 @@ function ProductCard({ product }) {
           src={product?.MainIMg}
           alt={product?.name}
           onLoad={() => setLoaded(true)}
-          className={`w-full h-full object-cover transition-all duration-700 ProdCarImg ${
+          className={` relative w-full h-full object-contain transition-all duration-700 ProdCarImg ${
             loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
           }`}
         />
+
+        {(product?.discount > 0 || product?.discount === null) && (
+          <p className='absolute right-1.5 top-1 bg-transparent text-orange-500 text-base'>-{product?.discount}%</p>
+        )}
+      </div>
+
+      <div className='flex items-center justify-end'>
+        {(product?.sponsored === true) && (
+          <p className='text-xs text-gray-500 px-2 py-1 flex items-center gap-1'>sponsored <SiGithubsponsors className=''  size={10}/></p>
+        )}
       </div>
 
       <div className='p-2 flex flex-col'>
@@ -48,7 +59,7 @@ function ProductCard({ product }) {
                   Ksh{new Intl.NumberFormat('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product?.discountPrice / 100)}
                 </p>
 
-                <p className='text-sm font-medium text-red-500 line-through'>
+                <p className='text-xs font-medium text-red-500 line-through'>
                   Ksh{new Intl.NumberFormat('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product?.price / 100)}
                 </p>                
               </>

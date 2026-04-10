@@ -4,6 +4,7 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { ReactLenis } from 'lenis/react';
 import { HomeSwiperItems } from '../../';
+import { useNavigate } from 'react-router-dom';
 import useProducts from '../../../Hooks/useProduts';
 import DashProducts from '../../../commons/Data/DashSwiper';
 import BuyerWhy from '../../../commons/Data/BuyerWhy';
@@ -20,6 +21,7 @@ function BuyerDashboard() {
   const [startIndex, setStartIndex] = useState(0);
   //const [showLoader, setShowLoader] = useState(true);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const navigate = useNavigate();
 
   const { getAllProducts } = useProducts();
   const { data, isLoading, isError } = getAllProducts({
@@ -55,6 +57,7 @@ function BuyerDashboard() {
     startIndex,
     startIndex + itemsPerPage
   );
+  
   
   const handleNext = () => {
     if (startIndex + itemsPerPage < data?.products.length){
@@ -277,7 +280,9 @@ function BuyerDashboard() {
               <span>By Categories</span>
             </h2>
 
-            <a className='text-base cursor-pointer text-dark hover:text-primary hover:underline'>
+            <a 
+              onClick={() => navigate('/buyer/products')}
+              className='text-base cursor-pointer text-dark hover:text-primary hover:underline'>
               view all products
             </a>
           </div>

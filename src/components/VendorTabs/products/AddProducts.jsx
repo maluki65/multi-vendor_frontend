@@ -92,7 +92,7 @@ function AddProducts({ vendorId }) {
   const handleChange = (e) => {
     const { name, value } = e.target; 
 
-    console.log('CHANGE:', name, value);  
+    //console.log('CHANGE:', name, value);  
 
     setForm((prev) => ({
       ...prev,

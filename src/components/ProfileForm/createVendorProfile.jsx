@@ -177,6 +177,12 @@ function CreateVendorProfile() {
     setSuccess('');
     setIsLoading(true);
 
+    if (!images.logo.file || !images.banner.file) {
+      toast.error('Logo and banner are required');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const uploadedImages = {};
 
@@ -232,18 +238,16 @@ function CreateVendorProfile() {
             All fields marked with <span className='text-red-600'>*</span> are required
           </p>
           <form className='flex flex-col mt-2 mb-2 w-full' onSubmit={handleSubmit}>
-            <div className='flex flex-col gap-3 my-1'>
-              <p className='text-md font-normal leading-relaxed my-1 markedT'>
-                {`Maximum single image file size is ${MAX_IMG_SIZE}MB`}
-                {error && <p className='text-red-600'>{error}</p>}
-              </p>
-            </div>
+          <div className='text-md font-normal leading-relaxed my-1 markedT'>
+            <p>{`Maximum single image file size is ${MAX_IMG_SIZE}MB`}</p>
+            {error && <p className='text-red-600'>{error}</p>}
+          </div>
 
             <div className='flex gap-2 VenImgCon'>
               <div 
                 onDrop={(e) => handleDrop('logo', e)}
                 onDragOver={(e) => handleDragOver('logo', e)}
-                onDragLeave={() => handleDragLeave('logo', e)}
+                onDragLeave={(e) => handleDragLeave('logo', e)}
                 className={`relative flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed rounded-full cursor-pointer transition VendImg ${images.logo.dragging ? 'border-dark bg-[#405889]' : 'border-gray-300'}`}
                 onClick={() => logoRef.current.click()}
                 >
@@ -280,7 +284,6 @@ function CreateVendorProfile() {
 
                   <input
                     type='file'
-                    required
                     accept='image/*'
                     ref={logoRef}
                     onChange={(e) => handleFileChange('logo', e)}
@@ -330,7 +333,6 @@ function CreateVendorProfile() {
 
                   <input
                     type='file'
-                    required
                     accept='image/*'
                     ref={bannerRef}
                     onChange={(e) => handleFileChange('banner', e)}

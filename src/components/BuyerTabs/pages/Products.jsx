@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ProductCard from '../BuyerItems/productCard';
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { MdRemoveShoppingCart, MdError } from "react-icons/md";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,7 +24,7 @@ function Products() {
   const [brandSearch, setBrandSearch] = useState('');
   const [sortOpen, setSortOpen] = useState(false);
 
-  const limit = 12;
+  const limit = 48; //48
 
   const page = parseInt(searchParams.get('page')) || 1;
   const search = searchParams.get('search') || '';
@@ -78,7 +79,6 @@ function Products() {
     setSearchParams(params);
   }, [selectedProductBrand, selectedCategories, priceRange, brandSearch]);
 
-  // 🔥 PAGINATION HANDLER
   const updatePage = (newPage) => {
     const params = new URLSearchParams(searchParams);
     params.set('page', newPage);
@@ -97,7 +97,7 @@ function Products() {
 
   return (
     <Inner>
-      <section className='min-h-[50vh] px-[3%] mt-6 bg-gray-50 py-4'>
+      <section className='min-h-[50vh] px-[3%] mt-1 bg-gray-50 py-2'>
         <div className='grid grid-cols-[25%_75%] gap-2 ProdContain89'>
           
           <div className='p-2 BuyerSideBAr'>
@@ -220,7 +220,7 @@ function Products() {
                 <button
                   onClick={() => updatePage(Math.max(page - 1, 1))}
                   disabled={page === 1}
-                  className='p-1 border rounded disabled:opacity-50'
+                  className='p-1 border rounded disabled:opacity-50 cursor-pointer'
                 >
                   <IoChevronBack size={20} />
                 </button>
@@ -231,7 +231,7 @@ function Products() {
                     <button
                       key={pageNumber}
                       onClick={() => updatePage(pageNumber)}
-                      className={`px-3 py-1 border rounded ${
+                      className={`px-3 text-sm py-1 border rounded  cursor-pointer ${
                         page === pageNumber
                           ? 'text-white bg-primary'
                           : 'border-gray-300'
@@ -245,7 +245,7 @@ function Products() {
                 <button
                   onClick={() => updatePage(Math.min(page + 1, totalPages))}
                   disabled={page === totalPages}
-                  className='p-1 border rounded disabled:opacity-50'
+                  className='p-1 border rounded disabled:opacity-50 cursor-pointer'
                 >
                   <IoChevronForward size={20} />
                 </button>
@@ -257,7 +257,21 @@ function Products() {
         </div>
       </section>
       
-      <section className='min-h-[30vh] px-[3%] my-6 bg-white py-4'></section>
+      <section className='min-h-[30vh] px-[3%] my-6 bg-white'>
+      <div className='flex items-center justify-between CatTexts001'>
+        <h2 className='font-semibold text-xl flex items-center gap-1 mb-4 pdosC'>
+          <span className='underline decoration-secondary decoration-2 underline-offset-4'>
+            Featured 
+          </span>
+          <span>products</span>
+        </h2>
+
+        <a 
+          className='text-base flex items-center gap-2 cursor-pointer text-dark hover:text-primary hover:underline'>
+          Featured <FaLongArrowAltRight className='' />
+        </a>
+      </div>
+      </section>
 
     </Inner>
   );
