@@ -7,7 +7,7 @@ import ProductSkeleton from '../BuyerItems/productSkeleton';
 import { FaChevronDown } from "react-icons/fa6";
 import { IoGrid } from "react-icons/io5";
 import { AiOutlineBars } from "react-icons/ai";
-import { BuyerSideBar } from '../../';
+import { BuyerSideBar, Footer } from '../../';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductCard from '../BuyerItems/productCard';
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
@@ -51,8 +51,13 @@ function Products() {
     return f;
   }, [page, search, selectedProductBrand, selectedCategories, priceRange, brandSearch, sortOrder]);
 
-  const { getAllProducts } = useProducts();
+  const { getAllProducts, getFeaturedProducts } = useProducts();
   const { data, isLoading, isError } = getAllProducts(filters);
+  const { data: featuredData, isLoading: featureLoading, isError: featureError } = getFeaturedProducts(8);
+
+  const featuredProducts = featuredData?.products || [];
+
+  //console.log('Featured', featuredProducts);
 
   useEffect(() => {
     setSearchParams(prev => {
@@ -258,21 +263,57 @@ function Products() {
       </section>
       
       <section className='min-h-[30vh] px-[3%] my-6 bg-white'>
-      <div className='flex items-center justify-between CatTexts001'>
-        <h2 className='font-semibold text-xl flex items-center gap-1 mb-4 pdosC'>
-          <span className='underline decoration-secondary decoration-2 underline-offset-4'>
-            Featured 
-          </span>
-          <span>products</span>
-        </h2>
+        <div className='flex items-center justify-between CatTexts001'>
+          <h2 className='font-semibold text-xl flex items-center gap-1 mb-4 pdosC'>
+            <span className='underline decoration-secondary decoration-2 underline-offset-4'>
+              Featured 
+            </span>
+            <span>products</span>
+          </h2>
 
-        <a 
-          className='text-base flex items-center gap-2 cursor-pointer text-dark hover:text-primary hover:underline'>
-          Featured <FaLongArrowAltRight className='' />
-        </a>
-      </div>
+          <a 
+            className='text-base flex items-center gap-2 cursor-pointer text-dark hover:text-primary hover:underline'>
+            Featured <FaLongArrowAltRight className='' />
+          </a>
+        </div>
+
+        <div className='grid grid-cols-4 gap-3 productCards65'>
+          {featureLoading && ( 
+            Array.from({ length: 4 }).map((_, i) => 
+            <ProductSkeleton key={i} /> 
+            ) 
+          )}
+
+          {featureError && (
+            <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+              <MdError className='text-red-500' size={45} />
+              <p className='text-red-500'>Failed to load featured products</p>
+            </div>
+          )}
+
+          {!featureLoading && !featureError && (
+            featuredProducts.length > 0 ? (
+              featuredProducts.map((product, index) => (
+                <motion.div
+                  key={product._id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                  >
+                    <ProductCard product={product} />
+                </motion.div>
+              ))
+            ) : (
+              <div className='col-span-full text-center text-gray-500 flex flex-col items-center gap-2'>
+                <MdRemoveShoppingCart className='text-red-500' size={45} />
+                <p>No featured products found</p>
+              </div>
+            )
+          )}
+        </div>
       </section>
 
+      <Footer />
     </Inner>
   );
 }

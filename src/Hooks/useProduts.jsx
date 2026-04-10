@@ -58,6 +58,20 @@ const useProducts = () => {
     }
   });
 
+  // On getting featured products
+  const getFeaturedProducts = (limit = 8) => {
+    return useQuery({
+      queryKey: ['featuredProducts', limit],
+      queryFn: async () => {
+        const { data } = await Api.get('/products/featured', {
+          params: { limit }
+        });
+        return data;
+      },
+      staleTime: 1000 * 60 * 10,
+    });
+  };
+
   // On getting product brands
   const getBrands = () => {
     return useQuery({
@@ -254,6 +268,7 @@ const useProducts = () => {
     getPendingProducts,
     getVendorProducts,
     getAllProducts,
+    getFeaturedProducts,
     getBrands,
     getProductById,
     getSmartRecommendations,

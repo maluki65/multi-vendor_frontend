@@ -6,15 +6,15 @@ function ProductCard({ product }) {
   const [loaded, setLoaded] = useState(false);
 
   const shortDescription = useMemo(() => {
-    return product?.description?.length > 30
-      ? product.description.slice(0, 30) + '...'
+    return product?.description?.length > 20
+      ? product.description.slice(0, 20) + '...'
       : product?.description;
   }, [product?.description]);
 
   return (
     <div className='rounded-md bg-white flex flex-col space-y-2 shadow-lg overflow-hidden py-2'>
       
-      <div className='h-[200px] relative overflow-hidden prodCon009'>
+      <div className='h-[150px] relative overflow-hidden prodCon009'>
 
         <img
           src={product?.MainIMg}
@@ -45,7 +45,7 @@ function ProductCard({ product }) {
       </div>
 
       <div className='p-2 flex flex-col'>
-        <h2 className='font-semibold leading-relaxed line-clamp-2 wrap-break-words prodName'>
+        <h2 className='font-medium leading-relaxed line-clamp-2 wrap-break-words text-dark prodName'>
           {product?.name}
         </h2>
 
@@ -55,7 +55,7 @@ function ProductCard({ product }) {
           <div className='flex items-center justify-between gap-2 DisCardText'>
             {product?.discount > 0 ? (
               <>
-                <p className='text-md font-semibold text-secondary'>
+                <p className='text-base font-semibold text-secondary'>
                   Ksh{new Intl.NumberFormat('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product?.discountPrice / 100)}
                 </p>
 
