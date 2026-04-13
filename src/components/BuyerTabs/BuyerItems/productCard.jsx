@@ -1,9 +1,43 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import './HomeSwiperItems.css';
 import { SiGithubsponsors } from "react-icons/si";
+import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { Api } from '../../../utils';
 
 function ProductCard({ product }) {
   const [loaded, setLoaded] = useState(false);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  /*useEffect(() => {
+    if (product) {
+      const correctSlug = `${product.slug}-${product._id}`;
+
+      if (slugId !== correctSlug){
+        navigate(`/product/${correctSlug}`, { replace: true });
+      }
+    }
+  }, [product, slugId]);*/
+
+  const prefetchProduct = () => {
+    if (!product?._id || !product?.slug) return;
+
+    const slugId = `${product.slug}-${product._id}`;
+
+    queryClient.prefetchQuery({
+      queryKey: ['product', slugId],
+      queryFn: () =>
+        Api.get(`/product/slug/${slugId}`).then(res => res.data),
+      staleTime: 1000 * 60 * 5,
+    });
+  };
+  
+  const handleClick = () => {
+    if (!product?._id || !product?.slug) return;
+
+    navigate(`/buyer/products/${product.slug}-${product._id}`);
+  }
 
   const shortDescription = useMemo(() => {
     return product?.description?.length > 20
@@ -12,7 +46,10 @@ function ProductCard({ product }) {
   }, [product?.description]);
 
   return (
-    <div className='rounded-md bg-white flex flex-col space-y-2 shadow-lg overflow-hidden py-2'>
+    <div 
+      onMouseEnter={prefetchProduct}
+      onClick={handleClick}
+      className='rounded-md bg-white flex flex-col space-y-2 shadow-lg overflow-hidden py-2 cursor-pointer hover:border hover:border-primary'>
       
       <div className='h-[150px] relative overflow-hidden prodCon009'>
 
@@ -39,8 +76,14 @@ function ProductCard({ product }) {
       </div>
 
       <div className='flex items-center justify-end'>
-        {(product?.sponsored === true) && (
-          <p className='text-xs text-gray-500 px-2 py-1 flex items-center gap-1'>sponsored <SiGithubsponsors className=''  size={10}/></p>
+        {product?.sponsored === true ? (
+          <p className='text-xs text-gray-500 px-2 py-1 flex items-center gap-1'>
+            sponsored <SiGithubsponsors size={10} />
+          </p>
+        ) : (
+          <p className='text-xs text-transparent px-2 py-1'>
+            not sponsored
+          </p>
         )}
       </div>
 

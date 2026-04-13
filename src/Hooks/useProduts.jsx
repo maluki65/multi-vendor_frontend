@@ -72,6 +72,17 @@ const useProducts = () => {
     });
   };
 
+  // On getting product by slugId
+  const getProductBySlugId = (slugId) => useQuery({
+    queryKey: ['product', slugId],
+    queryFn: async () => {
+      const { data } = await Api.get(`/product/slug/${slugId}`);
+      return data;
+    },
+    enabled: !!slugId,
+    staleTime: 1000 * 60 * 10,
+  });
+
   // On getting product brands
   const getBrands = () => {
     return useQuery({
@@ -271,6 +282,7 @@ const useProducts = () => {
     getFeaturedProducts,
     getBrands,
     getProductById,
+    getProductBySlugId,
     getSmartRecommendations,
     createProduct,
     approveProducts,

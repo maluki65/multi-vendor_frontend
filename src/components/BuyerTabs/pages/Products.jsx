@@ -277,7 +277,7 @@ function Products() {
           </a>
         </div>
 
-        <div className='grid grid-cols-4 gap-3 productCards65'>
+        <div className='grid grid-cols-5 gap-3 productCards65'>
           {featureLoading && ( 
             Array.from({ length: 4 }).map((_, i) => 
             <ProductSkeleton key={i} /> 
@@ -293,7 +293,7 @@ function Products() {
 
           {!featureLoading && !featureError && (
             featuredProducts.length > 0 ? (
-              featuredProducts.map((product, index) => (
+              featuredProducts.slice(0,5).map((product, index) => (
                 <motion.div
                   key={product._id}
                   initial={{ opacity: 0 }}
