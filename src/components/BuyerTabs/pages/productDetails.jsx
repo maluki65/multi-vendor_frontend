@@ -8,6 +8,7 @@ import { CiSquareChevLeft, CiSquareChevRight } from "react-icons/ci";
 import AttributeConfig from '../../../commons/Data/AttributConfig';
 import { SiGithubsponsors } from "react-icons/si";
 import { motion, AnimatePresence } from 'framer-motion';
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 function ProductDetails() {
   const [activeTab, setActiveTab] = useState('Vendor');
@@ -19,8 +20,10 @@ function ProductDetails() {
   const { data, isLoading } = getProductBySlugId(slugId);
 
   const product = data?.product;
+  const count = data?.productCount;
 
   console.log('Product detail:', product);
+  //console.log('Count for Vendor', count);
 
   const breadCrumbs = useMemo(() => {
     if (!product) return [];
@@ -374,8 +377,56 @@ function ProductDetails() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
+                className='flex items-center justify-center p-1'
                 >
-                  Vendor
+                  <div className='w-[60%] rounded-2xl overflow-hidden relative bg-gray-100 ProdVendor673'>
+                    <div className='h-40 w-full relative ProdBanCon'>
+                      <img
+                        src={product.vendorId?.banner}
+                        alt='banner'
+                        className='w-full h-full object-cover'
+                        loading='lazy'
+                      />
+                    </div>
+
+                    <div className='relative px-8 pt-15'>
+                      <div className='absolute -top-16 left-8'>
+                        <div className='w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-md prodLogoCon'>
+                          <img 
+                            src={product.vendorId?.logo}
+                            alt='logo'
+                            loading='lazy'
+                            className='w-full h-full object-cover'
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className='my-3 flex flex-col gap-2 px-4 prodDetVenCon'>
+                      <div className='flex justify-between items-center'>
+                          <h1 className='flex gap-2 items-center text-dark font-semibold text-2xl'>
+                            {product.vendorId?.businessInfo?.legalName}
+                             {product.vendorId?.verification?.isverified === true ? (
+                              <RiVerifiedBadgeFill className='text-primary prodVenIco' size={23}/>
+                             ) : ( 
+                              <p className='text-xs text-transparent px-2 py-1'/>
+                             )}
+                          </h1>
+                          <p className='text-sm text-gray-700'>
+                            {product.vendorId?.store?.addresses?.country}
+                          </p>
+                      </div>
+
+                      <p className='text-base text-gray-600 leading-relaxed tracking-normal'>
+                        {product.vendorId?.store?.description}
+                      </p>
+
+                      <button
+                        className='px-3 py-2 rounded-full bg-dark text-white text-base cursor-pointer hover:text-secondary'>
+                          Visit Store
+                        </button>
+                    </div>
+                  </div>
                 </motion.div>
             )}
           </AnimatePresence>

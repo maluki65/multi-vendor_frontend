@@ -95,7 +95,7 @@ function BuyerSideBar({
             setSelectedPriceRange('custom');
             setBrandSearch('');
           }}
-          className='text-green-600 text-sm hover:underline'
+          className='text-green-600 text-sm cursor-pointer hover:underline'
         >
           Reset All
         </button>
