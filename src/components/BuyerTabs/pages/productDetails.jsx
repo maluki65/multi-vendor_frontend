@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import '../BuyerTabs.css';
 import { Inner } from '../../../commons';
 import { useParams } from 'react-router-dom';
 import useProducts from '../../../Hooks/useProduts';
@@ -6,9 +7,10 @@ import { detail } from '../../../assets';
 import { CiSquareChevLeft, CiSquareChevRight } from "react-icons/ci";
 import AttributeConfig from '../../../commons/Data/AttributConfig';
 import { SiGithubsponsors } from "react-icons/si";
-import { trim } from 'lodash';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function ProductDetails() {
+  const [activeTab, setActiveTab] = useState('Vendor');
   const [selectedColor, setSelectedColor] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const { slugId } = useParams();
@@ -18,7 +20,7 @@ function ProductDetails() {
 
   const product = data?.product;
 
-  //console.log('Product detail:', product);
+  console.log('Product detail:', product);
 
   const breadCrumbs = useMemo(() => {
     if (!product) return [];
@@ -163,6 +165,11 @@ function ProductDetails() {
     );
   } 
 
+  const detailTabs = [
+    { name: 'Vendor', link: '/vendor' },
+    { name: 'Review', link: '/review' },
+  ]
+
   //console.log("normalizedAttributes:", normalizedAttributes);
   //console.log("AttributeConfig:", AttributeConfig);
   //console.log(AttributeConfig);
@@ -176,7 +183,7 @@ function ProductDetails() {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}>
-          <h1 className='font-semibold text-4xl text-dark leading-relaxed'>
+          <h1 className='font-semibold text-4xl text-dark leading-relaxed PathName'>
             {product?.name}
           </h1>
           <div className='flex items-center gap-2 text-sm text-gray-600'>
@@ -185,40 +192,40 @@ function ProductDetails() {
                 {item.path ? (
                   <a 
                     href={item.path} 
-                    className='hover:text-primary cursor-pointer'>
+                    className='hover:text-primary cursor-pointer path'>
                       {item.label}
                   </a>
                 ) : (
-                  <span className='text-gray-600 font-medium'>
+                  <span className='text-gray-600 font-medium path'>
                     {item.label}
                   </span>
                 )}
 
-                {i < breadCrumbs.length - 1 && <span>/</span>}
+                {i < breadCrumbs.length - 1 && <span className='path'>/</span>}
               </span>
             ))}
           </div>
       </section>
 
       <section className='min-h-[30vh] px-[2%] overflow-hidden my-5'>
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-2 gap-4 detFirstsec'>
           <div className='flex flex-col gap-3 py-2'>
             <div className='relative bg-gray-100 rounded-md overflow-hidden'>
               <img
                 src={images[activeIndex]}
                 alt={product?.name}
-                className='w-full h-[400px] object-contain'
+                className='w-full h-[400px] object-contain prodMainImg'
               />
 
               <CiSquareChevLeft
                 onClick={prev}
-                className='absolute left-3 top-1/2 -translate-y-1/2 text-dark cursor-pointer' 
+                className='absolute left-3 top-1/2 -translate-y-1/2 text-dark cursor-pointer detArrow' 
                 size={30}
               />
               
               <CiSquareChevRight 
                 onClick={next}
-                className='absolute right-3 top-1/2 -translate-y-1/2 text-dark cursor-pointer' 
+                className='absolute right-3 top-1/2 -translate-y-1/2 text-dark cursor-pointer detArrow' 
                 size={30}
               />
             </div>
@@ -229,7 +236,7 @@ function ProductDetails() {
                   key={index}
                   src={img}
                   onClick={() => setActiveIndex(index)}
-                  className={`w-20 h-20 object-cover rounded cursor-pointer border-2 transition ${
+                  className={`w-20 h-20 object-cover rounded cursor-pointer border-2 transition DetSuppImgs ${
                    activeIndex === index
                     ? 'border-primary scale-105'
                     : 'border-transparent opacity-70'
@@ -240,18 +247,18 @@ function ProductDetails() {
           </div>
 
           <div className='flex flex-col gap-2 py-6 px-3'>
-            <h2 className='font-semibold leading-relaxed text-2xl text-dark'>
+            <h2 className='font-semibold leading-relaxed text-2xl text-dark detName'>
               {product?.name}
             </h2>
 
-            <p className='text-base text-gray-600 mt-2'>
+            <p className='text-base text-gray-600 mt-2 detDesc'>
               {product?.description}
             </p>
 
             <div className='flex items-center justify-end'>
               {product?.sponsored === true ? (
                 <p className='text-xs text-gray-500 px-2 py-1 flex items-center gap-1'>
-                  sponsored <SiGithubsponsors size={10} />
+                  sponsored <SiGithubsponsors className='detSpon' size={10} />
                 </p>
               ) : (
                 <p className='text-xs text-transparent px-2 py-1'>
@@ -263,7 +270,7 @@ function ProductDetails() {
             <div className='flex items-center gap-2 DisCardText'>
               {product?.discount > 0 ? (
                 <>
-                  <p className='text-xl font-semibold text-primary'>
+                  <p className='text-xl font-semibold text-primary detPrice'>
                     Ksh{new Intl.NumberFormat('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product?.discountPrice / 100)}
                   </p>
 
@@ -272,7 +279,7 @@ function ProductDetails() {
                   </p>                
                 </>
               ) : (
-                <p className='text-xl font-semibold text-primary'>
+                <p className='text-xl font-semibold text-primary detPrice'>
                   Ksh{new Intl.NumberFormat('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product?.price / 100)}
                 </p>
               )}
@@ -318,21 +325,74 @@ function ProductDetails() {
               </button>
 
               <span className='text-gray-700'>
-               <SiGithubsponsors className='cursor-pointer' size={20} />
+               <SiGithubsponsors className='cursor-pointer detArrow' size={20} />
               </span>
             </div>
 
-            <div className="flex gap-2 flex-wrap mt-2">
+            <div className='flex gap-2 flex-wrap mt-2'>
               {productTags.map((tag, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 text-sm bg-gray-300 rounded-full text-gray-700"
+                  className='px-3 py-1 text-sm bg-gray-300 rounded-full text-gray-700 tags'
                 >
                   #{tag}
                 </span>
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className='min-h-[30vh] px-[2%] overflow-hidden my-5'>
+        <div className='flex justify-center items-center'>
+          <ul className='list-none flex gap-2 items-center'>
+            {detailTabs.map((item, index) => {
+              const isActive = activeTab === item.name;
+
+              return(
+                <li 
+                  key={index}>
+                    <button 
+                      id='DetailBtn'
+                      onClick={() => setActiveTab(item.name)}
+                      className={`px-2 py-1 rounded cursor-pointer ${
+                      isActive ? 'underline decoration-primary decoration-2 text-primary font-semibold text-base underline-offset-4' : 'text-base text-gray-600'}`}>
+                        {item.name}
+                      </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <div className='my-4 p-[2%]'>
+          <AnimatePresence mode='wait'>
+            {activeTab === 'Vendor' && (
+              <motion.div
+                key='Vendor'
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                >
+                  Vendor
+                </motion.div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence mode='wait'>
+            {activeTab === 'Review' && (
+              <motion.div
+                key='Review'
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                >
+                  Review
+                </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
     </Inner>

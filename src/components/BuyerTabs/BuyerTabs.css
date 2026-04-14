@@ -91,14 +91,14 @@
   border-radius: 10px;
 }
 @media(min-width: 2560px){
-  .logo, .cat908 h2, .Subscribe h2{
+  .logo, .cat908 h2, .Subscribe h2, .PathName, .detName{
     font-size: 3.3rem;
   }
   .wHyIcons{
     width: 60px;
     height: 60px;
   }
-  .itemHeading, .cat908 p{
+  .itemHeading, .cat908 p, .path{
     font-size: 2em;
   }
   .pdosC{
@@ -134,14 +134,33 @@
   .buyernavs{
     font-size: 2em;
   }
-  .Filters h1{
+  .Filters h1, .tags{
     font-size: 2em;
   }
   .Slider{
     height: 10px;
   }
-  .priceRange{
+  .priceRange, .detDesc{
     font-size: 2em;
+  }
+  .prodMainImg{
+    height: 30vw;
+    width: 100%;
+  }
+  .detArrow{
+    height: 60px;
+    width:  60px;
+  }
+  .DetSuppImgs{
+    height: 150px;
+    width: 160px;
+  }
+  .detSpon{
+    height: 20px;
+    width: 20px;
+  }
+  .detPrice{
+    font-size: 3em;
   }
 }
 
@@ -182,7 +201,7 @@
 }
 
 @media(max-width: 626px){
-  .catTitles{
+  .catTitles, .detFirstsec{
     grid-template-columns: repeat(1, 1fr);
   }
   .catHead{
@@ -226,6 +245,9 @@
   }
   .productCards65{
     grid-template-columns: repeat(2, 1fr);
+  }
+  .prodMainImg{
+    height: 300px;
   }
 }
 
