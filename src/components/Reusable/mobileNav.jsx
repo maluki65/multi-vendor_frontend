@@ -7,11 +7,13 @@ import useStickyNav from '../../Hooks/useStickyNav';
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { BsSuitHeart } from "react-icons/bs";
 import { CiUser, CiGrid32 } from "react-icons/ci";
+import useCart from '../../Hooks/useCart';
 
 function mobileNav() {
   const [isOpen,setIsOpen] = useState(false);
   const navigate = useNavigate();
   const isSticky = useStickyNav();
+  const { totalItems } = useCart();
 
   const BuyerNavs = [
     { name: 'All', value: '/products', icon: CiGrid32 },
@@ -40,8 +42,15 @@ function mobileNav() {
               <CiUser className='' size={20} />
             </span>
 
-            <span onClick={() => navigate('/buyer/cart')}>
-              <MdOutlineShoppingCart className='' size={20} />
+            <span 
+              onClick={() => navigate('/buyer/cart')}   className="relative">
+              <MdOutlineShoppingCart size={20} />
+
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] px-1 rounded-full">
+                  {totalItems}
+                </span>
+              )}
             </span>
           </div>
         </div>

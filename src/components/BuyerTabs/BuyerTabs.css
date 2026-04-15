@@ -140,7 +140,7 @@
   .Slider{
     height: 10px;
   }
-  .priceRange, .detDesc{
+  .priceRange, .detDesc, .reviewSec h2, .RevCount, .reviewSec h3, .RevSelc, .RevUser span, .RevText textarea{
     font-size: 2em;
   }
   .prodMainImg{
@@ -172,6 +172,21 @@
   .prodDetVenCon{
     margin-top: 60px;
   }
+  .reviewSec{
+    width: 70%;
+  }
+  .StarIcon{
+    height: 40px;
+    width: 40px;
+  }
+  .RevUser img{
+    height: 150px;
+    width: 150px;
+  }
+  .RevStarComm{
+    height: 30px;
+    width: 30px;
+  }
 }
 
 @media(max-width: 1024px){
@@ -196,7 +211,7 @@
   .catPara{
     font-size: 13px;
   }
-  .CanCards{
+  .CanCards, .simProd{
     grid-template-columns: repeat(4, 1fr);
   }
   .ProdContain89{
@@ -208,7 +223,7 @@
   .productCards65{
     grid-template-columns: repeat(3, 1fr);
   }
-  .ProdVendor673{
+  .ProdVendor673, .reviewSec{
     width: 80%;
   }
 }
@@ -221,10 +236,10 @@
     width: 100%;
     font-size: 1.5em;
   }
-  .CanCards{
+  .CanCards, .simProd{
     grid-template-columns: repeat(3, 1fr);
   }
-  .ProdVendor673{
+  .ProdVendor673, .reviewSec{
     width: 90%;
   }
 }
@@ -234,7 +249,7 @@
   .whyText p{
     font-size: 15px;
   }
-  .BuyeWHY{
+  .BuyeWHY, .simProd{
     grid-template-columns: repeat(2, 1fr);
   }
   .catLastCon{

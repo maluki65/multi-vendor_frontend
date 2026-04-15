@@ -9,8 +9,11 @@ function ReviewSection ({ product }) {
   const { data } = getProductReview(product?._id);
 
   const review = data?.reviews || [];
-const total = data?.count || 0;
-  const counts = product?.ratingCounts || {}
+  const total = data?.count || 0;
+  const counts = review.reduce((acc, r) => {
+    acc[r.rating] = (acc[r.rating] || 0) + 1;
+    return acc;
+  }, {});
 
   console.log('reviews', review);
 
@@ -20,16 +23,16 @@ const total = data?.count || 0;
   const { full, half, empty } = getStarts(product?.averageRating);
 
   return (
-    <div className='max-w-4xl mx-auto'>
+    <div className='w-4xl mx-auto reviewSec'>
       <div className='mb-6'>
         <h2 className='text-2xl font-semibold'>
           {product?.averageRating?.toFixed(1)} out of 5
         </h2>
 
         <div className='flex items-center gap-1'>
-          {[...Array(full)].map((_, i) => <FaStar key={i} className='' />)}
-          {half && <FaStarHalfAlt className='' />}
-          {[ ...Array(empty)].map((_, i) => <FaRegStar key={i} className='' />)}
+          {[...Array(full)].map((_, i) => <FaStar key={i} className='StarIcon' />)}
+          {half && <FaStarHalfAlt className='StarIcon' />}
+          {[ ...Array(empty)].map((_, i) => <FaRegStar key={i} className='StarIcon' />)}
         </div>
 
         <p className='text-sm text-gray-600'>
@@ -37,7 +40,7 @@ const total = data?.count || 0;
         </p>
       </div>
 
-      <div className='mb-6'>
+      <div className='mb-6 RevCount'>
         {[5,4,3,2,1].map(star => {
           const count = counts?.[star] || 0;
           const percentage = total ? (count / total) * 100 : 0;
@@ -61,7 +64,7 @@ const total = data?.count || 0;
         })}
       </div>
 
-      <div className='mb-6'>
+      <div className='mb-6 RevText'>
         <h3 className='font-sembold mb-2'>
           Write a review
         </h3>
@@ -70,7 +73,7 @@ const total = data?.count || 0;
           value={rating}
           required
           onChange={(e) => setRating(Number(e.target.value))}
-          className='border p-2 cursor-pointer rounded-md'
+          className='border p-2 cursor-pointer rounded-md RevSelc'
           >
             {[5,4,3,2,1].map(n => (
               <option key={n} value={n}>{n} Star</option>
@@ -119,7 +122,7 @@ const total = data?.count || 0;
             <div 
               key={r._id} 
               className='border p-3 rounded'>
-                <div className='flex items-center gap-2'>
+                <div className='flex items-center gap-2 RevUser'>
                   <img
                     src={r.userId?.buyerProfile?.avatar}
                     className='w-8 h-8 rounded-full'
@@ -130,9 +133,9 @@ const total = data?.count || 0;
                 </div>
 
                 <div className='flex gap-1 mt-1'>
-                  {[...Array(starts.full)].map((_, i) => <FaStar key={i} className='text-secondary' />)}
-                  {starts.half && <FaStarHalfAlt className='' />}
-                  {[...Array(starts.empty)].map((_, i) => <FaRegStar key={i} className='' />)}
+                  {[...Array(starts.full)].map((_, i) => <FaStar key={i} className='text-secondary RevStarComm' />)}
+                  {starts.half && <FaStarHalfAlt className='RevStarComm' />}
+                  {[...Array(starts.empty)].map((_, i) => <FaRegStar key={i} className='RevStarComm' />)}
                 </div>
 
                 <p className='text-sm mt-2'>{r.comment}</p>

@@ -4,10 +4,12 @@ import { SiGithubsponsors } from "react-icons/si";
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { Api } from '../../../utils';
+import useCart from '../../../Hooks/useCart';
 
 function ProductCard({ product }) {
   const [loaded, setLoaded] = useState(false);
   const queryClient = useQueryClient();
+  const { addToCart } = useCart();
   const navigate = useNavigate();
 
   /*useEffect(() => {
@@ -44,6 +46,15 @@ function ProductCard({ product }) {
       ? product.description.slice(0, 20) + '...'
       : product?.description;
   }, [product?.description]);
+
+  const handleCart = (e) => {
+    e.stopPropagation();
+
+    addToCart.mutate({
+      productId: product._id,
+      quantity: 1
+    });
+  }
 
   return (
     <div 
@@ -112,7 +123,9 @@ function ProductCard({ product }) {
               </p>
             )}
           </div>
-          <button className='px-2 py-1 bg-primary rounded-full text-sm text-gray-100 cursor-pointer'>
+          <button 
+            onClick={handleCart}
+            className='px-2 py-1 bg-primary rounded-full text-sm text-gray-100 cursor-pointer'>
             Add to cart
           </button>
         </div>

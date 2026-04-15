@@ -5,11 +5,13 @@ import { SearchBar, ProfileDropDown } from '../';
 import { useLogout } from '../../Hooks/useLogout';
 import useStickyNav from '../../Hooks/useStickyNav';
 import { CiGrid32 } from "react-icons/ci";
+import useCart from '../../Hooks/useCart';
 
 function DesktopNavbar({ products = [] }) {
   const navigate = useNavigate();
   const logout = useLogout();
   const isSticky = useStickyNav();
+  const { totalItems } = useCart();
 
   const handleLogout = async () => {
     await logout();
@@ -36,9 +38,22 @@ function DesktopNavbar({ products = [] }) {
 
           {menuRoleItems['Buyer']?.map((item) => {
             const Icon = item.icon;
+
+            const isCart = item.value === 'cart';
+
             return (
-              <Link key={item.value} to={`/buyer${item.link}`}>
+              <Link
+                key={item.value}
+                to={`/buyer${item.link}`}
+                className='relative inline-flex items-center justify-center'
+              >
                 <Icon size={22} />
+
+                {item.value === 'cart' && totalItems > 0 && (
+                  <span className='absolute -top-1 -right-2 bg-red-500 text-white text-[10px] px-1.5 rounded-full'>
+                    {totalItems}
+                  </span>
+                )}
               </Link>
             );
           })}

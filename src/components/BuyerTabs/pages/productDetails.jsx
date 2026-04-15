@@ -467,7 +467,7 @@ function ProductDetails() {
           </h2>
         </div>
 
-        <div className='grid grid-cols-5 gap-3'>
+        <div className='grid grid-cols-5 gap-3 simProd'>
   
           {similarLoading && (
             Array.from({ length: 5 }).map((_, i) => 

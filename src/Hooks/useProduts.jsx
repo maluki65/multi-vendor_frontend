@@ -16,7 +16,7 @@ const useProducts = () => {
     },
     enabled: me?.role === 'Admin',
     staleTime: 1000 * 60,
-    onError: (error) =>{
+    onError: (error) => {
       toast.error(
         error?.response?.data?.message || 'Failed to fetch pending products'
       );
