@@ -112,6 +112,23 @@ const useProducts = () => {
     }
   });
 
+  // On getting similar product
+  const getSimilarProducts = (productId) => useQuery({
+    queryKey: ['similarProducts', productId],
+    queryFn: async () => {
+      const { data } = await Api.get(`/buyer/products/similar/${productId}`);
+      return data.products;
+    },
+
+    enabled: !!productId,
+    staleTime: 1000 * 60 * 5,
+    onError: (error) => {
+      toast.error(
+        error?.response?.data?.message || 'Failed to fetch similar products!'
+      );
+    }
+  });
+
   // On getting recommendations
   const getSmartRecommendations = (productId) => useQuery({
     queryKey: ['recommendations', productId],
@@ -283,6 +300,7 @@ const useProducts = () => {
     getBrands,
     getProductById,
     getProductBySlugId,
+    getSimilarProducts,
     getSmartRecommendations,
     createProduct,
     approveProducts,

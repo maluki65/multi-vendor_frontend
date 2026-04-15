@@ -12,7 +12,7 @@ const useReviews = () => {
     queryKey: ['productReviews', productId],
     queryFn: async() => {
       const { data } = await Api.get(`/buyer/reviews/product/${productId}`);
-      return data.reviews;
+      return data;
     },
     enabled: !!productId,
     staleTime: 1000 * 60,
@@ -36,19 +36,22 @@ const useReviews = () => {
       return { toastId: id };
     },
 
-    onSuccess: (data, variables, context) => {
+    onSuccess: (_, variables, context) => {
       toast.success('Review posted', { id: context.toastId });
 
-      queryClient.invalidateQueries({
-        queryKey: ['productReviews', variables.productId]
-      });
+      queryClient.invalidateQueries([
+        'productReviews', variables.productId
+      ]);
 
-      queryClient.invalidateQueries({
-        queryKey: ['product', variables.productId]
-      });
+      queryClient.invalidateQueries([
+        'product', 
+        variables.productId
+      ]);
+
+      variables?.onSuccessCallback?.();
     },
 
-    onError: (error, variables, context) => {
+    onError: (error, _, context) => {
       toast.error(
         error?.response?.data?.message || 'Failed to post review',
         { id: context.toastId }
@@ -69,19 +72,14 @@ const useReviews = () => {
       return { toastId: id };
     },
 
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, _, context) => {
       toast.success('Review updated', { id: context.toastId });
 
-      queryClient.invalidateQueries({
-        queryKey: ['productReviews']
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ['product']
-      });
+      queryClient.invalidateQueries(['productReviews']);
+      queryClient.invalidateQueries(['product']);
     },
 
-    onError: (error, variables, context) => {
+    onError: (error, _, context) => {
       toast.error(
         error?.response?.data?.message || 'Failed to update review',
         { id: context.toastId }
@@ -105,16 +103,11 @@ const useReviews = () => {
     onSuccess: (data, variables, context) => {
       toast.success('Review deleted', { id: context.toastId });
 
-      queryClient.invalidateQueries({
-        queryKey: ['productReviews']
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ['product']
-      });
+      queryClient.invalidateQueries(['productReviews']);
+      queryClient.invalidateQueries(['product']);
     },
 
-    onError: (error, variables, context) => {
+    onError: (error, _, context) => {
       toast.error(
         error?.response?.data?.message || 'Failed to delete review',
         { id: context.toastId }

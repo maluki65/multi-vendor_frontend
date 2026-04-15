@@ -4,11 +4,16 @@ import { Inner } from '../../../commons';
 import { useParams } from 'react-router-dom';
 import useProducts from '../../../Hooks/useProduts';
 import { detail } from '../../../assets';
-import { CiSquareChevLeft, CiSquareChevRight } from "react-icons/ci";
+import { CiSquareChevLeft, CiSquareChevRight } from 'react-icons/ci';
 import AttributeConfig from '../../../commons/Data/AttributConfig';
-import { SiGithubsponsors } from "react-icons/si";
+import { SiGithubsponsors } from 'react-icons/si';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { RiVerifiedBadgeFill } from 'react-icons/ri';
+import { ReviewSection, Footer } from '../../';
+import { Toaster } from 'react-hot-toast';
+import ProductSkeleton from '../BuyerItems/productSkeleton';
+import { MdRemoveShoppingCart, MdError } from "react-icons/md";
+import ProductCard from '../BuyerItems/productCard';
 
 function ProductDetails() {
   const [activeTab, setActiveTab] = useState('Vendor');
@@ -16,13 +21,16 @@ function ProductDetails() {
   const [activeIndex, setActiveIndex] = useState(0);
   const { slugId } = useParams();
 
-  const { getProductBySlugId } = useProducts();
+  const { getProductBySlugId, getSimilarProducts } = useProducts();
   const { data, isLoading } = getProductBySlugId(slugId);
 
   const product = data?.product;
-  const count = data?.productCount;
+  //const count = data?.productCount;
 
-  console.log('Product detail:', product);
+  const { data: similarProducts = [], isLoading: similarLoading, isError: similarError } = getSimilarProducts(product?._id);
+
+
+  //console.log('Product detail:', product);
   //console.log('Count for Vendor', count);
 
   const breadCrumbs = useMemo(() => {
@@ -179,6 +187,7 @@ function ProductDetails() {
 
   return (
     <Inner>
+      <Toaster position='top-right' reverseOrder={false} />
       <section className='min-h-[30vh] flex flex-col justify-center items-center overflow-hidden'
         style={{
           backgroundImage: `url(${detail})`,
@@ -440,12 +449,62 @@ function ProductDetails() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
                 >
-                  Review
+                  <ReviewSection product={product} />
                 </motion.div>
             )}
           </AnimatePresence>
         </div>
       </section>
+
+      <section className='min-h-[30vh] px-[2%] overflow-hidden my-5 py-4 bg-gray-100'>
+        <p className='text-center text-gray-600 text-sm my-2'>Related Products</p>
+        <div className='flex items-center justify-center CatTexts001'>
+          <h2 className='font-semibold text-2xl flex items-center gap-1 mb-4 text-dark pdosC'>
+            <span className=''>
+              Explore 
+            </span>
+            <span className='text-primary'>Related Products</span>
+          </h2>
+        </div>
+
+        <div className='grid grid-cols-5 gap-3'>
+  
+          {similarLoading && (
+            Array.from({ length: 5 }).map((_, i) => 
+              <ProductSkeleton key={i} /> 
+            )
+          )}
+
+          {similarError && (
+            <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+              <MdError className='text-red-500' size={45} />
+              <p className='text-red-500'>Failed to load related products</p>
+            </div>
+          )}
+
+          {!similarLoading && !similarError && (
+            similarProducts?.length > 0 ? (
+              similarProducts.slice(0,5).map((product, index) => (
+                <motion.div
+                  key={product._id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))
+            ) : (
+              <div className='col-span-full text-center text-gray-500 flex flex-col items-center gap-2'>
+                <MdRemoveShoppingCart className='text-red-500' size={45} />
+                <p>No similar products found</p>
+              </div>
+            )
+          )}
+        </div>
+      </section>
+
+      <Footer />
     </Inner>
   );
 }

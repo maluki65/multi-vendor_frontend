@@ -48,3 +48,4 @@ export { default as HomeSwiperItems } from './BuyerTabs/BuyerItems/homeSwiper';
 export { default as Products } from './BuyerTabs/pages/Products';
 export { default as BuyerSideBar } from './BuyerTabs/BuyerComponents/sidebar';
 export { default as ProductDetails } from './BuyerTabs/pages/productDetails';
+export { default as ReviewSection } from './BuyerTabs/BuyerItems/ReviewSection';
