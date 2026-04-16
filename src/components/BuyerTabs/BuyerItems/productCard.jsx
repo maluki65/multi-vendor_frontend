@@ -52,7 +52,11 @@ function ProductCard({ product }) {
 
     addToCart.mutate({
       productId: product._id,
-      quantity: 1
+      quantity: 1,
+      name: product.name,
+      price: product.price,
+      image: product.MainIMg,
+      vendorId: product.vendorId
     });
   }
 
