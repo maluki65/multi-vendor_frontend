@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../BuyerTabs.css';
 import { Inner } from '../../../commons';
 import useCart from '../../../Hooks/useCart';
 import { Toaster } from 'react-hot-toast';
 import { cartB1, cartB2 } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
-import { CartTable } from '../../';
+import { CartTable, LocationSelector, OrderSummary } from '../../';
+import { Api } from '../../../utils';
 
 function Cart() {
+  const [location, setLocation] = useState(null);  
 
-  const { cart, updateQuantity, removeFromCart, clearCart, isLoading, isError } = useCart();
+  const { 
+    cart, 
+    updateQuantity, 
+    removeFromCart, 
+    clearCart, 
+    pricing,  
+    totalItems, 
+    isLoading, 
+    isError 
+  } = useCart(location);
+
   const navigate = useNavigate();
 
   //console.log('Cart items:', cart);
+
+  const appyLocation = (loc) => {
+    setLocation(loc);
+  }
+  const canCheckOut = location && pricing;
 
   return (
     <Inner>
@@ -39,8 +56,8 @@ function Cart() {
           </span>
       </section>
       
-      <section className='min-h-[40vh] px-[2%] my-5 overflow-hidden'>
-        <div className='grid grid-cols-[70%_30%] gap-2'>
+      <section className='min-h-[40vh] px-[2%] my-5'>
+        <div className='grid grid-cols-[75%_25%] gap-2 cartConGrid'>
           <div className='flex flex-col gap-4'>
             <CartTable 
               cart={cart} 
@@ -58,6 +75,25 @@ function Cart() {
                   Clear shopping cart
               </p>
             </div>
+          </div>
+
+          <div className='flex flex-col gap-4 my-7'>
+            <LocationSelector
+              location={location}
+              setLocation={appyLocation}
+            />
+
+            <OrderSummary
+              pricing={pricing}
+              totalItems={totalItems}
+              canCheckOut={canCheckOut}
+            />
+
+            {!location && (
+              <p className='text-sm text-red-500'>
+                Select delivery location to continue
+              </p>
+            )}
           </div>
         </div>
       </section>

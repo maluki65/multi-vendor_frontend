@@ -32,7 +32,7 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
           <AdLoader/>
         </div>
       ) : (
-        <table className='w-full border-collapse'>
+        <table className='w-full border-collapse CartTable'>
           <thead className=''>
             <tr className='bg-secondary text-left text-sm font-medium text-dark rounded-lg'>
               <th className='p-3 rounded-l-lg'>Product</th>
@@ -63,18 +63,18 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
                           <button
                             onClick={() => handleRemove(item.productId)}
                             className='text-gray-500 hover:text-red-500 cursor-pointer'>
-                              <FaTimes className='' />
+                              <FaTimes className='CartIcon' />
                           </button>
 
                           <img
                             src={item?.image}
                             alt={item?.name}
-                            className='w-16 h-16 object-cover rounded'
+                            className='w-16 h-16 object-cover rounded cartImg'
                           />
 
                           <div className=''>
-                            <p className='font-semibold'>{item?.name}</p>
-                            <p className='text-sm text-gray-500'>Vendor item</p>
+                            <p className='font-semibold cartItem'>{item?.name}</p>
+                            <p className='text-sm text-gray-500 CartVenItem'>Vendor item</p>
                           </div>
                         </td>
                         

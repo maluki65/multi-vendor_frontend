@@ -175,17 +175,26 @@
   .reviewSec{
     width: 70%;
   }
-  .StarIcon{
+  .StarIcon, .CartIcon{
     height: 40px;
     width: 40px;
   }
-  .RevUser img{
+  .RevUser img, .cartImg{
     height: 150px;
     width: 150px;
   }
   .RevStarComm{
     height: 30px;
     width: 30px;
+  }
+  .CartTable thead th{
+    font-size: 2.5em;
+  }
+  .cartItem{
+    font-size: 1.3em;
+  }
+  .CartVenItem{
+    font-size: 1em;
   }
 }
 
@@ -225,6 +234,12 @@
   }
   .ProdVendor673, .reviewSec{
     width: 80%;
+  }
+}
+
+@media(max-width: 769px){
+  .cartConGrid{
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 

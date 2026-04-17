@@ -49,4 +49,6 @@ export { default as Products } from './BuyerTabs/pages/Products';
 export { default as BuyerSideBar } from './BuyerTabs/BuyerComponents/sidebar';
 export { default as ProductDetails } from './BuyerTabs/pages/productDetails';
 export { default as ReviewSection } from './BuyerTabs/BuyerItems/ReviewSection';
-export { default as CartTable }from './BuyerTabs/BuyerItems/cartTable';
+export { default as CartTable } from './BuyerTabs/BuyerItems/cartTable';
+export { default as LocationSelector } from  './BuyerTabs/BuyerItems/locationSelector';
+export { default as OrderSummary } from './BuyerTabs/BuyerItems/orderSummary';

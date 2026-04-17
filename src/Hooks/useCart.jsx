@@ -2,17 +2,23 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from 'react-hot-toast';
 import { Api } from '../utils';
 
-const useCart = () => {
+const useCart = (location) => {
   const queryClient = useQueryClient();
 
   // On fetching cart
   const getCart = useQuery({
-    queryKey: ['cart'],
+    queryKey: ['cart', location],
     queryFn: async () => {
-      const { data } = await Api.get('/cart');
+      let url = '/cart';
+
+      if (location?.county) {
+        url += `?county=${location.county}&area=${location.area}`;
+      }
+
+      const { data } = await Api.get(url);
       return data;
     },
-    staleTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 5,
   });
 
   // On adding to cart
@@ -318,6 +324,7 @@ const useCart = () => {
       ...getCart.data?.cart,
       items: flattenedItems,
     },
+    pricing: getCart.data?.pricing || null,
     totalItems: getCart.data?.totalItems || 0,
     isLoading: getCart.isLoading,
     isError: getCart.isError,
