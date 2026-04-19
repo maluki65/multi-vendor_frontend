@@ -5,9 +5,11 @@ import { Api } from '../utils';
 const useCart = (location) => {
   const queryClient = useQueryClient();
 
-  // On fetching cart
+  const cartKey = ['cart', location]; 
+
+  // On getting cart
   const getCart = useQuery({
-    queryKey: ['cart', location],
+    queryKey: cartKey,
     queryFn: async () => {
       let url = '/cart';
 
@@ -29,97 +31,110 @@ const useCart = (location) => {
     },
 
     onMutate: async (payload) => {
-      await queryClient.cancelQueries({ queryKey: ['cart'] });
-    
-      const previousCart = queryClient.getQueryData(['cart']);
-    
-      const productId = payload.productId.toString();
-      const quantity = payload.quantity || 1;
-    
-      queryClient.setQueryData(['cart'], (old) => {
-        if (!old?.cart?.vendors) return old;
-    
+      await queryClient.cancelQueries({ queryKey: cartKey });
+
+      const previousCart = queryClient.getQueryData(cartKey);
+
+      queryClient.setQueryData(cartKey, (old) => {
+        if (!old) {
+          return {
+            cart: {
+              vendors: [{
+                vendorId: payload.vendorId,
+                vendorName: payload.vendorName || 'Vendor',
+                items: [{
+                  productId: payload.productId,
+                  quantity: payload.quantity || 1,
+                  price: payload.price,
+                  name: payload.name,
+                  image: payload.image,
+                }],
+                vendorTotal: payload.price * (payload.quantity || 1),
+              }],
+            },
+            totalItems: payload.quantity || 1,
+          };
+        }
+
+        const productId = payload.productId.toString();
+        const quantity = payload.quantity || 1;
+
         let found = false;
-    
+
         const updatedVendors = old.cart.vendors.map(vendor => {
           const updatedItems = vendor.items.map(item => {
             if (item.productId.toString() === productId) {
               found = true;
               return {
                 ...item,
-                quantity: item.quantity + quantity
+                quantity: item.quantity + quantity,
               };
             }
             return item;
           });
-    
+
           return {
             ...vendor,
             items: updatedItems,
             vendorTotal: updatedItems.reduce(
               (sum, i) => sum + i.price * i.quantity,
               0
-            )
+            ),
           };
         });
-    
+
         if (!found) {
           updatedVendors.push({
-            vendorId: payload.vendorId || 'temp',
-            vendorName: 'vendor',
+            vendorId: payload.vendorId,
+            vendorName: payload.vendorName || 'Vendor',
             items: [{
               productId,
               quantity,
-              name: payload.name,
               price: payload.price,
+              name: payload.name,
               image: payload.image,
-              vendorId: payload.vendorId
             }],
-            vendorTotal: payload.price * quantity
+            vendorTotal: payload.price * quantity,
           });
         }
-    
+
         return {
           ...old,
           cart: {
             ...old.cart,
-            vendors: updatedVendors
+            vendors: updatedVendors,
           },
           totalItems: updatedVendors
             .flatMap(v => v.items)
-            .reduce((sum, i) => sum + i.quantity, 0)
+            .reduce((sum, i) => sum + i.quantity, 0),
         };
       });
-    
-      const toastId = toast.loading('Adding product to cart...');
-    
+
+      const toastId = toast.loading('Adding to cart...');
       return { previousCart, toastId };
     },
-    
-    onSuccess: (data, _, context) => {
-      toast.success('Product added to cart', { id: context.toastId });
 
-      queryClient.setQueriesData(['cart'], (old) => {
-        return {
-          ...old,
-          cart: data.cart,
-          totalItems: data.totalItems
-        };
-      });
+    onSuccess: (data, _, context) => {
+      toast.success('Added to cart', { id: context.toastId });
+
+      queryClient.setQueryData(cartKey, (old) => ({
+        ...old,
+        cart: data.cart,
+        totalItems: data.totalItems,
+      }));
     },
 
     onError: (error, _, context) => {
-      queryClient.setQueryData(['cart'], context.previousCart);
+      queryClient.setQueryData(cartKey, context.previousCart);
 
       toast.error(
-        error?.response?.data?.message || 'Failed to add product to cart', { id: context.toastId }
+        error?.response?.data?.message || 'Failed to add to cart',
+        { id: context.toastId }
       );
-
-      console.error('Failed to add product to cart', error);
-    }
+    },
   });
 
-  // On updating cart
+  // On updating cart product quantity
   const updateQuantity = useMutation({
     mutationFn: async (payload) => {
       const { data } = await Api.put('/cart/update', payload);
@@ -127,132 +142,54 @@ const useCart = (location) => {
     },
 
     onMutate: async (payload) => {
-      await queryClient.cancelQueries(['cart']);
+      await queryClient.cancelQueries({ queryKey: cartKey });
 
-      const previousCart = queryClient.getQueriesData(['cart']);
+      const previousCart = queryClient.getQueryData(cartKey);
 
-      queryClient.setQueriesData(['cart'], (old) => {
+      queryClient.setQueryData(cartKey, (old) => {
         if (!old?.cart?.vendors) return old;
 
         const updatedVendors = old.cart.vendors.map(vendor => {
-          const updatedItems = vendor.items.map(item => 
+          const items = vendor.items.map(item =>
             item.productId.toString() === payload.productId.toString()
-              ? { 
-                ...item,
-                quantity: payload.quantity
-              }
+              ? { ...item, quantity: payload.quantity }
               : item
           );
 
           return {
             ...vendor,
-            items: updatedItems,
-            vendorTotal: updatedItems.reduce(
-              (sum, i) => sum + i.price * i.quantity, 0
-            )
+            items,
+            vendorTotal: items.reduce((s, i) => s + i.price * i.quantity, 0),
           };
         });
 
         return {
           ...old,
-          cart: {
-            ...old.cart,
-            vendors: updatedVendors
-          },
-          totalItems:updatedVendors
+          cart: { ...old.cart, vendors: updatedVendors },
+          totalItems: updatedVendors
             .flatMap(v => v.items)
-            .reduce((s, i) => s + i.quantity, 0)
+            .reduce((s, i) => s + i.quantity, 0),
         };
       });
 
-      //const toastId = toast.loading('Updating product quantity...');
-
-      return { 
-        previousCart,
-        //toastId
-      };
-    },
-
-    onSuccess: (data, _, context) => {
-      //toast.success('Product quantity updated', { id: context.toastId });
-      queryClient.invalidateQueries(['cart']);
+      return { previousCart };
     },
 
     onError: (error, _, context) => {
-      queryClient.setQueryData(['cart'], context.previousCart);
+      queryClient.setQueryData(cartKey, context.previousCart);
 
       toast.error(
-        error?.response?.data?.message || 'Failed to update product to cart', { id: context.toastId }
+        error?.response?.data?.message || 'Failed to update quantity'
       );
+    },
 
-      console.error('Failed to update product to cart', error);
-    }
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cartKey });
+    },
   });
 
-  const clearCart = useMutation({
-    mutationFn: async () => {
-      const { data } = await Api.put('/cart/clear');
-      return data;
-    },
-  
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['cart'] });
-  
-      const previousCart = queryClient.getQueryData(['cart']);
-  
-      queryClient.setQueryData(['cart'], (old) => {
-        if (!old?.cart) return old;
-  
-        return {
-          ...old,
-          cart: {
-            ...old.cart,
-            vendors: old.cart.vendors?.map(v => ({
-              ...v,
-              items: [],
-              vendorTotal: 0
-            })) || [],
-            items: []
-          },
-          totalItems: 0
-        };
-      });
-  
-      const toastId = toast.loading('Clearing cart...');
-  
-      return { previousCart, toastId };
-    },
-  
-    onSuccess: (data, _, context) => {
-      toast.success('Cart cleared', { id: context.toastId });
-  
-      
-      queryClient.setQueryData(['cart'], (old) => {
-        if (!old) return old;
-  
-        return {
-          ...old,
-          cart: {
-            ...data.cart,
-            vendors: data.cart?.vendors || [],
-            items: data.cart?.items || []
-          },
-          totalItems: 0
-        };
-      });
-    },
-  
-    onError: (error, _, context) => {
-      queryClient.setQueryData(['cart'], context.previousCart);
-  
-      toast.error(
-        error?.response?.data?.message || 'Failed to clear cart',
-        { id: context.toastId }
-      );
-    }
-  });
 
-  // On removing product from cart
+  // On removing a product from cart
   const removeFromCart = useMutation({
     mutationFn: async (productId) => {
       const { data } = await Api.delete(`/cart/delete/${productId}`);
@@ -260,75 +197,93 @@ const useCart = (location) => {
     },
 
     onMutate: async (productId) => {
-      await queryClient.cancelQueries(['cart']);
+      await queryClient.cancelQueries({ queryKey: cartKey });
 
-      const previousCart = queryClient.getQueryData(['cart']);
+      const previousCart = queryClient.getQueryData(cartKey);
 
-      queryClient.setQueriesData(['cart'], (old) => {
-        if (!old?.cart) return old;
-      
-        const vendors = old.cart.vendors || [];
-      
-        const updatedVendors = vendors.map(vendor => {
-          const filteredItems = vendor.items.filter(
-            i => i.productId.toString() !== productId.toString()
-          );
-      
-          return {
-            ...vendor,
-            items: filteredItems,
-            vendorTotal: filteredItems.reduce(
-              (sum, i) => sum + i.price * i.quantity,
-              0
-            )
-          };
-        }).filter(v => v.items.length > 0);
-      
+      queryClient.setQueryData(cartKey, (old) => {
+        if (!old?.cart?.vendors) return old;
+
+        const updatedVendors = old.cart.vendors
+          .map(v => {
+            const items = v.items.filter(
+              i => i.productId.toString() !== productId.toString()
+            );
+
+            return {
+              ...v,
+              items,
+              vendorTotal: items.reduce((s, i) => s + i.price * i.quantity, 0),
+            };
+          })
+          .filter(v => v.items.length > 0);
+
         return {
           ...old,
-          cart: {
-            ...old.cart,
-            vendors: updatedVendors
-          },
+          cart: { ...old.cart, vendors: updatedVendors },
           totalItems: updatedVendors
             .flatMap(v => v.items)
-            .reduce((s, i) => s + i.quantity, 0)
+            .reduce((s, i) => s + i.quantity, 0),
         };
       });
 
-      const toastId = toast.loading('Deleting product from cart...');
+      return { previousCart };
+    },
 
-      return{
-        previousCart,
-        toastId
-      }
+    onError: (_, __, context) => {
+      queryClient.setQueryData(cartKey, context.previousCart);
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cartKey });
+    },
+  });
+
+
+  // on clearing cart
+  const clearCart = useMutation({
+    mutationFn: async () => {
+      const { data } = await Api.put('/cart/clear');
+      return data;
+    },
+
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: cartKey });
+
+      const previousCart = queryClient.getQueryData(cartKey);
+
+      queryClient.setQueryData(cartKey, (old) => ({
+        ...old,
+        cart: { vendors: [] },
+        totalItems: 0,
+      }));
+
+      const toastId = toast.loading('Clearing cart...');
+      return { previousCart, toastId };
     },
 
     onSuccess: (data, _, context) => {
-      toast.success('Product removed from cart', { id: context.toastId });
-      queryClient.invalidateQueries(['cart']);
+      toast.success('Cart cleared', { id: context.toastId });
+      queryClient.setQueryData(cartKey, data);
     },
 
-    onError: (error, _, context) => {
-      toast.error(error?.response?.data?.message || 'Failed to remove from cart', { id: context.toastId });
-
-      console.error('Failed to remove from cart', error);
-    }
+    onError: (_, __, context) => {
+      queryClient.setQueryData(cartKey, context.previousCart);
+    },
   });
 
   const flattenedItems =
-  getCart.data?.cart?.vendors?.flatMap(v => v.items) || [];
+    getCart.data?.cart?.vendors?.flatMap(v => v.items) || [];
 
   return {
     cart: {
       ...getCart.data?.cart,
       items: flattenedItems,
     },
-    pricing: getCart.data?.pricing || null,
     totalItems: getCart.data?.totalItems || 0,
+    pricing: getCart.data?.pricing || null,
     isLoading: getCart.isLoading,
     isError: getCart.isError,
-    error: getCart.error,
 
     addToCart,
     updateQuantity,
@@ -337,4 +292,4 @@ const useCart = (location) => {
   };
 };
 
-export default useCart
+export default useCart;

@@ -24,8 +24,8 @@ function BuyerSideBar({
   const [isPriceOpen, setIsPriceOpen] = useState(true);
 
   const { getActiveCategories } = useCategory();
-  const { data } = getActiveCategories;
-  const categories = data?.categories || [];
+  const { data: categories = [] } = getActiveCategories;
+  console.log(categories);
 
   const brands = useMemo(() => {
     const set = new Set();

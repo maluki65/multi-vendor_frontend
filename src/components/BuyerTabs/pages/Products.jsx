@@ -26,6 +26,7 @@ function Products() {
 
   const limit = 48; //48
 
+
   const page = parseInt(searchParams.get('page')) || 1;
   const search = searchParams.get('search') || '';
 
