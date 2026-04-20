@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function OrderSummary({ pricing, canCheckOut, totalItems }) {
+function OrderSummary({ pricing, canCheckOut, totalItems, isLoading, onCheckout }) {
   if (!pricing) {
     return (
       <div className='border p-4 rounded-md'>
@@ -45,10 +45,11 @@ function OrderSummary({ pricing, canCheckOut, totalItems }) {
       </div>
 
       <button
-        disabled={!canCheckOut}
+        onClick={onCheckout}
+        disabled={!canCheckOut || isLoading }
         className={`w-full py-3 rounded-full text-white cursor-pointer ${canCheckOut ? 'bg-dark' : 'bg-gray-400 cursor-not-allowed'}`}
         >
-          Proceed to Checkout
+         {isLoading ? 'Processing...' : ' Proceed to Checkout'}
       </button>
     </div>
   );

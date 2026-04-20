@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import { cartB1, cartB2 } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
 import { CartTable, LocationSelector, OrderSummary } from '../../';
-import { Api } from '../../../utils';
+import useCheckout from '../../../Hooks/useCheckout';
 
 function Cart() {
   const [location, setLocation] = useState(null);  
@@ -23,6 +23,7 @@ function Cart() {
   } = useCart(location);
 
   const navigate = useNavigate();
+  const { prepareCheckout, isPending } = useCheckout();
 
   //console.log('Cart items:', cart);
 
@@ -30,6 +31,14 @@ function Cart() {
     setLocation(loc);
   }
   const canCheckOut = location && pricing;
+
+  const handleCheckout = () => {
+    if (!location) return;
+
+    prepareCheckout.mutate({
+      location,
+    });
+  };
 
   return (
     <Inner>
@@ -87,6 +96,8 @@ function Cart() {
               pricing={pricing}
               totalItems={totalItems}
               canCheckOut={canCheckOut}
+              onCheckout ={handleCheckout}
+              isLoading={isPending}
             />
 
             {!location && (
