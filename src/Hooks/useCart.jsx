@@ -29,12 +29,18 @@ const useCart = (location) => {
       const { data } = await Api.post('/cart/add', payload);
       return data;
     },
-
+  
     onMutate: async (payload) => {
       await queryClient.cancelQueries({ queryKey: cartKey });
-
+  
       const previousCart = queryClient.getQueryData(cartKey);
-
+  
+      const productId = payload.productId.toString();
+      const quantity = payload.quantity || 1;
+  
+      const unitPrice =
+        payload.discount > 0 ? payload.discountPrice : payload.price;
+  
       queryClient.setQueryData(cartKey, (old) => {
         if (!old) {
           return {
@@ -43,26 +49,28 @@ const useCart = (location) => {
                 vendorId: payload.vendorId,
                 vendorName: payload.vendorName || 'Vendor',
                 items: [{
-                  productId: payload.productId,
-                  quantity: payload.quantity || 1,
+                  _id: productId,
+                  productId,
+                  quantity,
                   price: payload.price,
+                  discount: payload.discount || 0,
+                  discountPrice: payload.discountPrice || 0,
                   name: payload.name,
                   image: payload.image,
+                  description: payload.description,
+                  productQuantity: payload.productQuantity,
                 }],
-                vendorTotal: payload.price * (payload.quantity || 1),
+                vendorTotal: unitPrice * quantity,
               }],
             },
-            totalItems: payload.quantity || 1,
+            totalItems: quantity,
           };
         }
-
-        const productId = payload.productId.toString();
-        const quantity = payload.quantity || 1;
-
+  
         let found = false;
-
-        const updatedVendors = old.cart.vendors.map(vendor => {
-          const updatedItems = vendor.items.map(item => {
+  
+        const updatedVendors = old.cart.vendors.map((vendor) => {
+          const updatedItems = vendor.items.map((item) => {
             if (item.productId.toString() === productId) {
               found = true;
               return {
@@ -72,32 +80,38 @@ const useCart = (location) => {
             }
             return item;
           });
-
+  
           return {
             ...vendor,
             items: updatedItems,
-            vendorTotal: updatedItems.reduce(
-              (sum, i) => sum + i.price * i.quantity,
-              0
-            ),
+            vendorTotal: updatedItems.reduce((sum, i) => {
+              const price =
+                i.discount > 0 ? i.discountPrice : i.price;
+              return sum + price * i.quantity;
+            }, 0),
           };
         });
-
+  
         if (!found) {
           updatedVendors.push({
             vendorId: payload.vendorId,
             vendorName: payload.vendorName || 'Vendor',
             items: [{
+              _id: productId,
               productId,
               quantity,
               price: payload.price,
+              discount: payload.discount || 0,
+              discountPrice: payload.discountPrice || 0,
               name: payload.name,
               image: payload.image,
+              description: payload.description,
+              productQuantity: payload.productQuantity,
             }],
-            vendorTotal: payload.price * quantity,
+            vendorTotal: unitPrice * quantity,
           });
         }
-
+  
         return {
           ...old,
           cart: {
@@ -109,24 +123,24 @@ const useCart = (location) => {
             .reduce((sum, i) => sum + i.quantity, 0),
         };
       });
-
+  
       const toastId = toast.loading('Adding to cart...');
       return { previousCart, toastId };
     },
-
+  
     onSuccess: (data, _, context) => {
       toast.success('Added to cart', { id: context.toastId });
-
+  
       queryClient.setQueryData(cartKey, (old) => ({
         ...old,
         cart: data.cart,
         totalItems: data.totalItems,
       }));
     },
-
+  
     onError: (error, _, context) => {
       queryClient.setQueryData(cartKey, context.previousCart);
-
+  
       toast.error(
         error?.response?.data?.message || 'Failed to add to cart',
         { id: context.toastId }
@@ -159,7 +173,10 @@ const useCart = (location) => {
           return {
             ...vendor,
             items,
-            vendorTotal: items.reduce((s, i) => s + i.price * i.quantity, 0),
+            vendorTotal: items.reduce((s, i) => {
+              const price = i.discount > 0 ? i.discountPrice : i.price;
+              return s + price * i.quantity;
+            }, 0),
           };
         });
 
@@ -213,7 +230,10 @@ const useCart = (location) => {
             return {
               ...v,
               items,
-              vendorTotal: items.reduce((s, i) => s + i.price * i.quantity, 0),
+              vendorTotal: items.reduce((s, i) => {
+              const price = i.discount > 0 ? i.discountPrice : i.price;
+              return s + price * i.quantity;
+            }, 0),
             };
           })
           .filter(v => v.items.length > 0);

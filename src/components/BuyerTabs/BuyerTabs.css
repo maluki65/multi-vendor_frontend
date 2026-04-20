@@ -11,6 +11,7 @@
   width: 100%;
 }
 
+
 .mobile-navbar {
   padding: 10px 16px;
   border-bottom: 1px solid #eee;
@@ -90,6 +91,11 @@
   width: 20px; 
   border-radius: 10px;
 }
+
+.card-view{
+  display: none;
+}
+
 @media(min-width: 2560px){
   .logo, .cat908 h2, .Subscribe h2, .PathName, .detName, .prodDetVenCon div h1{
     font-size: 3.3rem;
@@ -257,6 +263,12 @@
   .ProdVendor673, .reviewSec{
     width: 90%;
   }
+  .table-view{
+    display: none;
+  }
+  .card-view{
+    display: block;
+  }
 }
 
 
@@ -306,6 +318,10 @@
   .prodMainImg{
     height: 300px;
   }
+  .CoupClear{
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 @media(max-width: 376px){
@@ -328,5 +344,8 @@
     display: flex;
     flex-direction: column;
     align-items: start;
+  }
+  .subTotals{
+    flex-wrap: wrap;
   }
 }

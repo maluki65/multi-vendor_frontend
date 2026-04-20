@@ -25,7 +25,7 @@ function BuyerSideBar({
 
   const { getActiveCategories } = useCategory();
   const { data: categories = [] } = getActiveCategories;
-  console.log(categories);
+  //console.log(categories);
 
   const brands = useMemo(() => {
     const set = new Set();

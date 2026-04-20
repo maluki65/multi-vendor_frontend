@@ -14,15 +14,18 @@ import { Toaster } from 'react-hot-toast';
 import ProductSkeleton from '../BuyerItems/productSkeleton';
 import { MdRemoveShoppingCart, MdError } from "react-icons/md";
 import ProductCard from '../BuyerItems/productCard';
+import useCart from '../../../Hooks/useCart';
 
 function ProductDetails() {
   const [activeTab, setActiveTab] = useState('Vendor');
   const [selectedColor, setSelectedColor] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const { slugId } = useParams();
 
   const { getProductBySlugId, getSimilarProducts } = useProducts();
   const { data, isLoading } = getProductBySlugId(slugId);
+  const { addToCart } = useCart();
 
   const product = data?.product;
   //const count = data?.productCount;
@@ -311,23 +314,41 @@ function ProductDetails() {
             <div className='flex flex-wrap items-center gap-2 my-3'>
               <div className='flex gap-1'>
                 <button
+                  onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
                   className='px-3 py-1 border rounded text-base font-semibold cursor-pointer'>
                     -
                 </button>
 
                 <button
                   className='px-3 py-1 border rounded text-base font-semibold cursor-pointer'>
-                    1
+                    {quantity}
                 </button>
 
                 <button
+                  onClick={() => setQuantity(prev => prev + 1)}
                   className='px-3 py-1 border rounded text-base font-semibold cursor-pointer'>
                     +
                 </button>
               </div>
 
               <button
-               className='rounded-full px-4 py-2 cursor-pointer bg-primary text-white'>
+                onClick={() => {
+                  addToCart.mutate({
+                    productId: product._id,
+                    vendorId: product.vendorId?._id,
+                    vendorName: product.vendorId?.businessInfo?.legalName,
+                    quantity: quantity,
+                    price: product.price,
+                    name: product.name,
+                    image: product.MainIMg,
+                    description: product.description,
+                    discount: product.discount,
+                    discountPrice: product.discountPrice,
+                    productQuantity: product.quantity,
+                  });
+                }}
+                className='rounded-full px-4 py-2 cursor-pointer bg-primary text-white'
+              >
                 Add to cart
               </button>
 

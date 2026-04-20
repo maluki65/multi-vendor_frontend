@@ -67,7 +67,7 @@ function Cart() {
               isError={isError}
             />
 
-            <div className='flex justify-between items-center'>
+            <div className='flex justify-between items-center px-4 CoupClear'>
               <p className=''>Appy coupon</p>
               <p 
                 onClick={() => clearCart.mutate()}

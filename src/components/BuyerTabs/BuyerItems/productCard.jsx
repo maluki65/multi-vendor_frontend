@@ -56,7 +56,11 @@ function ProductCard({ product }) {
       name: product.name,
       price: product.price,
       image: product.MainIMg,
-      vendorId: product.vendorId
+      vendorId: product.vendorId,
+      description: product.description,
+      discount: product.discount,
+      discountPrice: product.discountPrice,
+      productQuantity: product.quantity,
     });
   }
 
@@ -103,7 +107,7 @@ function ProductCard({ product }) {
       </div>
 
       <div className='p-2 flex flex-col'>
-        <h2 className='font-medium leading-relaxed line-clamp-2 wrap-break-words text-dark prodName'>
+        <h2 className='font-medium leading-relaxed line-clamp-2 wrap-break-words text-dark text-sm prodName'>
           {product?.name}
         </h2>
 
