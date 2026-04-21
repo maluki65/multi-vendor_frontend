@@ -52,3 +52,4 @@ export { default as ReviewSection } from './BuyerTabs/BuyerItems/ReviewSection';
 export { default as CartTable } from './BuyerTabs/BuyerItems/cartTable';
 export { default as LocationSelector } from  './BuyerTabs/BuyerItems/locationSelector';
 export { default as OrderSummary } from './BuyerTabs/BuyerItems/orderSummary';
+export { default as Checkout } from './BuyerTabs/pages/checkout';

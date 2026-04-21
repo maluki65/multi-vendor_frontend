@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const counties = [
   'Mombasa',
@@ -53,6 +53,20 @@ const counties = [
 function LocationSelector({ location, setLocation }) {
   const [county, setCounty] = useState(location?.county || '');
   const [area, setArea] = useState(location?.area || '');
+  const [open, setOpen] = useState(false);
+
+  const dropDownRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropDownRef.current && !dropDownRef.current.contains(e.target)){
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleAppy = (e) => {
     e.preventDefault();
@@ -70,19 +84,31 @@ function LocationSelector({ location, setLocation }) {
       <form 
         className='px-2 flex flex-col gap-3'
         onSubmit={handleAppy} >
-          <select
-            value={county}
-            required
-            onChange={(e) => setCounty(e.target.value)}
-            className='border p-2 w-full ml-2 px-3 py-1 outline-none focus:bg[#dfdede] focus:border-[1.5px] focus:border-orange-400 rounded-lg'
-            >
-              <option value='' >Select County</option>
-              {counties.map((c) => (
-                <option  key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-          </select> 
+          <div className='relative ml-2' ref={dropDownRef}>
+            <button
+              type='button'
+              onClick={() => setOpen(!open)}
+              className='w-full border px-3 py-2 rounded-lg text-left bg-white focus:outline-none focus:border-orange-400'
+              >
+                {county || 'select County'}
+              </button>
+
+              {open && (
+                <ul className='absolute z-10 mt-1 w-full bg-white rounded-lg shadow max-h-[200px] overflow-auto locationSelect'>
+                  {counties.map((c) => (
+                    <li
+                      key={c}
+                      onClick={() => {
+                        setCounty(c);
+                        setOpen(false);
+                      }}
+                      className='px-3 py-2 cursor-pointer hover:bg-orange-100'>
+                        {c}
+                    </li>
+                  ))}
+                </ul>
+              )}
+          </div>
 
           <input
             type='text'

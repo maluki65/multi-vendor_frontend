@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Api } from '../utils';
 
-const useCheckout = () => {
+const useCheckout = (sessionId) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -33,9 +33,7 @@ const useCheckout = () => {
 
       queryClient.setQueryData(['checkout', sessionId], fullSession);
 
-      navigate('/checkout', {
-        state: fullSession,
-      });
+      navigate(`/buyer/checkout/${sessionId}`);
     },
 
     onError: (error, _, context) => {
@@ -47,10 +45,20 @@ const useCheckout = () => {
     },
   });
 
+  const checkoutSessionQuery = useQuery({
+    queryKey: ['checkout', sessionId],
+    queryFn: async () => {
+      const { data } = await Api.get(`/checkout/session/${sessionId}`);
+      return data.session;
+    },
+    enabled: !!sessionId,
+  });
+;
   return {
     isPending: prepareCheckout.isPending, 
     
     prepareCheckout,
+    checkoutSessionQuery,
   };
 };
 

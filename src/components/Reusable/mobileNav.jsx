@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { FaBarsStaggered, FaXmark } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
 import SideDrawer from './SideDrawer';
-import { SearchBar } from '../';
+import { SearchBar, ProfileDropDown  } from '../';
 import useStickyNav from '../../Hooks/useStickyNav';
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { BsSuitHeart } from "react-icons/bs";
 import { CiUser, CiGrid32 } from "react-icons/ci";
 import useCart from '../../Hooks/useCart';
+import { useLogout } from '../../Hooks/useLogout';
+
 
 function mobileNav() {
   const [isOpen,setIsOpen] = useState(false);
   const navigate = useNavigate();
+    const logout = useLogout();
+  
   const isSticky = useStickyNav();
   const { totalItems } = useCart();
 
@@ -21,6 +25,11 @@ function mobileNav() {
     { name: 'Gift cards', value: '/', icon: null},
     { name: 'Orders', value: '/orders', icon: null },
   ]
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/signin');
+  };
 
   return (
     <>
@@ -38,8 +47,8 @@ function mobileNav() {
             {/*<span onClick={() => navigate('/buyer/wishlist')}>
               <MdOutlineShoppingCart className='' size={20} />
             </span>*/}
-            <span onClick={() => navigate('/buyer/profile')}>
-              <CiUser className='' size={20} />
+            <span>
+              <ProfileDropDown onLogout={handleLogout} />   
             </span>
 
             <span 
