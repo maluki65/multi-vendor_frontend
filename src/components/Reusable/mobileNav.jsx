@@ -21,9 +21,10 @@ function mobileNav() {
 
   const BuyerNavs = [
     { name: 'All', value: '/products', icon: CiGrid32 },
-    { name: "Today's peak", value: '/deals', icon: null },
-    { name: 'Gift cards', value: '/', icon: null},
+    { name: 'checkout', value: '/checkout', icon: null },
+    { name: 'Blogs', value: '/blogs', icon: null },
     { name: 'Orders', value: '/orders', icon: null },
+    { name: 'Contact Us', value: '/contact', icon: null},
   ]
 
   const handleLogout = async () => {

@@ -260,6 +260,9 @@
   .CanCards, .simProd{
     grid-template-columns: repeat(3, 1fr);
   }
+  .cartSessions{
+    grid-template-columns: repeat(2, 1fr);
+  }
   .ProdVendor673, .reviewSec{
     width: 90%;
   }
@@ -279,7 +282,7 @@
   .BuyeWHY, .simProd{
     grid-template-columns: repeat(2, 1fr);
   }
-  .catLastCon{
+  .catLastCon, .cartSessions{
     grid-template-columns: repeat(1, 1fr);
   }
   .fanImgs{

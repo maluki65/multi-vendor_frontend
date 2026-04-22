@@ -46,11 +46,11 @@ function footer() {
   ]
 
   return (
-    <div className='min-h-[40vh] px-[4%] flex flex-col gap-1 overflow-hidden py-5 bg-dark text-[#cecdcd] FooterCon' id='Contact'>
+    <div className='min-h-[40vh] px-[4%] flex flex-col gap-1 overflow-hidden py-5 bg-dark text-[#cecdcd] rounded-md FooterCon' id='Contact'>
       <div className='grid grid-cols-5 gap-3 justify-center items-start FooterCards'>
         <div className='flex flex-col gap-2 space-y-3'>
-          <h1 className='text-2xl font-goodly text-light'>
-            Sellory
+          <h1 className='text-2xl text-orange-400 font-goodly cursor-pointer'>
+          Sell<span className='text-primary'>ory</span>
           </h1>
           <p className='w-full text-sm'>
             We do not divide our collections to seasons

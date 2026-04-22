@@ -5,7 +5,7 @@ import useCart from '../../../Hooks/useCart';
 import { Toaster } from 'react-hot-toast';
 import { cartB1, cartB2 } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
-import { CartTable, LocationSelector, OrderSummary } from '../../';
+import { CartTable, LocationSelector, OrderSummary, Footer } from '../../';
 import useCheckout from '../../../Hooks/useCheckout';
 
 function Cart() {
@@ -25,10 +25,14 @@ function Cart() {
   const navigate = useNavigate();
   const { prepareCheckout, isPending } = useCheckout();
 
-  //console.log('Cart items:', cart);
+  console.log('Cart items:', cart);
 
   const appyLocation = (loc) => {
     setLocation(loc);
+
+    prepareCheckout.mutate({ 
+      location: loc,
+    })
   }
   const canCheckOut = location && pricing;
 
@@ -109,7 +113,9 @@ function Cart() {
         </div>
       </section>
 
-
+      <div className='p-2'>
+       <Footer />
+      </div>
     </Inner>
   )
 }

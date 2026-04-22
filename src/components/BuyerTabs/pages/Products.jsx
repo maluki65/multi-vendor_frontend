@@ -94,6 +94,8 @@ function Products() {
   const totalPages = Math.ceil((data?.total || 0) / limit);
   const products = data?.products || [];
 
+  //console.log('Products:', products);
+
   const hasActiveFilters =
     selectedProductBrand.length > 0 ||
     selectedCategories.length > 0 ||
@@ -314,7 +316,9 @@ function Products() {
         </div>
       </section>
 
-      <Footer />
+      <div className='p-2'>
+       <Footer />
+      </div>
     </Inner>
   );
 }

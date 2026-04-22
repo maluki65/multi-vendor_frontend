@@ -339,7 +339,9 @@ function BuyerDashboard() {
           </div>
         </section>
 
-        <Footer />
+        <div className='p-2'>
+         <Footer />
+        </div>
       </ReactLenis>
     </>
 
