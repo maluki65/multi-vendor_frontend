@@ -29,10 +29,6 @@ function Cart() {
 
   const appyLocation = (loc) => {
     setLocation(loc);
-
-    prepareCheckout.mutate({ 
-      location: loc,
-    })
   }
   const canCheckOut = location && pricing;
 

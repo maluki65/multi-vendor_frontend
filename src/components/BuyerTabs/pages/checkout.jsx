@@ -13,7 +13,7 @@ function Checkout() {
   const { getAllCheckoutSessions } = useCheckout();
   const { data: sessions, isLoading, isError } = getAllCheckoutSessions;
 
-  //console.log('all sessions:', sessions);
+  console.log('all sessions:', sessions);
   const navigate = useNavigate();
 
   const formatDate = (date) => {
@@ -85,26 +85,10 @@ function Checkout() {
     );
   }
 
-  if (isError) {
-    return (
-      <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
-        <FiCheckCircle className='text-red-500' size={55} />
-        <p className='text-red-500'>Failed to load checkout session</p>
-      </div>
-    );
-  }
-
-  if (!sessions) {
-    return (
-      <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
-        <FiCheckCircle className='text-red-500' size={55} />
-        <p className='text-red-500'>Checkout session expired or not found</p>
-      </div>
-    );
-  }
   return (
     <Inner>
       <Toaster position='top-right' reverseOrder={false} />
+
       <section className='min-h-[30vh] flex flex-col justify-center items-center overflow-hidden'
         style={{
           backgroundImage: `url(${cartB2})`,
@@ -132,75 +116,92 @@ function Checkout() {
           </span>
       </section>
 
-      <section className='min-h-[50vh] flex flex-col gap-2 px-[2%] py-5 overflow-hidden bg-gray-100'>
-        <div className='grid grid-cols-3 gap-1 justigy-center items-center cartSessions'>
-         {sessions.map((item) => (
-          <div 
-           key={item._id}
-           onClick={() => navigate(`/buyer/checkout/${item._id}`)}
-           className='bg-white rounded-md p-2 flex flex-col gap-2 cursor-pointer shadow-md hover:border hover:border-primary'>
-            <h4 className='flex items-center gap-1 font-semibold text-dark'>CreatedAt: <span className='font-medium text-gray-500'>{formatDateTime(new Date(item.createdAt))}</span></h4>
-            
-            <div className='flex items-center justify-between'>
-              <p className='font-semibold text-dark'>Payment Status:</p>
-              <p className={`px-2 py-1 rounded-full text-sm ${getPaymentStatusColor(item.paymentStatus)}`}>
-                {item.paymentStatus}
-              </p>
-            </div>
+      {isError && (
+        <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+          <FiCheckCircle className='text-red-500' size={55} />
+          <p className='text-red-500'>Failed to load checkout sessions</p>
+        </div>
+      )}
 
-            <div className='flex items-center justify-between'>
-              <p className='font-semibold text-dark'>Status:</p>
-              <p className={`px-2 py-1 rounded-full text-sm ${getOrderStatusColor(item.status)}`}>
-                {item.status}
-              </p>
-            </div>
-
-            <h4 className='flex items-center gap-1 font-semibold text-dark'>CreatedAt: <span className='font-medium text-red-500 text-sm'>{formatDateTime(new Date(item.expiresAt))}</span></h4>
-
-            <div className='flex flex-col gap-2'>
-              <h3 className='font-semibold text-gray-600'>Order Summary</h3>
-              <div className='flex flex-col gap-2 p-2'>
+      {!isError &&(
+        sessions.length > 0 ? (
+          <section className='min-h-[50vh] flex flex-col gap-2 px-[2%] py-5 overflow-hidden bg-gray-100'>
+            <div className='grid grid-cols-3 gap-1 justigy-center items-center cartSessions'>
+            {sessions.map((item) => (
+              <div 
+              key={item._id}
+              onClick={() => navigate(`/buyer/checkout/${item._id}`)}
+              className='bg-white rounded-md p-2 flex flex-col gap-2 cursor-pointer shadow-md hover:border hover:border-primary'>
+                <h4 className='flex items-center gap-1 font-semibold text-dark'>CreatedAt: <span className='font-medium text-green-500'>{formatDateTime(new Date(item.createdAt))}</span></h4>
+                
                 <div className='flex items-center justify-between'>
-                  <p className='text-base font-semibold text-gray-700'>
-                    Shipping:
-                  </p>
-                  <p className='text-sm font-medium text-gray-500'>
-                    {(item.pricing.shipping / 100).toLocaleString()}
+                  <p className='font-semibold text-dark'>Payment Status:</p>
+                  <p className={`px-2 py-1 rounded-full text-sm ${getPaymentStatusColor(item.paymentStatus)}`}>
+                    {item.paymentStatus}
                   </p>
                 </div>
+
                 <div className='flex items-center justify-between'>
-                  <p className='text-base font-semibold text-gray-700'>
-                    Tax:
-                  </p>
-                  <p className='text-sm font-medium text-gray-500'>
-                    {(item.pricing.tax / 100).toLocaleString()}
+                  <p className='font-semibold text-dark'>Status:</p>
+                  <p className={`px-2 py-1 rounded-full text-sm ${getOrderStatusColor(item.status)}`}>
+                    {item.status}
                   </p>
                 </div>
-                <div className='flex items-center justify-between'>
-                  <p className='text-base font-semibold text-gray-700'>
-                    Subtotal:
-                  </p>
-                  <p className='text-sm font-medium text-gray-500'>
-                    {(item.pricing.subtotal/ 100).toLocaleString()}
-                  </p>
-                </div> 
 
-                <hr className='flex-1 border-t border-gray-300' />
+                <h4 className='flex items-center gap-1 font-semibold text-dark'>ExpiresAt: <span className='font-medium text-red-500 text-sm'>{formatDateTime(new Date(item.expiresAt))}</span></h4>
 
-                <div className='flex items-center justify-between'>
-                  <p className='text-base font-semibold text-gray-700'>
-                    Total:
-                  </p>
-                  <p className='text-sm font-semibold text-gray-800'>
-                    {(item.pricing.total / 100).toLocaleString()}
-                  </p>
+                <div className='flex flex-col gap-2'>
+                  <h3 className='font-semibold text-gray-600'>Order Summary</h3>
+                  <div className='flex flex-col gap-2 p-2'>
+                    <div className='flex items-center justify-between'>
+                      <p className='text-base font-semibold text-gray-700'>
+                        Shipping:
+                      </p>
+                      <p className='text-sm font-medium text-gray-500'>
+                        {(item.pricing.shipping / 100).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className='flex items-center justify-between'>
+                      <p className='text-base font-semibold text-gray-700'>
+                        Tax(16%):
+                      </p>
+                      <p className='text-sm font-medium text-gray-500'>
+                        {(item.pricing.tax / 100).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className='flex items-center justify-between'>
+                      <p className='text-base font-semibold text-gray-700'>
+                        Subtotal:
+                      </p>
+                      <p className='text-sm font-medium text-gray-500'>
+                        {(item.pricing.subtotal/ 100).toLocaleString()}
+                      </p>
+                    </div> 
+
+                    <hr className='flex-1 border-t border-gray-300' />
+
+                    <div className='flex items-center justify-between'>
+                      <p className='text-base font-semibold text-gray-700'>
+                        Total:
+                      </p>
+                      <p className='text-sm font-semibold text-gray-800'>
+                        {(item.pricing.total / 100).toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
+            ))}
             </div>
+          </section>
+        ) : (
+          <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+            <FiCheckCircle className='text-red-500' size={55} />
+            <p className='text-red-500'>Checkout session expired or not found</p>
           </div>
-         ))}
-        </div>
-      </section>
+        )
+      )}
+      
     </Inner>
   )
 }
