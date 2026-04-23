@@ -20,7 +20,7 @@ function mobileNav() {
   const { totalItems } = useCart();
 
   const BuyerNavs = [
-    { name: 'All', value: '/products', icon: CiGrid32 },
+    { name: 'Shop', value: '/products', icon: CiGrid32 },
     { name: 'checkout', value: '/checkout', icon: null },
     { name: 'Blogs', value: '/blogs', icon: null },
     { name: 'Orders', value: '/orders', icon: null },

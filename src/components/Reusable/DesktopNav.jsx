@@ -19,7 +19,7 @@ function DesktopNavbar({ products = [] }) {
   };
 
   const BuyerNavs = [
-    { name: 'All Products', value: '/products', icon: CiGrid32 },
+    { name: 'Shop', value: '/products', icon: CiGrid32 },
     { name: 'Blogs', value: '/blogs', icon: null },
     { name: 'checkout', value: '/checkout', icon: null },
     { name: 'Orders', value: '/orders', icon: null },

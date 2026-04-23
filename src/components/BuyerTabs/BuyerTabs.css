@@ -51,12 +51,12 @@
   padding: 16px;
 }
 
-.drawer-links {
+/*.drawer-links {
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 16px;
-}
+}*/
 
 .overlay {
   position: fixed;
@@ -146,7 +146,7 @@
   .Slider{
     height: 10px;
   }
-  .priceRange, .detDesc, .reviewSec h2, .RevCount, .reviewSec h3, .RevSelc, .RevUser span, .RevText textarea{
+  .priceRange, .detDesc, .reviewSec h2, .RevCount, .reviewSec h3, .RevSelc, .RevUser span, .RevText textarea, .orderSummary span{
     font-size: 2em;
   }
   .prodMainImg{
@@ -244,7 +244,7 @@
 }
 
 @media(max-width: 769px){
-  .cartConGrid{
+  .cartConGrid, .checkSession{
     grid-template-columns: repeat(1, 1fr);
   }
 }
@@ -282,7 +282,7 @@
   .BuyeWHY, .simProd{
     grid-template-columns: repeat(2, 1fr);
   }
-  .catLastCon, .cartSessions{
+  .catLastCon, .cartSessions, .cardMpesaIn{
     grid-template-columns: repeat(1, 1fr);
   }
   .fanImgs{

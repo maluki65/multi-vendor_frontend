@@ -25,7 +25,7 @@ function Cart() {
   const navigate = useNavigate();
   const { prepareCheckout, isPending } = useCheckout();
 
-  console.log('Cart items:', cart);
+  //console.log('Cart items:', cart);
 
   const appyLocation = (loc) => {
     setLocation(loc);

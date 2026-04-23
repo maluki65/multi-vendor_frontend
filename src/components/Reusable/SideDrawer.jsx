@@ -1,40 +1,62 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaXmark } from 'react-icons/fa6';
+import { IoIosLogOut } from "react-icons/io";
+import { useLogout } from '../../Hooks/useLogout';
 import { menuRoleItems } from '../DashboardLayout/roles/menuConfig';
 
 function SideDrawer({ isOpen, onClose }) {
+
+  const drawerNavs = [
+    { name: 'Shop', link: '/buyer/products'},
+    { name: 'cart', link: '/buyer/cart' },
+    { name: 'Whishlist', link: '/buyer/wishlist' },
+    { name: 'Checkout', link:'/buyer/checkout' },
+    { name: 'Orders', link: '/buyer/orders' },
+  ]
+
+  const navigate = useNavigate();
+  const logout = useLogout();
+
+  const handleLogout = async () => {
+    await logout();
+  }
+
+  const handleNavigate = (link) => {
+    navigate(link);
+    onClose();
+  }
 
   return (
     <>
       {isOpen && <div className="overlay" onClick={onClose} />}
 
-      <div className={`drawer ${isOpen ? 'open' : ''}`}>
+      <div className={`drawer flex flex-col justify-between ${isOpen ? 'open' : ''}`}>
 
         <div className="drawer-header">
           <FaXmark size={22} onClick={onClose} />
         </div>
 
-        <div className="drawer-links">
+        <div className='drawer-links gap-5 p-4 flex flex-col cursor-pointer text-primary'>
 
-          <Link to="/buyer/wishlist" onClick={onClose}>Wishlist</Link>
-          <Link to="/buyer/cart" onClick={onClose}>Cart</Link>
-          <Link to="/buyer/profile" onClick={onClose}>Profile</Link>
-
-          {menuRoleItems['Buyer']?.map((item) => {
-            const Icon = item.icon;
+          {drawerNavs.map((item, index) => {
             return (
-              <Link
-                key={item.value}
-                to={`/buyer${item.link}`}
-                onClick={onClose}
-              >
-                <Icon /> {item.label}
-              </Link>
-            );
-          })}
-
+              <div 
+                onClick={() => handleNavigate(item.link)}
+                key={index}
+                className=''
+                >
+                  {item.name}
+              </div>
+            )
+          }
+          )}
         </div>
+
+        <div className='flex items-center justify-between px-4 my-2 text-primary'>
+            <a onClick={() => navigate('/buyer/profile')} className=''>Profile</a>
+            <IoIosLogOut onClick={handleLogout} className='hover:text-red-500' size={23} />
+          </div>
       </div>
     </>
   );
