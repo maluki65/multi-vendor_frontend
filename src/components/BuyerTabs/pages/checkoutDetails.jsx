@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import useCheckout from '../../../Hooks/useCheckout';
 import { AdLoader } from '../../';
 import { FiCheckCircle } from "react-icons/fi";
-import { cartB1, cartB2 } from '../../../assets';
+import { cartB1, cartB2, cartB3, cartB4, cartB5, cartB6 } from '../../../assets';
 import { Inner } from '../../../commons';
 import { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,7 @@ function CheckoutDetails() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
 
-  const { checkoutSessionQuery } = useCheckout(sessionId);
+  const { checkoutSessionQuery, completeCheckout } = useCheckout(sessionId);
 
   const { data: session, isLoading, isError } = checkoutSessionQuery;
 
@@ -44,14 +44,19 @@ function CheckoutDetails() {
     { name: 'M-pesa', value: 'M-pesa', icon: PiMoneyWavyLight },
     { name: 'Card', value: 'Card', icon: CiCreditCard1 }
   ]
-  console.log('checkout session:', session);
+
+  //console.log('checkout session:', session);
+
+  const handlePayNow = () => {
+    completeCheckout.mutate(sessionId)
+  }
 
   return (
     <Inner>
       <Toaster position='top-right' reverseOrder={false} />
       <section className='min-h-[30vh] flex flex-col justify-center items-center overflow-hidden'
         style={{
-          backgroundImage: `url(${cartB2})`,
+          backgroundImage: `url(${cartB6})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
@@ -166,7 +171,7 @@ function CheckoutDetails() {
                               type='number'
                               name='mpesaPhone'
                               required
-                              placeholder='Enter number'
+                              placeholder='07**********'
                               value={form.mpesaPhone}
                               onChange={handleChange}
                               className='p-2 outline-none border-[1.3px] border-gray-300 w-full focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg'
@@ -291,9 +296,11 @@ function CheckoutDetails() {
                 </div>
 
                 <button
-                  className={`w-full my-3 py-3 rounded-full text-white cursor-pointer bg-dark`}
+                  onClick={handlePayNow}
+                  disabled={completeCheckout.isPending}
+                  className={`w-full my-3 py-3 rounded-full text-white cursor-pointer bg-primary`}
                   >
-                  {isLoading ? 'Processing...' : ' Pay Now' }
+                  {completeCheckout.isPending ? 'Processing...' : ' Pay Now' }
                 </button>
               </div> 
             </div>

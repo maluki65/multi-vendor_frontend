@@ -22,8 +22,8 @@ function DesktopNavbar({ products = [] }) {
     { name: 'Shop', value: '/products', icon: CiGrid32 },
     { name: 'Blogs', value: '/blogs', icon: null },
     { name: 'checkout', value: '/checkout', icon: null },
-    { name: 'Orders', value: '/orders', icon: null },
-    { name: 'Contact Us', value: '/contact', icon: null},
+    { name: 'Orders', value: '/account', icon: null },
+    { name: 'Contact Us', value: '/contacts', icon: null},
   ];
 
   return (
@@ -67,7 +67,7 @@ function DesktopNavbar({ products = [] }) {
             const BuyIcon = nav.icon;
             return (
               <Link key={nav.value} to={`/buyer${nav.value}`}>
-                <li className='flex items-center hover:underline'>
+                <li className='flex items-center hover:underline hover:text-orange-400'>
                   {BuyIcon && <BuyIcon className='buyerIcon' strokeWidth={1} size={20}/>} 
                   <span className='buyernavs'>{nav.name}</span>
                 </li>

@@ -1,7 +1,7 @@
 import React from 'react'
 import '../BuyerTabs.css';
 import { FiCheckCircle } from "react-icons/fi";
-import { cartB1, cartB2 } from '../../../assets';
+import { cartB1, cartB2, cartB3, cartB4, cartB5, cartB6 } from '../../../assets';
 import { Inner } from '../../../commons';
 import { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ function Checkout() {
   const { getAllCheckoutSessions } = useCheckout();
   const { data: sessions, isLoading, isError } = getAllCheckoutSessions;
 
-  console.log('all sessions:', sessions);
+  //console.log('all sessions:', sessions);
   const navigate = useNavigate();
 
   const formatDate = (date) => {
@@ -91,7 +91,7 @@ function Checkout() {
 
       <section className='min-h-[30vh] flex flex-col justify-center items-center overflow-hidden'
         style={{
-          backgroundImage: `url(${cartB2})`,
+          backgroundImage: `url(${cartB4})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'

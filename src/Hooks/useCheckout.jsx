@@ -87,6 +87,35 @@ const useCheckout = (sessionId) => {
     },
   });
 
+  const completeCheckout = useMutation({
+    mutationFn: async (sessionId) => {
+      const { data } = await Api.post(`/checkout/competed/${sessionId}`);
+      return data;
+    },
+
+    onMutate: () => {
+      const toastId = toast.loading('Processing payment...');
+      return { toastId }
+    },
+
+    onSuccess: (data, sessionId, context) => {
+      toast.success('Payment successful...Order created!', { id: context.toastId });
+
+      queryClient.invalidateQueries(['Orders']);
+
+      navigate('/buyer/account');
+    },
+
+    onError: (error, _, context) => {
+      toast.error(
+        error?.response?.data?.message || 'Payment failed',
+        { id: context.toastId }
+      );
+
+      console.error('Payment failed', error);
+    },
+  });
+
   return {
     isPending: prepareCheckout.isPending, 
     
@@ -94,6 +123,7 @@ const useCheckout = (sessionId) => {
     checkoutSessionQuery,
     getAllCheckoutSessions,
     resumeCheckout,
+    completeCheckout,
   };
 };
 

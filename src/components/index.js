@@ -54,3 +54,6 @@ export { default as LocationSelector } from  './BuyerTabs/BuyerItems/locationSel
 export { default as OrderSummary } from './BuyerTabs/BuyerItems/orderSummary';
 export { default as Checkout } from './BuyerTabs/pages/checkout';
 export { default as CheckoutDetails } from './BuyerTabs/pages/checkoutDetails';
+export { default as Account } from './BuyerTabs/pages/Account';
+export { default as Blogs } from './BuyerTabs/pages/blogs';
+export { default as Contacts } from './BuyerTabs/pages/contact';

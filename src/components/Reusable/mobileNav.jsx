@@ -23,8 +23,8 @@ function mobileNav() {
     { name: 'Shop', value: '/products', icon: CiGrid32 },
     { name: 'checkout', value: '/checkout', icon: null },
     { name: 'Blogs', value: '/blogs', icon: null },
-    { name: 'Orders', value: '/orders', icon: null },
-    { name: 'Contact Us', value: '/contact', icon: null},
+    { name: 'Orders', value: '/account', icon: null },
+    { name: 'Contact Us', value: '/contacts', icon: null},
   ]
 
   const handleLogout = async () => {
@@ -75,7 +75,7 @@ function mobileNav() {
             const BuyIcon = nav.icon;
             return (
               <Link key={nav.value} to={`/buyer${nav.value}`}>
-                <li className='flex items-center hover:underline my-2 LinkTexts09'>{BuyIcon && <BuyIcon strokeWidth={1} size={20}/>} <span className=''>{nav.name}</span></li>
+                <li className='flex items-center hover:underline hover:text-orange-400 my-2 LinkTexts09'>{BuyIcon && <BuyIcon strokeWidth={1} size={20}/>} <span className=''>{nav.name}</span></li>
               </Link>
             )
           })}
