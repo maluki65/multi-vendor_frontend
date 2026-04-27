@@ -89,7 +89,7 @@ const useCheckout = (sessionId) => {
 
   const completeCheckout = useMutation({
     mutationFn: async (sessionId) => {
-      const { data } = await Api.post(`/checkout/competed/${sessionId}`);
+      const { data } = await Api.post(`/checkout/completed/${sessionId}`);
       return data;
     },
 
