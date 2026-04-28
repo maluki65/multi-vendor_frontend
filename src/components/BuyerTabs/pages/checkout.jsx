@@ -5,7 +5,7 @@ import { cartB1, cartB2, cartB3, cartB4, cartB5, cartB6 } from '../../../assets'
 import { Inner } from '../../../commons';
 import { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { AdLoader } from '../../';
+import { AdLoader, Footer } from '../../';
 import useCheckout from '../../../Hooks/useCheckout';
 
 function Checkout() {
@@ -91,7 +91,7 @@ function Checkout() {
 
       <section className='min-h-[30vh] flex flex-col justify-center items-center overflow-hidden'
         style={{
-          backgroundImage: `url(${cartB4})`,
+          backgroundImage: `url(${cartB5})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
@@ -202,6 +202,9 @@ function Checkout() {
         )
       )}
       
+      <div className='p-2'>
+        <Footer />
+      </div>
     </Inner>
   )
 }

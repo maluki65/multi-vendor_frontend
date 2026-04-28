@@ -193,7 +193,7 @@
     height: 30px;
     width: 30px;
   }
-  .CartTable thead th{
+  .CartTable thead th, .contactET0988 h4{
     font-size: 2.5em;
   }
   .cartItem{
@@ -244,13 +244,16 @@
 }
 
 @media(max-width: 769px){
-  .cartConGrid, .checkSession{
+  .cartConGrid, .checkSession, .contactNEm{
     grid-template-columns: repeat(1, 1fr);
+  }
+  .contactET0988{
+    width: 80%;
   }
 }
 
 @media(max-width: 626px){
-  .catTitles, .detFirstsec{
+  .catTitles, .detFirstsec, .contactForms3{
     grid-template-columns: repeat(1, 1fr);
   }
   .catHead{
@@ -324,6 +327,9 @@
   .CoupClear{
     display: flex;
     flex-direction: column;
+  }
+  .contactET0988{
+    width: 90%;
   }
 }
 

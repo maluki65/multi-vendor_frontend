@@ -1,7 +1,7 @@
 import React from 'react';
 import '../BuyerTabs.css';
 import { Inner } from '../../../commons';
-import { cartB1, cartB2, cartB3, cartB4, cartB5, cartB6, cartB7, cartB8, cartB9 } from '../../../assets';
+import { cartB1, cartB2, cartB3, cartB4, cartB5, cartB6, cartB7, cartB8, cartB9, detail } from '../../../assets';
 import { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ function Account() {
       <Toaster position='top-right' reverseOrder={false} />
       <section className='min-h-[30vh] flex flex-col justify-center items-center overflow-hidden'
         style={{
-          backgroundImage: `url(${cartB8})`,
+          backgroundImage: `url(${detail})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'

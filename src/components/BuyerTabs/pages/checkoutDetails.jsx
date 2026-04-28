@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import '../BuyerTabs.css';
 import { useParams } from 'react-router-dom';
 import useCheckout from '../../../Hooks/useCheckout';
-import { AdLoader } from '../../';
+import { AdLoader, Footer } from '../../';
 import { FiCheckCircle } from "react-icons/fi";
-import { cartB1, cartB2, cartB3, cartB4, cartB5, cartB6 } from '../../../assets';
+import { cartB1, cartB2, cartB3, cartB4, cartB5, cartB11 } from '../../../assets';
 import { Inner } from '../../../commons';
 import { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -56,7 +56,7 @@ function CheckoutDetails() {
       <Toaster position='top-right' reverseOrder={false} />
       <section className='min-h-[30vh] flex flex-col justify-center items-center overflow-hidden'
         style={{
-          backgroundImage: `url(${cartB6})`,
+          backgroundImage: `url(${cartB11})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
@@ -312,6 +312,10 @@ function CheckoutDetails() {
           <p className='text-red-500'>Checkout session expired or not found</p>
         </div>
       )}
+
+      <div className='p-2'>
+        <Footer />
+      </div>
     </Inner>
   );
 }
