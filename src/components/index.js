@@ -57,3 +57,6 @@ export { default as CheckoutDetails } from './BuyerTabs/pages/checkoutDetails';
 export { default as Account } from './BuyerTabs/pages/Account';
 export { default as Blogs } from './BuyerTabs/pages/blogs';
 export { default as Contacts } from './BuyerTabs/pages/contact';
+export { default as Orders } from './BuyerTabs/BuyerItems/Orders';
+export { default as Profiles } from './BuyerTabs/BuyerItems/Profile';
+export { default as Passwords } from './BuyerTabs/BuyerItems/Passwords';

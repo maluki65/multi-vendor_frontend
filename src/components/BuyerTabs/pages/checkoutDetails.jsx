@@ -139,12 +139,12 @@ function CheckoutDetails() {
 
               <div className='p-2 flex flex-col gap-3 border-[1.5px] border-gray-200 rounded-md'>
                 <div className='p-2 flex gap-3 '>
-                  {paymentMethods.map((item, index) => {
+                  {paymentMethods.map((item) => {
                     const Icon = item.icon
 
                     return (
                       <div
-                        key={index}
+                        key={item.value}
                         onClick={() => setActiveTab(item.value)}
                         className={`flex-1 flex flex-col border-[1.5px] text-gray-500 border-gray-300  justify-center cursor-pointer items-center px-4 py-2 rounded ${activeTab === item.value ? 'border-primary text-primary' : ''}`}
                         >

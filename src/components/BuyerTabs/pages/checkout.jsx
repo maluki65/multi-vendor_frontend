@@ -195,7 +195,7 @@ function Checkout() {
             </div>
           </section>
         ) : (
-          <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+          <div className='min-h-[60vh]  justify-center text-center text-gray-500 flex flex-col items-center gap-2'>
             <FiCheckCircle className='text-red-500' size={55} />
             <p className='text-red-500'>Checkout session expired or not found</p>
           </div>
