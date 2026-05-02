@@ -14,7 +14,7 @@ function Orders() {
 
   return (
     <section className='flex flex-col gap-3 overflow-hidden py-2 px-4'>
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between orders09'>
         <h1 className='font-semibold text-base'>Orders({count})</h1>
         <div className='flex items-center gap-2 cursor-pointer'>
           <p className='text-base font-medium'>sort by:</p>
@@ -30,8 +30,8 @@ function Orders() {
 
       {isError && (
         <div className='text-center text-gray-500 flex flex-col items-center gap-3'>
-          <MdError className='text-red-500' size={45} />
-          <p className='text-red-500'> Filed to load orders</p>
+          <MdError className='text-red-500' size={65} />
+          <p className='text-red-500'> Failed to load orders</p>
         </div>
       )}
 
@@ -41,7 +41,7 @@ function Orders() {
             <div 
               key={order._id}
               className='rounded-3xl flex flex-col'>
-              <div className='p-3 flex items-center justify-between bg-orange-400 rounded-t-3xl'>
+              <div className='p-3 flex items-center justify-between bg-orange-400 rounded-t-3xl orderHeading'>
                 <div className='flex flex-col gap-1'>
                   <p className='text-gray-500 text-sm font-medium'>Order ID</p>
                   <h4 className='fonr-semibold text-base'>
@@ -78,10 +78,10 @@ function Orders() {
                       <img 
                         src={product.image}
                         atl= {product.name}
-                        className='w-15 h-15 object-contain rounded-lg'
+                        className='w-15 h-15 object-contain rounded-lg orderProdImg'
                       />
 
-                      <div className='flex flex-col justify-center px-4'>
+                      <div className='flex flex-col justify-center px-4 orderProdHeading32'>
                         <h4 className='font-semibold leading-relaxed'>
                           {product?.name}
                         </h4>
@@ -93,7 +93,7 @@ function Orders() {
 
                 <hr className='flex-1 border-t border-gray-300' />
 
-                <div className='flex items-center justify-between my-3'>
+                <div className='flex items-center justify-between my-3 orderActions'>
                   <div className='flex items-center gap-4'>
                     <button
                       className='rounded-full px-3 py-1 text-white bg-primary cursor-pointer'>
@@ -105,14 +105,14 @@ function Orders() {
                         Invoice
                     </button>
                   </div>
-                  <a className='text-orange-400 font-semibold cursor-pointer hover:underline'>Cancel Order</a>
+                  <a className='text-orange-400 font-semibold cursor-pointer hover:underline orderCancel'>Cancel Order</a>
                 </div>
               </div>
             </div>
           ))
         ) : (
           <div className='col-span-full text-center text-gray-600 flex flex-col items-center gap-2'>
-            <LuBox className='text-red-500' size={45} />
+            <LuBox className='text-red-500' size={65} />
             <p className=''>No orders found!</p>
           </div>
         )

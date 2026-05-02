@@ -140,7 +140,7 @@
   .buyernavs{
     font-size: 2em;
   }
-  .Filters h1, .tags{
+  .Filters h1, .tags, .orders09 h1, .orders09 p, .orders09 a, .AccNavTabs, .orderHeading h4, .orderProdHeading32 h4, .orderCancel{
     font-size: 2em;
   }
   .Slider{
@@ -171,7 +171,7 @@
   .ProdBanCon{
     height: 13vw;
   }
-  .prodLogoCon{
+  .prodLogoCon, .orderProdImg{
     width: 170px;
     height: 170px;
   }
@@ -181,7 +181,7 @@
   .reviewSec{
     width: 70%;
   }
-  .StarIcon, .CartIcon{
+  .StarIcon, .CartIcon, .AccNavLog{
     height: 40px;
     width: 40px;
   }
@@ -253,7 +253,7 @@
 }
 
 @media(max-width: 626px){
-  .catTitles, .detFirstsec, .contactForms3{
+  .catTitles, .detFirstsec, .contactForms3, .AccTabSwitch{
     grid-template-columns: repeat(1, 1fr);
   }
   .catHead{
@@ -266,7 +266,7 @@
   .cartSessions{
     grid-template-columns: repeat(2, 1fr);
   }
-  .ProdVendor673, .reviewSec{
+  .ProdVendor673, .reviewSec, .AccPassContainer{
     width: 90%;
   }
   .table-view{
@@ -274,6 +274,24 @@
   }
   .card-view{
     display: block;
+  }
+  .AccNavTabsMain{
+    width:fit-content;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .AccNavTabs{
+    border: none;
+    font-size: 14px;
+    position: relative;
+  }
+  .AccNavTabs.activeTab{
+    background-color: transparent;
+    text-decoration: underline;
+    text-decoration-color: #fb923c;
+  }
+  .AccNavTabs:last-child{
+    display: none;
   }
 }
 
@@ -310,7 +328,7 @@
   .productCards65{
     grid-template-columns: repeat(2, 1fr);
   }
-  .ProdVendor673{
+  .ProdVendor673, .AccPassContainer{
     width: 100%;
   }
   .prodLogoCon{
@@ -330,6 +348,10 @@
   }
   .contactET0988{
     width: 90%;
+  }
+  .orderHeading{
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 
@@ -356,5 +378,21 @@
   }
   .subTotals{
     flex-wrap: wrap;
+  }
+  .orderActions{
+    display: flex;
+    flex-wrap: wrap;
+    gap:5px;
+  }
+}
+
+@media(max-width: 321px){
+  .AccPassBtn{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .AccBtn756{
+    width: 100%;
   }
 }

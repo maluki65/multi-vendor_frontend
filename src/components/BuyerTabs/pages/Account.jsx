@@ -56,8 +56,8 @@ function Account() {
       </section>
 
       <section className='min-h-[50vh] my-4 px-[2%] overflow-hidden'>
-        <div className='grid grid-cols-[25%_75%] gap-3'>
-          <div className='flex flex-col w-full p-2 gap-3'>
+        <div className='grid grid-cols-[25%_75%] gap-3 AccTabSwitch'>
+          <div className='flex flex-col w-full p-2 gap-3 AccNavTabsMain'>
             {activeMenu.map((item) => {
               const isLogout = item.value === 'Logout';
               const Icon = item.icon;
@@ -66,10 +66,10 @@ function Account() {
                 <div
                 key={item.value}
                 onClick={isLogout ? handleLogOut : () => setActiveTab(item.value)}
-                className={`border-[1.5px]  border-gray-200 py-2 px-2 text-dark rounded-md cursor-pointer ${!isLogout && activeTab === item.value ? 'bg-orange-400 border-none' : ''} 
+                className={`border-[1.5px]  border-gray-200 py-2 px-2 text-dark rounded-md cursor-pointer AccNavTabs ${!isLogout && activeTab === item.value ? 'bg-orange-400 border-none activeTab' : ''} 
                 ${isLogout ? 'text-red-600 flex items-center gap-2' : 'text-dark'}`}
                 >
-                  {Icon && <Icon size={23} />}
+                  {Icon && <Icon className='AccNavLog' size={23} />}
                   <li className='list-none'>{item.name}</li>
               </div>
               )
@@ -113,7 +113,9 @@ function Account() {
                  exit={{ opacity: 0, y: -20 }}
                  transition={{ duration: 0.3 }}
                   >
-                  <Passwords />
+                  <div className='flex items-center justify-center overflow-hidden'>
+                   <Passwords />
+                  </div>
               </motion.div>
               )}
             </AnimatePresence>

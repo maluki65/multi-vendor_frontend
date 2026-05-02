@@ -29,7 +29,7 @@ function ProfileDropDown({ onLogout }) {
       {open && (
         <div className='absolute right-0 mt-2 w-40 bg-white shadow-lg border rounded-md p-1 z-50'>
           <div className='flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer'
-            onClick={() => navigate('/buyer/profile')}
+            onClick={() => navigate('/buyer/account')}
             >
              <IoSettingsOutline className='text-dark' size={20}/> Settings
           </div>

@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getProfileRouteByRole } from "../utils/profileRoutes";
 import { useAuth } from "../Context/AuthContext";
 import { Api } from "../utils";
+import toast from 'react-hot-toast';
 
 
 
@@ -58,6 +59,34 @@ export const useProfile = (role) => {
     },
   });
 
+  // On updating user password
+  const updatePassword = useMutation({
+    mutationFn: async (payload) => {
+      const { data } = await Api.patch('/password/update', payload);
+      return data;
+    },
+    onMutate: () => {
+      const toastId = toast.loading('Updating password...');
+      return { toastId };
+    },
+
+    onSuccess: (data, variables, context) => {
+      toast.success('Password updated successfuly', { id: context.toastId});
+
+      if (data?.forceLogout) {
+        window.location.href = '/signin';
+      }
+    },
+
+    onError: (error, variables, context) => {
+      toast.error(
+        error?.response?.data?.message || 'Failed to update password', { id: context.toastId }
+      );
+
+      console.error('Failed to update password', error);
+    }
+  });
+
   // On updating profile Img
   const updateProfileImg = useMutation({
     mutationFn: async (payload) => {
@@ -107,5 +136,7 @@ export const useProfile = (role) => {
 
     updateProfileImg: updateProfileImg.mutateAsync,
     updatingImg: updateProfileImg.isPending,
+
+    updatePassword,
   };
 }

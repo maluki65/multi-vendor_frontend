@@ -37,7 +37,6 @@ export { default as VendorProducts } from './VendorTabs/products/vendorProducts'
 export { default as BuyerDashboard } from './BuyerTabs/pages/BuyerDashboard';
 export { default as BuyerLayout } from './BuyerTabs/BuyerLayout';
 export { default as Cart } from './BuyerTabs/pages/Cart';
-export { default as Profile } from './BuyerTabs/pages/Profile';
 export { default as Wishlist } from './BuyerTabs/pages/Wishlist'; 
 export { default as ProfileDropDown } from './Reusable/ProfileDropDown';
 export { default as SearchBar } from './Reusable/search';
