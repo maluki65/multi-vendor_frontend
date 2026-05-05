@@ -59,3 +59,4 @@ export { default as Contacts } from './BuyerTabs/pages/contact';
 export { default as Orders } from './BuyerTabs/BuyerItems/Orders';
 export { default as Profiles } from './BuyerTabs/BuyerItems/Profile';
 export { default as Passwords } from './BuyerTabs/BuyerItems/Passwords';
+export { default as ProfileEdit } from './BuyerTabs/BuyerItems/ProfileEdit';

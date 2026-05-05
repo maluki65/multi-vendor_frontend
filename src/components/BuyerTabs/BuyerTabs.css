@@ -137,7 +137,7 @@
     width: 40px;
     height: 40px;
   }
-  .buyernavs{
+  .buyernavs, .setHeading{
     font-size: 2em;
   }
   .Filters h1, .tags, .orders09 h1, .orders09 p, .orders09 a, .AccNavTabs, .orderHeading h4, .orderProdHeading32 h4, .orderCancel{
@@ -171,7 +171,7 @@
   .ProdBanCon{
     height: 13vw;
   }
-  .prodLogoCon, .orderProdImg{
+  .prodLogoCon, .orderProdImg, .profileSetImg{
     width: 170px;
     height: 170px;
   }
@@ -253,7 +253,7 @@
 }
 
 @media(max-width: 626px){
-  .catTitles, .detFirstsec, .contactForms3, .AccTabSwitch{
+  .catTitles, .detFirstsec, .contactForms3, .AccTabSwitch, .SetProCon{
     grid-template-columns: repeat(1, 1fr);
   }
   .catHead{
@@ -353,6 +353,9 @@
     display: flex;
     flex-wrap: wrap;
   }
+  .imgSetCon87{
+    flex-direction: column;
+  }
 }
 
 @media(max-width: 376px){
@@ -384,6 +387,9 @@
     flex-wrap: wrap;
     gap:5px;
   }
+  .SetProInner{
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 @media(max-width: 321px){
@@ -394,5 +400,8 @@
   }
   .AccBtn756{
     width: 100%;
+  }
+  .SetImgEdit{
+    flex-direction: column;
   }
 }

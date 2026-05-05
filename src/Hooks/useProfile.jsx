@@ -21,7 +21,7 @@ export const useProfile = (role) => {
       try {
         const res = await Api.get(route /*'/users/auth/profile'*/);
         //console.log('Profile API response:', res.data);
-        return res.data.profile;
+        return res.data;
       } catch (error) {
         if (error?.response?.status == 404) {
           return null;
@@ -34,6 +34,27 @@ export const useProfile = (role) => {
     refetchOnWindowFocus: true,
     retry: false,
   });
+
+  // On getting Buyer whole user & profile
+  /*const userProfileQuery = useQuery({
+    queryKey: PROFILE_KEY,
+    queryFn: async() => {
+      if (!route) return null;
+      try{
+        const res = await Api.get(route);
+        return res.data;
+      } catch (error) {
+        if (error?.response?.status == 404) {
+          return null;
+        }
+        throw error;
+      }
+    },
+    enabled: isAuthenticated && !!role &&!!route,
+    staleTime: 40 * 60 * 1000,
+    refetchOnWindowFocus: true,
+    retry: false,
+  });*/
 
   // On  creating profile
   const createProfile = useMutation({
@@ -126,7 +147,8 @@ export const useProfile = (role) => {
 
   return {
     ...profileQuery,
-    profile: profileQuery.data,
+    profile: profileQuery.data?.profile,
+    user: profileQuery.data?.user,
 
     createProfile: createProfile.mutateAsync,
     creating: createProfile.isPending,
