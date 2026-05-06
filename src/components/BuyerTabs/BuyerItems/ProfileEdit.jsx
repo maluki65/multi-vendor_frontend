@@ -3,12 +3,18 @@ import { FaArrowLeft } from "react-icons/fa6";
 import UploadProfileImg from '../../../utils/ProfileImgUpload';
 import { AdLoader } from '../../';
 
-function ProfileEdit({  profile, user, onUpdate, activeTab, setActiveTab }) {
+function ProfileEdit({  profile, user, onUpdate, setActiveTab }) {
 
   const [username, setUsername] = useState(user?.username || '');
   const [phone, setPhone] = useState(profile?.phone || '');
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(user?.avatar || '');
+  const [addressLabel, setAddressLabel] = useState(profile?.addresses?.[0]?.label || '');
+  const [country, setCountry] = useState(profile?.addresses?.[0]?.country || '');
+  const [street, setStreet] = useState(profile?.addresses?.[0]?.street || '');
+  const [postalCode, setPostalCode] = useState(profile?.addresses?.[0]?.postalCode || '');
+  const [city, setCity] = useState(profile?.addresses?.[0]?.city || '');
+  const [fullname, setFullname]= useState(profile?.fullname || '');
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
@@ -18,6 +24,18 @@ function ProfileEdit({  profile, user, onUpdate, activeTab, setActiveTab }) {
       reader.readAsDataURL(avatarFile);
     }
   }, [avatarFile]);
+
+  useEffect(() => {
+    if (profile) {
+      setAddressLabel(profile?.addresses?.[0]?.label || '');
+      setCountry(profile?.addresses?.[0]?.country || '');
+      setCity(profile?.addresses?.[0]?.city || '');
+      setStreet(profile?.addresses?.[0]?.street || '');
+      setPostalCode(profile?.addresses?.[0]?.postalCode || '');
+      setPhone(profile?.phone || '');
+      setFullname(profile?.fullname || '');
+    }
+  }, [profile]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +51,16 @@ function ProfileEdit({  profile, user, onUpdate, activeTab, setActiveTab }) {
       const payload = {
         username,
         phone,
+        fullname,
+        addresses: [
+          {
+            label: addressLabel,
+            country,
+            city,
+            street,
+            postalCode,
+          }
+        ],
         ...(avatarData && { avatar: avatarData }),
       };
 
@@ -47,7 +75,7 @@ function ProfileEdit({  profile, user, onUpdate, activeTab, setActiveTab }) {
   };
 
   return (
-    <div className='p-2 flex flex-col space-y-4'>
+    <div className='flex flex-col'>
       <div className='flex items-center justify-between'>
         <FaArrowLeft 
          onClick={() => setActiveTab('BuyerProfile')} 
@@ -64,24 +92,97 @@ function ProfileEdit({  profile, user, onUpdate, activeTab, setActiveTab }) {
         ) : (
           <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
 
-            <div className='flex flex-col gap-1'>
-              <label>Username</label>
-              <input
-                type='text'
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                className='input'
-              />
-            </div>
+            <div className='grid grid-cols-2 gap-3 profileEditSettings'>
+              <div className='flex flex-col gap-1'>
+                <label className='text-sm font-semibold'>Username</label>
+                <input
+                  type='text'
+                  required
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
 
-            <div className='flex flex-col gap-1'>
-              <label>Phone</label>
-              <input
-                type='text'
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-                className='input'
-              />
+              <div className='flex flex-col gap-1'>
+                <label className='text-sm font-semibold'>Fullname</label>
+                <input
+                  type='text'
+                  required
+                  value={fullname}
+                  onChange={e => setFullname(e.target.value)}
+                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='text-sm font-semibold'>Phone</label>
+                <input
+                  type='text'
+                  required
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='text-sm font-semibold'>Address Label</label>
+                <select
+                  required
+                  value={addressLabel}
+                  onChange={e => setAddressLabel(e.target.value)}
+                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                 >
+                  <option value=''>Select Address Label</option>
+                  <option value='Home'>Home</option>
+                  <option value='Office'>Office</option>
+                </select>
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='text-sm font-semibold'>Country</label>
+                <input
+                  type='text'
+                  required
+                  value={country}
+                  onChange={e => setCountry(e.target.value)}
+                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='text-sm font-semibold'>City</label>
+                <input
+                  type='text'
+                  required
+                  value={city}
+                  onChange={e => setCity(e.target.value)}
+                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='text-sm font-semibold'>Street</label>
+                <input
+                  type='text'
+                  required
+                  value={street}
+                  onChange={e => setStreet(e.target.value)}
+                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                <label className='text-sm font-semibold'>Postal Code</label>
+                <input
+                  type='text'
+                  required
+                  value={postalCode}
+                  onChange={e => setPostalCode(e.target.value)}
+                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                />
+              </div>
             </div>
 
             <div className='flex flex-col gap-2'>
@@ -99,16 +200,23 @@ function ProfileEdit({  profile, user, onUpdate, activeTab, setActiveTab }) {
                 type='file'
                 accept='image/*'
                 onChange={e => setAvatarFile(e.target.files[0])}
+                className='text-primary cursor-pointer'
               />
             </div>
 
-            <button className='btn-primary'>
-              {isUploading ? 'Updating...' : 'Update Profile'}
-            </button>
+            <div className='flex gap-3 items-center'>
+              <button className='bg-primary text-white px-4 py-2 font-medium rounded-lg w-fit cursor-pointer hover:bg-transparent hover:border-dark hover:border hover:text-dark'>
+                {isUploading ? 'Updating...' : 'Update Profile'}
+              </button>
 
-            <button type='button' onClick={() => setActiveTab('BuyerProfile')}>
-              Cancel
-            </button>
+              <button 
+               type='button' 
+               onClick={() => setActiveTab('BuyerProfile')}
+               className='border border-dark bg-transparent rounded-lg w-fit px-4  cursor-pointer py-2 hover:border-none hover:bg-orange-400'
+                >
+                Cancel
+              </button>
+            </div>
 
           </form>
         )

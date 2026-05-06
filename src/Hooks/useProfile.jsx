@@ -4,8 +4,6 @@ import { useAuth } from "../Context/AuthContext";
 import { Api } from "../utils";
 import toast from 'react-hot-toast';
 
-
-
 export const useProfile = (role) => {
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
@@ -71,7 +69,7 @@ export const useProfile = (role) => {
   // On updating profile
   const updateProfile = useMutation({
     mutationFn: async (payload) => {
-      const res = await Api.patch(route, payload);
+      const res = await Api.patch('/buyer/profile/update', payload);
       return res.data;
     },
     onSuccess: (data) => {
@@ -79,6 +77,43 @@ export const useProfile = (role) => {
       queryClient.invalidateQueries(PROFILE_KEY);
     },
   });
+
+  const updateNotification = useMutation({
+    mutationFn: async ({ type, value }) => {
+      const res = await Api.patch('/buyer/profile/preferences/notification', {
+        type,
+        value,
+      });
+      return res.data;
+    },
+
+    onMutate: async ({ type, value }) => {
+      await queryClient.cancelQueries(PROFILE_KEY);
+
+      const prev = queryClient.getQueriesData(PROFILE_KEY);
+
+      queryClient.setQueriesData(PROFILE_KEY, (old) => ({
+        ...old,
+        preferences: {
+          ...old?.preferences,
+          notification: {
+            ...old?.preferences?.notification,
+            [type]: value,
+          },
+        },
+      }));
+
+      return { prev };
+    },
+
+    onError: (err, variables, context) => {
+      queryClient.setQueriesData(PROFILE_KEY, context.prev);
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries(PROFILE_KEY);
+    }
+  })
 
   // On updating user password
   const updatePassword = useMutation({
@@ -160,5 +195,6 @@ export const useProfile = (role) => {
     updatingImg: updateProfileImg.isPending,
 
     updatePassword,
+    updateNotification,
   };
 }

@@ -11,10 +11,32 @@ function Profiles() {
   const { data: me, isLoading } = useCurrentUser();
   const role = me?.role;
 
-  const { profile, user } = useProfile(role);
+  const { profile, user, updateNotification, updateProfile } = useProfile(role);
 
-  console.log('profile:', profile);
-  console.log('User:', user);
+  const handleToggle = (type) => {
+    const current = profile?.preferences?.notification?.[type] || false;
+
+    updateNotification.mutate({
+      type,
+      value: !current,
+    });
+  };
+
+  const Toggle = ({ value, onChange }) => {
+    return (
+      <button 
+        onClick={onChange}
+        className={`w-12 h-6 flex items-center rounded-full p-1 transition cursor-pointer ${value ? 'bg-primary' : 'bg-muted'}`}
+        >
+          <div
+            className={`bg-white w-4 h-4 rounded-full shadow-md transform transition cursor-pointer ${ value ? 'translate-x-6' : 'translate-x-0'}`}
+          />
+        </button>
+    )
+  }
+
+  //console.log('profile:', profile);
+  //console.log('User:', user);
 
   return (
     <section className='bg-gray-100 rounded-xl p-2 shadow-xs overflow-hidden'>
@@ -155,19 +177,28 @@ function Profiles() {
                 <div className='flex flex-col gap-2'>
                   <h4 className='font-semibold text-dark flex items-center gap-1 setHeading'> Preferences</h4>
                   <div className='grid grid-cols-[70%_30%] gap-3 p-2 SetProCon'>
-                    <div className='flex flex-col gap-2'>
-                      <p className='text-dark font-semibold text-base'>
-                        Email Notifications:{' '}
-                        {profile?.preferences?.notification?.email ? 'On' : 'Off'}
-                      </p>
-                      <p className='text-dark font-semibold text-base'>
-                        SMS Notifications:{' '}
-                        {profile?.preferences?.notification?.sms ? 'On' : 'Off'}
-                      </p>
-                      <p className='text-dark font-semibold text-base'>
-                        Push Notifications:{' '}
-                        {profile?.preferences?.notification?.push ? 'On' : 'Off'}
-                      </p>
+                    <div className='flex flex-col gap-4'>
+                      <div className='flex items-center justify-between'>
+                        <span className='text-dark font-semibold text-base'>Email Notification</span>
+                        <Toggle
+                          value={profile?.preferences?.notification?.email}
+                          onChange={() => handleToggle('email')}
+                        />
+                      </div>
+                      <div className='flex items-center justify-between'>
+                        <span className='text-dark font-semibold text-base'>SMS Notification</span>
+                        <Toggle
+                          value={profile?.preferences?.notification?.sms}
+                          onChange={() => handleToggle('sms')}
+                        />
+                      </div>
+                      <div className='flex items-center justify-between'>
+                        <span className='text-dark font-semibold text-base'>Push Notification</span>
+                        <Toggle
+                          value={profile?.preferences?.notification?.push}
+                          onChange={() => handleToggle('push')}
+                        />
+                      </div>
                     </div>
                     {/*<div className='flex justify-end'>
                       <button className='border-dark border px-2 py-1 font-semibold rounded-lg flex items-center gap-2 cursor-pointer hover:bg-blue-200 hover:border-none h-fit editSetBtn'>
@@ -192,13 +223,14 @@ function Profiles() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
             >
-            <ProfileEdit 
-              activeTab = {activeTab}
-              setActiveTab = {setActiveTab}
-              profile = {profile} 
-              user = {user} 
-              onUpdate = { isLoading }
-            />
+            <div className='p-2'>
+              <ProfileEdit 
+                setActiveTab = {setActiveTab}
+                profile = {profile} 
+                user = {user} 
+                onUpdate = {updateProfile}
+              />
+            </div>
         </motion.div>
         )}
       </AnimatePresence>

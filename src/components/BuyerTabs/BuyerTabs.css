@@ -387,7 +387,7 @@
     flex-wrap: wrap;
     gap:5px;
   }
-  .SetProInner{
+  .SetProInner, .profileEditSettings{
     grid-template-columns: repeat(1, 1fr);
   }
 }
