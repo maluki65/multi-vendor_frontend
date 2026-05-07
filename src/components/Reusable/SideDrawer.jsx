@@ -10,7 +10,7 @@ function SideDrawer({ isOpen, onClose }) {
   const drawerNavs = [
     { name: 'Shop', link: '/buyer/products'},
     { name: 'cart', link: '/buyer/cart' },
-    { name: 'Whishlist', link: '/buyer/wishlist' },
+    { name: 'Wishlist', link: '/buyer/wishlist' },
     { name: 'Checkout', link:'/buyer/checkout' },
     { name: 'Orders', link: '/buyer/orders' },
   ]
@@ -54,7 +54,7 @@ function SideDrawer({ isOpen, onClose }) {
         </div>
 
         <div className='flex items-center justify-between px-4 my-2 text-primary'>
-            <a onClick={() => navigate('/buyer/profile')} className=''>Profile</a>
+            <a onClick={() => navigate('/buyer/account')} className=''>Profile</a>
             <IoIosLogOut onClick={handleLogout} className='hover:text-red-500' size={23} />
           </div>
       </div>

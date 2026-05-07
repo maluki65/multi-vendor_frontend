@@ -15,6 +15,7 @@ import ProductSkeleton from '../BuyerItems/productSkeleton';
 import { MdRemoveShoppingCart, MdError } from "react-icons/md";
 import ProductCard from '../BuyerItems/productCard';
 import useCart from '../../../Hooks/useCart';
+import useWishlist from '../../../Hooks/useWishlist';
 
 function ProductDetails() {
   const [activeTab, setActiveTab] = useState('Vendor');
@@ -26,6 +27,7 @@ function ProductDetails() {
   const { getProductBySlugId, getSimilarProducts } = useProducts();
   const { data, isLoading } = getProductBySlugId(slugId);
   const { addToCart } = useCart();
+  const { addToWishlist } = useWishlist();
 
   const product = data?.product;
   //const count = data?.productCount;
@@ -357,7 +359,20 @@ function ProductDetails() {
                 Buy now
               </button>
 
-              <span className='text-gray-700'>
+              <span 
+                onClick={() => {
+                  addToWishlist.mutate({
+                    productId: product._id,
+                    name: product.name,
+                    price: product.price,
+                    MainIMg: product.MainIMg,
+                    discount: product.discount,
+                    discountPrice: product.discountPrice,
+                    quantity: product.quantity,
+                    slug: product.slug,
+                  })
+                }}
+               className='text-gray-700'>
                <SiGithubsponsors className='cursor-pointer detArrow' size={20} />
               </span>
             </div>

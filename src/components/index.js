@@ -60,3 +60,4 @@ export { default as Orders } from './BuyerTabs/BuyerItems/Orders';
 export { default as Profiles } from './BuyerTabs/BuyerItems/Profile';
 export { default as Passwords } from './BuyerTabs/BuyerItems/Passwords';
 export { default as ProfileEdit } from './BuyerTabs/BuyerItems/ProfileEdit';
+export { default as WishlistTable } from './BuyerTabs/BuyerItems/WishlistTable';
