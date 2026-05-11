@@ -141,7 +141,7 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
 
             <div className='card-view'>
               {isError && (
-                <div className=' my-5 flex flex-col justify-center items-center text-center gap-2'>
+                <div className='my-5 flex flex-col justify-center items-center text-center gap-2'>
                   <MdError className='text-red-500' size={55} />
                   <p className='text-base text-red-500'>
                     Failed to load products in cart
@@ -241,7 +241,7 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
                     })}
                   </div>
                 ) : (
-                  <div className=' my-5 flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
+                  <div className='my-5 flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
                     <MdRemoveShoppingCart className='text-red-500' size={55} />
                     <p className='font-semibold text-dark text-xl'>
                       Your cart is empty!

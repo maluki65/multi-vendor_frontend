@@ -45,7 +45,7 @@ function Wishlist() {
           </span>
       </section>
 
-      <section className='min-h-[60vh] px-[3%] my-5'>
+      <section className='min-h-[60vh] px-[3%] my-5 overflow-hidden'>
         <WishlistTable
           wishlist={wishlist}
           totalWishlistItems={totalWishlistItems}
@@ -55,28 +55,30 @@ function Wishlist() {
         />
       </section>
 
-      {wishlist.length > 0 ? (
-        <div className='my-3 px-[3%] flex items-center justify-between'>
-          <div className='flex gap-3 items-center'>
-            <a className='text-dark text-base font-semibold underline hover:text-primary cursor-pointer'>
-              Wishlink link:
-            </a>
-            <span className='rounded-full px-3 py-2 border border-gray-400 text-gray-700 text-base'>
-              https://www.sellory/com/buyer/879843/wishlist
-            </span>
-            <button
-              className='rounded-full bg-dark text-white px-3 py-2 cursor-pointer hover:bg-orange-400'>Copy Link</button>
-          </div>
+      <secion className='min-h-[20vh] px-[3%] my-5 overflow-hidden'>
+        {wishlist.length > 0 ? (
+          <div className='my-3 px-[3%] flex items-center justify-between clearWishlisxtCon'>
+            <div className='flex gap-3 items-center'>
+              <a className='text-dark text-base font-semibold underline hover:text-primary cursor-pointer'>
+                Wishlink link:
+              </a>
+              <span className='rounded-full px-3 py-2 border border-gray-400 text-gray-700 text-sm flex flex-wrap'>
+                https://www.sellory/com/buyer/879843/wishlist
+              </span>
+              <button
+                className='rounded-full bg-dark text-white px-3 py-2 cursor-pointer hover:bg-orange-400'>Copy Link</button>
+            </div>
 
-          <a 
-          onClick={() => clearWishlist.mutate()}
-          className='text-dark text-base underline hover:text-primary font-semibold cursor-pointer'>
-            Clear Wishlist
-          </a>
-        </div>
-      ): (
-        <div className=''></div>
-      )}
+            <a 
+            onClick={() => clearWishlist.mutate()}
+            className='text-dark text-base underline hover:text-primary font-semibold cursor-pointer'>
+              Clear Wishlist
+            </a>
+          </div>
+        ): (
+          <div className=''></div>
+        )}
+      </secion>
 
       <div className='p-2'>
        <Footer/>
