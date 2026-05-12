@@ -3,12 +3,14 @@ import '../vendorTabs.css';
 import { AdLoader } from '../..';
 import { debounce } from 'lodash';
 import { VerifyDoc } from '../../';
-import { TbShoppingBagX } from "react-icons/tb";
+import { TbShoppingBagX, TbShoppingBagExclamation, TbEdit } from "react-icons/tb";
 import { toast, Toaster } from 'react-hot-toast';
 import useProducts from '../../../Hooks/useProduts';
 import { motion, AnimatePresence } from 'framer-motion';
 import useDeleteProduct from '../deleteProduct';
 import EditProductForm from '../EditProductForm';
+import { GrFormViewHide } from "react-icons/gr";
+import { IoTrashOutline } from "react-icons/io5";
 
 function vendorProducts({ vendorId }) {  
   const [selectedEditProduct, setSelectedEditProduct] = useState(null);
@@ -36,7 +38,7 @@ function vendorProducts({ vendorId }) {
 
   const { getVendorProducts, deleteProduct, updateProduct } = useProducts();
   const handleDeleteProduct = useDeleteProduct(deleteProduct);;
-  const { data, isLoading } = getVendorProducts(vendorId, page, search);
+  const { data, isLoading, isError } = getVendorProducts(vendorId, page, search);
 
   const products = data?.products || [];
   const totalPages = data?.totalPages || 1;
@@ -69,7 +71,7 @@ function vendorProducts({ vendorId }) {
 
   const handleViewProduct = (product) => {
     setSelectedProduct(product);
-    console.log(product.attributes);
+    //console.log(product.attributes);
     setModalOpen(true);
   }
 
@@ -93,7 +95,7 @@ function vendorProducts({ vendorId }) {
           <AdLoader/>
         </div>
       ): (
-        <div className='p-4 bg-gray-300 my-4 rounded-md'>
+        <div className='p-4 bg-white my-4 rounded-md'>
           <div className='flex gap-2 mb-4 items-center justify-center p-2 rounded'>
             {['all', 'pending', 'approved', 'rejected'].map((status) => (
               <button
@@ -120,63 +122,181 @@ function vendorProducts({ vendorId }) {
             />
           </div>
 
-          {filteredProducts.length === 0 ? (
-            <div className='flex justify-center items-center h-[75vh]'>
-              <div className='flex flex-col gap-3  items-center justify-center'>
-                <TbShoppingBagX  className='text-red-500' size={50}/>
-                <p className=''> No products found</p>
+          <div className='w-full mt-3 table-view h-[360px] overflow-auto VenProdTableCon8u'>
+            {isError && (
+              <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+                <TbShoppingBagExclamation className='text-red-500' size={65} />
+                <p className='text-red-500'>Failed to get vendor products!</p>
               </div>
-            </div>
-          ): (
-            <>
-              <div className="grid grid-cols-4 gap-2 prodCardsV">
-                <AnimatePresence>
-                  {filteredProducts.map((product) => (
-                    <motion.div 
-                      key={product._id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
-                      className='p-1 bg-white rounded-md shadow-sm flex flex-col gap-2 venProdCard'
-                      >
-                        <div className='h-40 w-full rounded-md'>
-                          <img
-                            src={product?.MainIMg}
-                            alt={product?.slug}
-                            className='h-full w-full rounded-md shadow-md object-cover'
-                          />
-                        </div>
-                        <div className='p-2 flex flex-col space-y-1'>
-                          <div className='flex items-center justify-between'>
-                          <p className='text-md'>{product?.name}</p>
-                          <span 
-                            className={`p-1 text-xs rounded-full ${product.moderationStatus === 'approved'
-                              ? 'bg-green-600'
-                                : product.moderationStatus === 'pending'
-                                ? 'bg-yellow-600'
-                                : 'bg-red-600'
-                              }`}
-                            ></span>
-                          </div>
-                          <p className='text-sm flex items-center justify-between text-gray-500'>Price <span className='hover:underline'>{product?.price}</span></p>
-                          <p className='text-sm flex items-center justify-between text-gray-500'>Quantity <span className='hover:underline'>{product?.quantity}</span></p>
-                          <div className='flex items-center gap-2 justify-end'>
-                            <p className='text-sm hover:underline cursor-pointer text-dark hover:text-green-600' onClick={() => handleViewProduct(product)}>view</p>
-                            <p className='text-sm hover:underline cursor-pointer text-dark hover:text-orange-600'
-                            onClick={() => handleEditProduct(product)}>edit</p>
-                            <p className='text-sm hover:underline cursor-pointer text-dark hover:text-red-600'
-                             onClick={() => handleDeleteProduct(product._id)}>Delete</p>
-                          </div>
-                        </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-            </>
-          )}
+            )}
 
-          <div className="flex justify-between items-center CatNav mt-4">
+            {!isError && (
+              filteredProducts?.length > 0 ? (
+                <table className='w-full border-collapse WishTable'>
+                  <thead className=''>
+                    <tr className='bg-secondary text-left text-sm font-medium text-dark rounded-lg'>
+                      <th className='p-3 rounded-l-lg'>Product</th>
+                      <th className='p-3'>Price</th>
+                      <th className='p-3'>Brand</th>
+                      <th className='p-3'>status</th>
+                      <th className='p-3 rounded-r-lg'></th>
+                    </tr>
+                  </thead>
+
+                  <tbody className=''>
+                    {filteredProducts.map((item) => {
+                      return (
+                        <tr
+                          key={item._id}
+                          className='border-b border-gray-300'>
+                            <td className='p-2 flex items-center gap-2'>
+                              <img
+                                src={item?.MainIMg}
+                                alt={item?.name}
+                                loading='lazy'
+                                className='w-15 h-15 object-contain rounded-md cartImg'
+                              />
+                              <div className='flex flex-col gap-1'>
+                                <p className='font-semibold cartItem'>{item?.name}</p>
+                                <p className='text-sm'> {item?.quantity <= 10 ? (
+                                  <span className='text-red-500 prodVenItem'>Quantity: {item?.quantity}</span>
+                                ) : (
+                                  <span className='text-gray-500 prodVenItem'>Quantity: {item?.quantity}</span>
+                                )}</p>
+                              </div>
+                            </td>
+                            <td className='p-2'>
+                              {item?.discount > 0 ? (
+                                <p className='wishPrice'>
+                                  ksh {(item.discountPrice /100).toLocaleString()}
+                                </p>
+                              ) : (
+                                <p className='wishPrice'>
+                                  ksh {(item?.price / 100).toLocaleString()}
+                                </p>
+                              )}
+                            </td>
+                            <td className='p-2'>{item?.brand}</td>
+                            <td className='p-2'>
+                              <span 
+                                className={`p-1 text-xs rounded-full wishDate ${item?.moderationStatus === 'approved'
+                                  ? 'bg-green-200 text-green-500 p-1'
+                                    : item?.moderationStatus === 'pending'
+                                    ? 'bg-yellow-200 text-yellow-500 p-1'
+                                    : 'bg-red-200 text-red-500 p-1'
+                                  }`}
+                              >
+                                {item?.moderationStatus}
+                              </span>
+                            </td>
+                            <td className='p-2'>
+                              <div className='flex items-center gap-4'>
+                                <GrFormViewHide 
+                                  onClick={() => handleViewProduct(item)}
+                                  className='cursor-pointer text-gray-600 hover:text-orange-400 venProdIcon4u' 
+                                  size={20} 
+                                />
+                                <TbEdit 
+                                  onClick={() => handleEditProduct(item)}
+                                  className='cursor-pointer text-gray-600 hover:text-orange-400 venProdIcon4u' 
+                                  size={20} 
+                                />
+                                <IoTrashOutline 
+                                  onClick={() => handleDeleteProduct(item._id)}
+                                  className='cursor-pointer text-gray-600 hover:text-orange-400 venProdIcon4u' 
+                                  size={20} 
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              ) : (
+                <div className='my-5 flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
+                  <TbShoppingBagX className='text-red-500' size={65} />
+                  <p className='text-dark font-semibold text-xl'>No products found</p>
+                </div>
+              )
+            )}
+          </div>
+
+          <div className='card-view'>
+            {isError && (
+              <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+                <TbShoppingBagExclamation className='text-red-500' size={65} />
+                <p className='text-red-500'>Failed to get vendor products!</p>
+              </div>
+            )}
+
+            {!isError && (
+              filteredProducts.length > 0 ? (
+                <div className='flex flex-col gap-3'>
+                  {filteredProducts.map((item) => {
+                    return (
+                      <div
+                        key={item._id}
+                        className='flex gap-2 rounded-md shadow-sm p-3'>
+                          <img
+                            src={item?.MainIMg}
+                            alt={item?.name}
+                            className='w-20 h-20 object-contain rounded-md'
+                            loading='lazy'
+                          />
+                          <div className='flex flex-col gap-2 w-full'>
+                            <div className='flex items-center justify-between wishNameStock'>
+                              <p className='text-md text-dark'>{item?.name}</p>
+                              <p className='text-sm'> {item?.quantity <= 10 ? (
+                                  <span className='text-red-500 prodVenItem'>Quantity: {item?.quantity}</span>
+                                ) : (
+                                  <span className='text-gray-500 prodVenItem'>Quantity: {item?.quantity}</span>
+                                )}
+                              </p>
+                            </div>
+                            <p className='text-gray-600 font-semibold'>
+                              {item?.discount > 0 ? (
+                                <span className=''>
+                                  Ksh {(item.discountPrice / 100).toLocaleString()}
+                                </span>
+                              ): (
+                                <span className=''>
+                                  Ksh {(item.price / 100).toLocaleString()}
+                                </span>
+                              )}
+                            </p>
+                            <div className='flex items-center justify-between'>
+                              <GrFormViewHide 
+                                onClick={() => handleViewProduct(item)}
+                                className='cursor-pointer text-primary hover:text-orange-400 venProdIcon4u' 
+                                size={20} 
+                              />
+                              <TbEdit 
+                                onClick={() => handleEditProduct(item)}
+                                className='cursor-pointer text-primary hover:text-orange-400 venProdIcon4u' 
+                                size={20} 
+                              />
+                              <IoTrashOutline 
+                                onClick={() => handleDeleteProduct(item._id)}
+                                className='cursor-pointer text-primary hover:text-red-500 venProdIcon4u' 
+                                size={20} 
+                              />
+                            </div>
+                          </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className='my-5 flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
+                  <TbShoppingBagX className='text-red-500' size={65} />
+                  <p className='text-dark font-semibold text-xl'>No products found</p>
+                </div>
+              )
+            )}
+          </div>
+
+          <div className='flex justify-between items-center CatNav mt-4'>
             <button 
               disabled={page <= 1} 
               onClick={() => setPage(page - 1)}
@@ -206,7 +326,7 @@ function vendorProducts({ vendorId }) {
               <img 
                 src={selectedProduct?.MainIMg}
                 alt={selectedProduct?.slug}
-                className='rounded-md h-50 object-cover w-full selectImg'
+                className='rounded-md h-50 object-contain w-full selectImg'
               />
               <div className='flex flex-wrap gap-2'>
                 {selectedProduct?.supportImgs?.map((item, index) => (
@@ -217,7 +337,7 @@ function vendorProducts({ vendorId }) {
                       <img
                         src={item}
                         alt={`support-${index}`}
-                        className='h-full w-full object-cover rounded'
+                        className='h-full w-full object-contain rounded'
                       />
                     </div>
                 ))}
@@ -226,7 +346,13 @@ function vendorProducts({ vendorId }) {
                 <div className='grid grid-cols-3 gap-2 selectChar'>
                 <p className='text-sm text-dark flex items-center gap-3'> <span className='font-semibold'>Category:</span>{selectedProduct?.category?.name}</p>
                 <p className='text-sm text-dark flex items-center gap-3'> <span className='font-semibold'>Quantity:</span>{selectedProduct?.quantity}</p>
-                <p className='text-sm text-dark flex items-center gap-3'> <span className='font-semibold'>Price:</span>Ksh:{selectedProduct?.price?.toLocaleString()}</p>
+                <p className='text-sm text-dark flex items-center gap-3'> <span className='font-semibold'>Price:</span>{selectedProduct?.discount > 0 ? (
+                  <span className=''>ksh: {(selectedProduct?.discountPrice / 100).toLocaleString()}</span>
+                ) : (
+                  <span className=''>
+                    ksh: {(selectedProduct?.price / 100).toLocaleString()}
+                  </span>
+                )}</p>
                 </div>
                 <p className='text-sm text-dark flex flex-col'> <span className='font-semibold'>Description:</span>{selectedProduct?.description}</p>
                 <p className='text-sm text-dark font-semibold flex flex-col'>

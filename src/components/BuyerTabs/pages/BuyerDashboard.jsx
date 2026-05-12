@@ -14,8 +14,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ProductSkeleton from '../BuyerItems/productSkeleton';
 import { Axis, fan, vision, hp, Tv, Lazuli, Sub } from '../../../assets';
 import BuyerCategories from '../../../commons/Data/BuyerCategories';
-import { MdArrowRightAlt } from "react-icons/md";
+import { MdArrowRightAlt, MdRemoveShoppingCart } from "react-icons/md";
 import { Footer } from '../../';
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 function BuyerDashboard() {
   const [startIndex, setStartIndex] = useState(0);
@@ -23,11 +24,14 @@ function BuyerDashboard() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const navigate = useNavigate();
 
-  const { getAllProducts } = useProducts();
+  const { getAllProducts, getFeaturedProducts } = useProducts();
   const { data, isLoading, isError } = getAllProducts({
     page: 1,
     limit: 20
   });
+
+  const { data: featuredData, isLoading: featureLoading, isError: featureError } = getFeaturedProducts(5);
+  const featuredProducts = featuredData?.products || [];
 
   useEffect(() => {
     const handleReSize = () => {
@@ -199,7 +203,6 @@ function BuyerDashboard() {
               </motion.div>
           </AnimatePresence>
           )}
-
         </section>
 
         <section className='min-h-[30vh] px-[2%] my-10 flex flex-col overflow-hidden catCon89'>
@@ -268,6 +271,57 @@ function BuyerDashboard() {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className='min-h-[30vh] px-[3%] my-6 bg-white'>
+          <div className='flex items-center justify-between CatTexts001'>
+            <h2 className='font-semibold text-xl flex items-center gap-1 mb-4 pdosC'>
+              <span className='underline decoration-secondary decoration-2 underline-offset-4'>
+                Featured 
+              </span>
+              <span>products</span>
+            </h2>
+
+            <a 
+              className='text-base flex items-center gap-2 cursor-pointer text-dark hover:text-primary hover:underline'>
+              Featured <FaLongArrowAltRight className='' />
+            </a>
+          </div>
+
+          <div className='grid grid-cols-5 gap-3 productCards65'>
+            {featureLoading && ( 
+              Array.from({ length: 4 }).map((_, i) => 
+              <ProductSkeleton key={i} /> 
+              ) 
+            )}
+
+            {featureError && (
+              <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+                <MdError className='text-red-500' size={45} />
+                <p className='text-red-500'>Failed to load featured products</p>
+              </div>
+            )}
+
+            {!featureLoading && !featureError && (
+              featuredProducts.length > 0 ? (
+                featuredProducts.slice(0,5).map((product, index) => (
+                  <motion.div
+                    key={product._id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.05 }}
+                    >
+                      <ProductCard product={product} />
+                  </motion.div>
+                ))
+              ) : (
+                <div className='col-span-full text-center text-gray-500 flex flex-col items-center gap-2'>
+                  <MdRemoveShoppingCart className='text-red-500' size={45} />
+                  <p>No featured products found</p>
+                </div>
+              )
+            )}
           </div>
         </section>
 

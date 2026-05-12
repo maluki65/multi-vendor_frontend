@@ -159,7 +159,7 @@ function WishlistTable({ wishlist, totalWishlistItems, isLoading, isError, remov
                     return (
                       <div 
                        key={item._id}
-                       className='flex gap-2 bg-gray-white rounded-md shadow-sm p-3'>
+                       className='flex gap-2 rounded-md shadow-sm p-3'>
                         <img
                           src={item?.MainIMg}
                           alt={item?.name}
@@ -183,13 +183,13 @@ function WishlistTable({ wishlist, totalWishlistItems, isLoading, isError, remov
                           </div>
                           <p className='text-gray-600 font-semibold'>
                             {item?.discount > 0 ? (
-                              <p className=''>
+                              <span className=''>
                                 Ksh {(item.discountPrice / 100).toLocaleString()}
-                              </p>
+                              </span>
                             ): (
-                              <p className=''>
+                              <span className=''>
                                 Ksh {(item.price / 100).toLocaleString()}
-                              </p>
+                              </span>
                             )}
                           </p>
                           <div className='flex items-end justify-between'>

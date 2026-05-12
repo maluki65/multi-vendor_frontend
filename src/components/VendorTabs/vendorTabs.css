@@ -56,6 +56,16 @@
   .attrVal{
     font-size: 2em;
   }
+  .VenProdTableCon8u{
+    height: 80vh;
+  }
+  .prodVenItem{
+    font-size: 20px;
+  }
+  .venProdIcon4u{
+    height: 40px;
+    width: 40px;
+  }
 }
 
 @media(max-width: 900px){

@@ -18,8 +18,8 @@ function VerifyDoc({ isOpen, onClose, title, children, className = '' }) {
             </h2>
             <button 
               onClick={onClose}
-              className='text-muted hover:text-gray-800 font-bold cursor-pointer modalT'>
-                X
+              className='text-white bg-red-500 px-3 py-1 rounded-full hover:text-gray-800 cursor-pointer modalT'>
+                Close
               </button>
           </div>
           <div className='modal-body'>
