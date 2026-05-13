@@ -67,7 +67,7 @@ const useOrders = () => {
       return { toastId: id };
     },
 
-    onSuccess: (data, variables, context) => {
+    onSuccess: async(data, variables, context) => {
       toast.success('Order status updated', { id: context.toastId });
 
       await Promise.all([
