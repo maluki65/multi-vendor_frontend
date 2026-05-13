@@ -130,7 +130,7 @@ function SignIn() {
                   onChange={(e) => setRememberMe(e.target.checked)}
                   className='text-primary'
                 />
-                <span className='text-sm rem01'>Remember me</span>
+                <span className='text-sm cursor-pointer rem01'>Remember me</span>
               </label>
               <a className='text-primary text-sm cursor-pointer hover:underline fonr-serif rem'>
                 Forgot Password?

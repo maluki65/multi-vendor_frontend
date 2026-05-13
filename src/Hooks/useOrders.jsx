@@ -30,19 +30,71 @@ const useOrders = () => {
   });
 
   // On getting vendor orders
-  const getVendorOrder = useQuery({
-    queryKey: ['VendorOrders'],
-    queryFn: async () => {
-      const { data } = await Api.get('/orders/vendor');
+  const getVendorOrder = ({ 
+    page = 1,
+    limit = 6,
+    search = '',
+  }) => {
+    return useQuery({
+      queryKey: ['VendorOrders', page, limit, search],
+      queryFn: async () => {
+        const { data } = await Api.get('/orders/vendor', {
+          params: {
+            page,
+            limit,
+            search
+          },
+        });
+
+        return data;
+      },
+
+      enabled: me?.role === 'Vendor',
+      keepPreviousDate: true,
+      staleTime: 1000 * 60 * 5,
+    });
+  };
+
+  // On updating order status for all roles
+  const updateOrderStatus = useMutation({
+    mutationFn: async ({ orderId, status }) => {
+      const { data } = await Api.patch(`/orders/update/${orderId}/status`, { status })
       return data;
     },
-    enabled: me?.role === 'Vendor'
-  });
 
+    onMutate: () => {
+      const id = toast.loading('Updating order status...');
+      return { toastId: id };
+    },
+
+    onSuccess: (data, variables, context) => {
+      toast.success('Order status updated', { id: context.toastId });
+
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['VendorOrders'],
+        }),
+      
+        queryClient.invalidateQueries({
+          queryKey: ['BuyerOrders'],
+        }),
+      
+        queryClient.invalidateQueries({
+          queryKey: [orderKey],
+        }),
+      ]);
+    }, 
+
+    onError: (error, variables, context) => {
+      toast.error(error?.response?.data?.message || 'Failed to update order status', { id: context.toastId });
+      console.error('Failed to update order status', error);
+    }
+  })
   return {
     getAllOrders,
     getBuyerOrder,
     getVendorOrder,
+    updateOrderStatus,
   }
 }
 

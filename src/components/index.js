@@ -61,3 +61,5 @@ export { default as Profiles } from './BuyerTabs/BuyerItems/Profile';
 export { default as Passwords } from './BuyerTabs/BuyerItems/Passwords';
 export { default as ProfileEdit } from './BuyerTabs/BuyerItems/ProfileEdit';
 export { default as WishlistTable } from './BuyerTabs/BuyerItems/WishlistTable';
+export { default as VendorOrders } from './VendorTabs/order';
+export { default as VendorPayments } from './VendorTabs/Payments';
