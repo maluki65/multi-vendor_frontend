@@ -50,7 +50,7 @@ const useOrders = () => {
       },
 
       enabled: me?.role === 'Vendor',
-      keepPreviousDate: true,
+      keepPreviousData: true,
       staleTime: 1000 * 60 * 5,
     });
   };
@@ -80,7 +80,7 @@ const useOrders = () => {
         }),
       
         queryClient.invalidateQueries({
-          queryKey: [orderKey],
+          queryKey: orderKey,
         }),
       ]);
     }, 

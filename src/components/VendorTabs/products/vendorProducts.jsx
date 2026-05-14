@@ -122,179 +122,193 @@ function vendorProducts({ vendorId }) {
             />
           </div>
 
-          <div className='w-full mt-3 table-view h-[360px] overflow-auto VenProdTableCon8u'>
-            {isError && (
-              <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
-                <TbShoppingBagExclamation className='text-red-500' size={65} />
-                <p className='text-red-500'>Failed to get vendor products!</p>
-              </div>
-            )}
+          <AnimatePresence mode='wait'>
+            <motion.div 
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             exit={{ opacity: 0, y: -20 }}
+             transition={{ duration: 0.3 }}
+             className='w-full mt-3 table-view h-[360px] overflow-auto VenProdTableCon8u'>
+              {isError && (
+                <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+                  <TbShoppingBagExclamation className='text-red-500' size={65} />
+                  <p className='text-red-500'>Failed to get vendor products!</p>
+                </div>
+              )}
 
-            {!isError && (
-              filteredProducts?.length > 0 ? (
-                <table className='w-full border-collapse WishTable'>
-                  <thead className=''>
-                    <tr className='bg-secondary text-left text-sm font-medium text-dark rounded-lg'>
-                      <th className='p-3 rounded-l-lg'>Product</th>
-                      <th className='p-3'>Price</th>
-                      <th className='p-3'>Brand</th>
-                      <th className='p-3'>status</th>
-                      <th className='p-3 rounded-r-lg'></th>
-                    </tr>
-                  </thead>
+              {!isError && (
+                filteredProducts?.length > 0 ? (
+                  <table className='w-full border-collapse WishTable'>
+                    <thead className=''>
+                      <tr className='bg-secondary text-left text-sm font-medium text-dark rounded-lg'>
+                        <th className='p-3 rounded-l-lg'>Product</th>
+                        <th className='p-3'>Price</th>
+                        <th className='p-3'>Brand</th>
+                        <th className='p-3'>status</th>
+                        <th className='p-3 rounded-r-lg'></th>
+                      </tr>
+                    </thead>
 
-                  <tbody className=''>
+                    <tbody className=''>
+                      {filteredProducts.map((item) => {
+                        return (
+                          <tr
+                            key={item._id}
+                            className='border-b border-gray-300'>
+                              <td className='p-2 flex items-center gap-2'>
+                                <img
+                                  src={item?.MainIMg}
+                                  alt={item?.name}
+                                  loading='lazy'
+                                  className='w-15 h-15 object-contain rounded-md cartImg'
+                                />
+                                <div className='flex flex-col gap-1'>
+                                  <p className='font-semibold cartItem'>{item?.name}</p>
+                                  <p className='text-sm'> {item?.quantity <= 10 ? (
+                                    <span className='text-red-500 prodVenItem'>Quantity: {item?.quantity}</span>
+                                  ) : (
+                                    <span className='text-gray-500 prodVenItem'>Quantity: {item?.quantity}</span>
+                                  )}</p>
+                                </div>
+                              </td>
+                              <td className='p-2'>
+                                {item?.discount > 0 ? (
+                                  <p className='wishPrice'>
+                                    ksh {(item.discountPrice /100).toLocaleString()}
+                                  </p>
+                                ) : (
+                                  <p className='wishPrice'>
+                                    ksh {(item?.price / 100).toLocaleString()}
+                                  </p>
+                                )}
+                              </td>
+                              <td className='p-2'>{item?.brand}</td>
+                              <td className='p-2'>
+                                <span 
+                                  className={`p-1 text-xs rounded-full wishDate ${item?.moderationStatus === 'approved'
+                                    ? 'bg-green-200 text-green-500 p-1'
+                                      : item?.moderationStatus === 'pending'
+                                      ? 'bg-yellow-200 text-yellow-500 p-1'
+                                      : 'bg-red-200 text-red-500 p-1'
+                                    }`}
+                                >
+                                  {item?.moderationStatus}
+                                </span>
+                              </td>
+                              <td className='p-2'>
+                                <div className='flex items-center gap-4'>
+                                  <GrFormViewHide 
+                                    onClick={() => handleViewProduct(item)}
+                                    className='cursor-pointer text-gray-600 hover:text-orange-400 venProdIcon4u' 
+                                    size={20} 
+                                  />
+                                  <TbEdit 
+                                    onClick={() => handleEditProduct(item)}
+                                    className='cursor-pointer text-gray-600 hover:text-orange-400 venProdIcon4u' 
+                                    size={20} 
+                                  />
+                                  <IoTrashOutline 
+                                    onClick={() => handleDeleteProduct(item._id)}
+                                    className='cursor-pointer text-gray-600 hover:text-orange-400 venProdIcon4u' 
+                                    size={20} 
+                                  />
+                                </div>
+                              </td>
+                            </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div className='my-5 flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
+                    <TbShoppingBagX className='text-red-500' size={65} />
+                    <p className='text-dark font-semibold text-xl'>No products found</p>
+                  </div>
+                )
+              )}
+            </motion.div>
+          </AnimatePresence>
+
+          <AnimatePresence mode='wait'>
+            <motion.div 
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             exit={{ opacity: 0, y: -20 }}
+             transition={{ duration: 0.3 }}
+             className='card-view'>
+              {isError && (
+                <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+                  <TbShoppingBagExclamation className='text-red-500' size={65} />
+                  <p className='text-red-500'>Failed to get vendor products!</p>
+                </div>
+              )}
+
+              {!isError && (
+                filteredProducts.length > 0 ? (
+                  <div className='flex flex-col gap-3'>
                     {filteredProducts.map((item) => {
                       return (
-                        <tr
+                        <div
                           key={item._id}
-                          className='border-b border-gray-300'>
-                            <td className='p-2 flex items-center gap-2'>
-                              <img
-                                src={item?.MainIMg}
-                                alt={item?.name}
-                                loading='lazy'
-                                className='w-15 h-15 object-contain rounded-md cartImg'
-                              />
-                              <div className='flex flex-col gap-1'>
-                                <p className='font-semibold cartItem'>{item?.name}</p>
+                          className='flex gap-2 rounded-md shadow-sm p-3'>
+                            <img
+                              src={item?.MainIMg}
+                              alt={item?.name}
+                              className='w-20 h-20 object-contain rounded-md'
+                              loading='lazy'
+                            />
+                            <div className='flex flex-col gap-2 w-full'>
+                              <div className='flex items-center justify-between wishNameStock'>
+                                <p className='text-md text-dark'>{item?.name}</p>
                                 <p className='text-sm'> {item?.quantity <= 10 ? (
-                                  <span className='text-red-500 prodVenItem'>Quantity: {item?.quantity}</span>
-                                ) : (
-                                  <span className='text-gray-500 prodVenItem'>Quantity: {item?.quantity}</span>
-                                )}</p>
+                                    <span className='text-red-500 prodVenItem'>Quantity: {item?.quantity}</span>
+                                  ) : (
+                                    <span className='text-gray-500 prodVenItem'>Quantity: {item?.quantity}</span>
+                                  )}
+                                </p>
                               </div>
-                            </td>
-                            <td className='p-2'>
-                              {item?.discount > 0 ? (
-                                <p className='wishPrice'>
-                                  ksh {(item.discountPrice /100).toLocaleString()}
-                                </p>
-                              ) : (
-                                <p className='wishPrice'>
-                                  ksh {(item?.price / 100).toLocaleString()}
-                                </p>
-                              )}
-                            </td>
-                            <td className='p-2'>{item?.brand}</td>
-                            <td className='p-2'>
-                              <span 
-                                className={`p-1 text-xs rounded-full wishDate ${item?.moderationStatus === 'approved'
-                                  ? 'bg-green-200 text-green-500 p-1'
-                                    : item?.moderationStatus === 'pending'
-                                    ? 'bg-yellow-200 text-yellow-500 p-1'
-                                    : 'bg-red-200 text-red-500 p-1'
-                                  }`}
-                              >
-                                {item?.moderationStatus}
-                              </span>
-                            </td>
-                            <td className='p-2'>
-                              <div className='flex items-center gap-4'>
+                              <p className='text-gray-600 font-semibold'>
+                                {item?.discount > 0 ? (
+                                  <span className=''>
+                                    Ksh {(item.discountPrice / 100).toLocaleString()}
+                                  </span>
+                                ): (
+                                  <span className=''>
+                                    Ksh {(item.price / 100).toLocaleString()}
+                                  </span>
+                                )}
+                              </p>
+                              <div className='flex items-center justify-between'>
                                 <GrFormViewHide 
                                   onClick={() => handleViewProduct(item)}
-                                  className='cursor-pointer text-gray-600 hover:text-orange-400 venProdIcon4u' 
+                                  className='cursor-pointer text-primary hover:text-orange-400 venProdIcon4u' 
                                   size={20} 
                                 />
                                 <TbEdit 
                                   onClick={() => handleEditProduct(item)}
-                                  className='cursor-pointer text-gray-600 hover:text-orange-400 venProdIcon4u' 
+                                  className='cursor-pointer text-primary hover:text-orange-400 venProdIcon4u' 
                                   size={20} 
                                 />
                                 <IoTrashOutline 
                                   onClick={() => handleDeleteProduct(item._id)}
-                                  className='cursor-pointer text-gray-600 hover:text-orange-400 venProdIcon4u' 
+                                  className='cursor-pointer text-primary hover:text-red-500 venProdIcon4u' 
                                   size={20} 
                                 />
                               </div>
-                            </td>
-                          </tr>
+                            </div>
+                        </div>
                       )
                     })}
-                  </tbody>
-                </table>
-              ) : (
-                <div className='my-5 flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
-                  <TbShoppingBagX className='text-red-500' size={65} />
-                  <p className='text-dark font-semibold text-xl'>No products found</p>
-                </div>
-              )
-            )}
-          </div>
-
-          <div className='card-view'>
-            {isError && (
-              <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
-                <TbShoppingBagExclamation className='text-red-500' size={65} />
-                <p className='text-red-500'>Failed to get vendor products!</p>
-              </div>
-            )}
-
-            {!isError && (
-              filteredProducts.length > 0 ? (
-                <div className='flex flex-col gap-3'>
-                  {filteredProducts.map((item) => {
-                    return (
-                      <div
-                        key={item._id}
-                        className='flex gap-2 rounded-md shadow-sm p-3'>
-                          <img
-                            src={item?.MainIMg}
-                            alt={item?.name}
-                            className='w-20 h-20 object-contain rounded-md'
-                            loading='lazy'
-                          />
-                          <div className='flex flex-col gap-2 w-full'>
-                            <div className='flex items-center justify-between wishNameStock'>
-                              <p className='text-md text-dark'>{item?.name}</p>
-                              <p className='text-sm'> {item?.quantity <= 10 ? (
-                                  <span className='text-red-500 prodVenItem'>Quantity: {item?.quantity}</span>
-                                ) : (
-                                  <span className='text-gray-500 prodVenItem'>Quantity: {item?.quantity}</span>
-                                )}
-                              </p>
-                            </div>
-                            <p className='text-gray-600 font-semibold'>
-                              {item?.discount > 0 ? (
-                                <span className=''>
-                                  Ksh {(item.discountPrice / 100).toLocaleString()}
-                                </span>
-                              ): (
-                                <span className=''>
-                                  Ksh {(item.price / 100).toLocaleString()}
-                                </span>
-                              )}
-                            </p>
-                            <div className='flex items-center justify-between'>
-                              <GrFormViewHide 
-                                onClick={() => handleViewProduct(item)}
-                                className='cursor-pointer text-primary hover:text-orange-400 venProdIcon4u' 
-                                size={20} 
-                              />
-                              <TbEdit 
-                                onClick={() => handleEditProduct(item)}
-                                className='cursor-pointer text-primary hover:text-orange-400 venProdIcon4u' 
-                                size={20} 
-                              />
-                              <IoTrashOutline 
-                                onClick={() => handleDeleteProduct(item._id)}
-                                className='cursor-pointer text-primary hover:text-red-500 venProdIcon4u' 
-                                size={20} 
-                              />
-                            </div>
-                          </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              ) : (
-                <div className='my-5 flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
-                  <TbShoppingBagX className='text-red-500' size={65} />
-                  <p className='text-dark font-semibold text-xl'>No products found</p>
-                </div>
-              )
-            )}
-          </div>
+                  </div>
+                ) : (
+                  <div className='my-5 flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
+                    <TbShoppingBagX className='text-red-500' size={65} />
+                    <p className='text-dark font-semibold text-xl'>No products found</p>
+                  </div>
+                )
+              )}
+            </motion.div>
+          </AnimatePresence>
 
           <div className='flex justify-between items-center CatNav mt-4'>
             <button 
