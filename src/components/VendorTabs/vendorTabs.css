@@ -18,7 +18,7 @@
     width:70px;
     height: 70px;
   }
-  .suppText{
+  .suppText, .orderTableH1 td{
     font-size: 1em;
   }
   .supportPrevImg{
@@ -53,7 +53,7 @@
     font-size: 2.5em;
     font-weight: normal;
   }
-  .attrVal{
+  .attrVal, .orderStatusTitles{
     font-size: 2em;
   }
   .VenProdTableCon8u{
@@ -75,11 +75,20 @@
   .SeaProd{
     width: 60%;
   }
+  .VenOrders{
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media(max-width: 626px){
   .prodCardsV, .selectChar{
     grid-template-columns: repeat(2, 1fr);
+  }
+  .VenOrdersHs{
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 10px;
   }
 }
 
@@ -87,7 +96,7 @@
   .proName{
     width: 100%;
   }
-  .line1, .line2{
+  .line1, .line2, .VenOrders{
     grid-template-columns: repeat(1, 1fr);
   }
   .SeaProd{

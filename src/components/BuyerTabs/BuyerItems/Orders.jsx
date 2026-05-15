@@ -6,7 +6,7 @@ import { MdError } from "react-icons/md";
 import { LuBox } from "react-icons/lu";
 
 function Orders() {
-  const { getBuyerOrder } = useOrders();
+  const { getBuyerOrder, updateOrderStatus } = useOrders();
   const { data, isLoading, isError } = getBuyerOrder;
   
   const count = data?.results;
@@ -105,6 +105,28 @@ function Orders() {
                         Invoice
                     </button>
                   </div>
+                  <button
+                    onClick={() => {
+                      updateOrderStatus.mutate({
+                        orderId: order._id,
+                        status: 'completed',
+                      });
+                    }}
+
+                    disabled={
+                      order.orderStatus !== 'shipped' ||
+                      updateOrderStatus.isPending
+                    }
+                    className={`rounded-full cursor-pointer transition ${
+                    order?.orderStatus === 'shipped'
+                     ? 'text-green-500 hover:underline'
+                     : 'text-gray-400 cursor-not-allowed'}`}>
+                      {updateOrderStatus.isPending
+                       ? 'Updating'
+                       : order?.orderStatus === 'completed'
+                         ? 'Order received'
+                         : 'Mark as received'}
+                  </button>
                   <a className='text-orange-400 font-semibold cursor-pointer hover:underline orderCancel'>Cancel Order</a>
                 </div>
               </div>
