@@ -3,7 +3,7 @@ import './vendorTabs.css';
 import useOrders from '../../Hooks/useOrders';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
-import { AdLoader } from '../';
+import { AdLoader, VerifyDoc } from '../';
 import { MdOutlineSort } from "react-icons/md";
 import { debounce } from 'lodash';
 import { TbReceiptOff, TbTruckDelivery, TbCancel } from "react-icons/tb";
@@ -16,12 +16,15 @@ function Orders() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('all');
+  const [modalOpen, setModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+  const [sortOrder, setSortOrder] = useState('latest');
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const { getVendorOrder, updateOrderStatus } = useOrders();
   
   //const { data: orderStatus, isLoading: statusLoading, isError: statusError } = updateOrderStatus();
-  const { data, isLoading, isError } = getVendorOrder({
+  const { data, isLoading, isFetching, isError } = getVendorOrder({
     page,
     limit: 6,
     search,
@@ -29,6 +32,8 @@ function Orders() {
 
   const orders = data?.orders || [];
   console.log('Vendor orders:', orders);
+
+  const  totalPages = data?.totalPages || 1
 
   const formatDate = (
     date = new Date(),
@@ -69,15 +74,15 @@ function Orders() {
 
   const orderTabs = [
     { name: 'All', value: 'all', statuses: [] },
-    { name: 'Processing', value: 'pending', statuses: ['pending', 'processing', 'shipped'] },
+    { name: 'Processing', value: 'processing', statuses: ['pending', 'processing', 'shipped'] },
     { name: 'Completed', value: 'completed', statuses: ['completed'] },
   ]
 
   const debouncedSearch = useMemo(
     () => debounce((val) => {
-      setSearch(val);
+      setSearch(val.trim());
       setPage(1);
-    }, 300),
+    }, 800),
     []
   );
 
@@ -98,12 +103,23 @@ function Orders() {
       (tab) => tab.value === activeTab
     );
 
-    if (!currentTab || activeTab === 'all') {
-      return orders;
+    let filtered = orders;
+
+    if (currentTab && activeTab !== 'all') {
+      filtered = orders.filter((order) => currentTab.statuses.includes(order.orderStatus));
     }
 
-    return orders.filter((order) => currentTab.statuses.includes(order.orderStatus));
-  }, [orders, activeTab]);
+    const sorted = [...filtered].sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+
+      return sortOrder === 'latest'
+       ? dateB - dateA
+       : dateA  - dateB;
+    });
+
+    return sorted
+  }, [orders, activeTab, sortOrder]);
 
   const counts = useMemo(() => {
     return {
@@ -154,6 +170,16 @@ function Orders() {
     cancelled: [],
   }
 
+  const handleSelectedOrder = (order) => {
+    setSelectedOrder(order);
+    setModalOpen(true);
+  }
+
+  const currentStatus = statusConfig[selectedOrder?.orderStatus] || {
+    bg: 'bg-gray-300 text-dark',
+    icon: null
+  };
+
   return (
     <section className='overflow-hidden'>
     <Toaster position='top-right' reverseOrder={false} />
@@ -163,6 +189,11 @@ function Orders() {
       </div>
     ) : (
       <div className='p-4 rounded-md my-5 bg-white'>
+        {isFetching && (
+          <div className='absolute top-2 right-2'>
+            <AdLoader />
+          </div>
+        )}
         <div className='flex items-center justify-between'>
           <h2 className='font-semibold text-dark text-lg'>Orders</h2>
           <p className='font-medium text-dark text-sm'>{formatDate().date}</p>
@@ -183,9 +214,20 @@ function Orders() {
             })}
           </div>
           <div className='flex gap-3 items-center'>
-            <span className='p-1 rounded bg-gray-200'>
-             <MdOutlineSort className='cursor-pointer' size={23} />
-            </span>
+            <button
+              onClick={() =>
+                setSortOrder((prev) =>
+                  prev === 'latest' ? 'oldest' : 'latest'
+                )
+              }
+              className='p-1 rounded bg-gray-200 flex items-center gap-1 cursor-pointer'
+            >
+              <MdOutlineSort size={23} />
+
+              <span className='text-xs text-dark capitalize'>
+                {sortOrder}
+              </span>
+            </button>
             <input 
               type='text'
               value={searchInput}
@@ -257,14 +299,19 @@ function Orders() {
                           </p>
                         </div>
 
+                        <p className='flex items-center justify-between text-sm my-2 orderShipAdd'>
+                          <span className='text-gray-700'>Shipping address:</span>
+                          <span className='text-gray-500'>{order?.shippingAddress}</span>
+                        </p>
+
                         <hr className='flex-1 border-t border-gray-300' />
 
                         <table className='w-full border-none my-2'>
                           <thead className=''>
-                            <tr className='orderTableH1'>
-                              <td className='text-sm text-gray-400'>Name</td>
-                              <td className='text-sm text-gray-400 text-center'>Qty</td>
-                              <td className='text-sm text-gray-400 text-end'>Price</td>
+                            <tr className=''>
+                              <td className='text-sm text-gray-400 oderPopTd'>Name</td>
+                              <td className='text-sm text-gray-400 text-center oderPopTd'>Qty</td>
+                              <td className='text-sm text-gray-400 text-end oderPopTd'>Price</td>
                             </tr>
                           </thead>
 
@@ -286,16 +333,17 @@ function Orders() {
                         <hr className='flex-1 border-t border-gray-300' />
                          
                         <div className='flex items-center justify-between my-1'>
-                        <p className='font-semibold text-dark text-base'>
-                          Total
-                        </p>
-                        <p className='font-semibold text-dark text-base'>
-                          Ksh {(order?.totalAmount / 100).toLocaleString()}
-                        </p>
+                          <p className='font-semibold text-dark text-base'>
+                            Total
+                          </p>
+                          <p className='font-semibold text-dark text-base'>
+                            Ksh {(order?.totalAmount / 100).toLocaleString()}
+                          </p>
                         </div>
 
                         <div className='grid grid-cols-2 gap-2 mt-2'>
                           <button
+                            onClick={() => handleSelectedOrder(order)}
                             className='bg-gray-300 rounded-md px-3 py-1 text-orange-400 cursor-pointer'>
                               See details
                           </button>
@@ -344,7 +392,113 @@ function Orders() {
               )
             )}
           </motion.div>
-        </AnimatePresence>     
+        </AnimatePresence>   
+
+        <div className='flex justify-between items-center CatNav mt-4'>
+          <button 
+            disabled={page <= 1} 
+            onClick={() => setPage(page - 1)}
+            className='px-3 py-1 border rounded cursor-pointer disabled:opacity-50'
+              >
+              Prev
+          </button>
+          <span className=''>
+            Page {page} of {totalPages}
+          </span>
+          <button 
+            disabled={page >= totalPages} 
+            onClick={() => setPage(page + 1)}
+            className='px-3 py-1 border rounded cursor-pointer disabled:opacity-50'
+            >
+              Next
+          </button>
+        </div>
+
+        <VerifyDoc
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}  
+          title={
+            <div className='flex items-center gap-2'>
+              <span className='text-gray-500 text-md'>Order:</span>
+              <span className='font-semibold text-orange-400'>
+                {selectedOrder?.orderNumber}
+              </span>
+            </div>
+          }
+          className='max-h-[80vh] overflow-y-auto'>
+            <div className='flex flex-col space-y-2'>
+              <div className='flex items-center justify-between'>
+               <h1 className='text-dark font-semibold orderPopH'>
+                Buyer Contacts
+              </h1>
+              <p className={`px-2 py-1 rounded-lg text-xs flex items-center gap-1 w-fit capitalize ${currentStatus.bg}`}>
+                {currentStatus.icon}
+                {selectedOrder?.orderStatus}
+              </p>
+              </div>
+              <div className='flex items-center justify-between orderShipAdd'>
+                <h2 className='text-dark flex items-center gap-2 orderPopH'>
+                  Buyer: <span className='text-gray-600 capitalize'>
+                  {selectedOrder?.buyer?.username}
+                  </span>
+                </h2>
+                <h2 className='text-dark flex items-center gap-2 orderPopH'>
+                  Phone: <span className='text-gray-600'>
+                  {selectedOrder?.buyer?.phone}
+                  </span>
+                </h2>
+              </div>
+              <h2 className='text-dark flex items-center gap-2 orderPopH'>
+                Email: <span className='text-gray-600'>
+                {selectedOrder?.buyer?.email}
+                </span>
+              </h2>
+
+              <h1 className='text-dark font-semibold my-2 orderPopH'>
+                Order products:
+              </h1>
+
+              <table className='w-full border-none my-2'>
+                <thead className=''>
+                  <tr className=''>
+                    <td className='text-sm text-gray-400 oderPopTd'>Name</td>
+                    <td className='text-sm text-gray-400 text-center oderPopTd'>Qty</td>
+                    <td className='text-sm text-gray-400 text-end oderPopTd'>Price</td>
+                  </tr>
+                </thead>
+
+                <tbody className=''>
+                  {selectedOrder?.products?.map((item) => {
+                    return (
+                      <tr 
+                        key={item._id}
+                        className=''>
+                          <td className='text-sm text-gray-700 py-2'>{item?.name}</td>
+                          <td className='text-sm text-gray-700 py-2 text-center'>{item?.quantity}</td>
+                          <td className='text-sm text-gray-700 py-2 text-end'>ksh {(item?.price / 100).toLocaleString()}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+
+              <hr className='flex-1 border-t border-gray-300' />
+
+              <div className='flex items-center justify-between my-1'>
+                <p className='font-semibold text-dark text-base'>
+                  Total
+                </p>
+                <p className='font-semibold text-dark text-base'>
+                  Ksh {(selectedOrder?.totalAmount / 100).toLocaleString()}
+                </p>
+              </div>
+
+              <p className='flex items-center justify-between text-base my-2 orderShipAdd'>
+                <span className='text-dark'>Shipping address:</span>
+                <span className='text-gray-700'>{selectedOrder?.shippingAddress}</span>
+              </p>                     
+            </div>
+        </VerifyDoc>
       </div>
     )}
     </section>

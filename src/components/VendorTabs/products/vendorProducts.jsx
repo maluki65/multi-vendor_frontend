@@ -333,7 +333,7 @@ function vendorProducts({ vendorId }) {
           <VerifyDoc
             isOpen={modalOpen}
             onClose={() => setModalOpen(false)}
-            title={`product: ${selectedProduct?.name}`}
+            title={`Product: ${selectedProduct?.name}`}
             className="max-h-[80vh] overflow-y-auto"
             >
             <div className='flex flex-col gap-2'>

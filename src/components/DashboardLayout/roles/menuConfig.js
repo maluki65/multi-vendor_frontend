@@ -32,7 +32,7 @@ export const menuRoleItems = {
     { label: 'Orders', value: 'orders', icon: RiShoppingCartLine, requiresApproval: true, link: "?tab=orders" },
     { label: 'Payments', value: 'payments', icon: MdOutlinePayments, requiresApproval: true, link: "?tab=payments" },
     { label: 'Verification', value: 'verification', icon: MdOutlineDomainVerification, requiresApproval: true, link: "?tab=verification" },
-    { label: 'Settings', value: 'Settings', icon: IoSettingsOutline, link: "?tab=settings"},
+    { label: 'Settings', value: 'vendorSettings', icon: IoSettingsOutline, link: "?tab=settings"},
   ],
  Buyer: [
   //{ label: 'Dashboard', value: 'dashboard', icon: RiShoppingBagLine, link: '/dashboard' },

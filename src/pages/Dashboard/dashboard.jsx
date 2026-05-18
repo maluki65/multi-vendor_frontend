@@ -6,7 +6,7 @@ import { needsProfile } from '../../utils/userProfiles';
 import { getProfileFormByRole } from '../../utils/profileforms';
 import { useAuth } from '../../Context/AuthContext';
 import { useProfile } from '../../Hooks/useProfile';
-import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductCategory, VendorProducts, VendorOrders, VendorPayments, BuyerDashboard } from '../../components';
+import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductCategory, VendorProducts, VendorOrders, VendorPayments, VendorSettings, BuyerDashboard } from '../../components';
 //import { AdLoader } from  '../../components'
 
 function Dashboard() {
@@ -123,6 +123,7 @@ function Dashboard() {
               )}
               {tab === 'orders' && isVendor && <VendorOrders/>}
               {tab === 'payments' && isVendor && <VendorPayments/>}
+              {tab === 'vendorSettings' && isVendor && <VendorSettings/>}
             </>
           )}
         </DashboardLayout>

@@ -16,7 +16,7 @@ function Account() {
   const logOut = useLogout();
 
   const handleLogOut = async() => {
-      await logOut();
+    await logOut();
   }
 
   const activeMenu = [
@@ -64,10 +64,10 @@ function Account() {
 
               return (
                 <div
-                key={item.value}
-                onClick={isLogout ? handleLogOut : () => setActiveTab(item.value)}
-                className={`border-[1.5px]  border-gray-200 py-2 px-2 text-dark rounded-md cursor-pointer AccNavTabs ${!isLogout && activeTab === item.value ? 'bg-orange-400 border-none activeTab' : ''} 
-                ${isLogout ? 'text-red-600 flex items-center gap-2' : 'text-dark'}`}
+                 key={item.value}
+                 onClick={isLogout ? handleLogOut : () => setActiveTab(item.value)}
+                 className={`border-[1.5px]  border-gray-200 py-2 px-2 text-dark rounded-md cursor-pointer AccNavTabs ${!isLogout && activeTab === item.value ? 'bg-orange-400 border-none activeTab' : ''} 
+                 ${isLogout ? 'text-red-600 flex items-center gap-2' : 'text-dark'}`}
                 >
                   {Icon && <Icon className='AccNavLog' size={23} />}
                   <li className='list-none'>{item.name}</li>
