@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Toaster } from 'react-hot-toast';
 import { useProfile } from '../../../Hooks/useProfile';
 import { useCurrentUser } from '../../../Hooks/useCurrentUser';
 import { CiEdit } from "react-icons/ci";

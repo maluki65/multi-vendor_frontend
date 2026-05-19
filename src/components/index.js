@@ -64,6 +64,5 @@ export { default as WishlistTable } from './BuyerTabs/BuyerItems/WishlistTable';
 export { default as VendorOrders } from './VendorTabs/order';
 export { default as VendorPayments } from './VendorTabs/Payments';
 export { default as VendorSettings } from './VendorTabs/vendorSettings';
-export { default as VendorPassword } from './VendorTabs/vendorItems/password';
 export { default as EditVendorProfile } from './VendorTabs/vendorItems/editProfile';
 export { default as VendorProfile } from './VendorTabs/vendorItems/vendorProfile';

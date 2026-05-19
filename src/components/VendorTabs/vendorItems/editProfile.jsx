@@ -1,8 +1,16 @@
-import React from 'react'
+import React from 'react';
+import { FaArrowLeft } from "react-icons/fa6";
 
-function EditVendorProfile() {
+function EditVendorProfile({ activeTab, setActiveTab }) {
   return (
-    <div>EditVendorProfile</div>
+    <div>
+      <FaArrowLeft 
+       onClick={() => setActiveTab('VendorProfile')}
+        className='text-dark hover:text-primary cursor-pointer'
+        size={25}
+       />
+      EditVendorProfile
+    </div>
   )
 }
 
