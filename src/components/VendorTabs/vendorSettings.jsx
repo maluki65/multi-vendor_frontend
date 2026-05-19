@@ -25,8 +25,8 @@ function VendorSettings() {
     <>
       <Toaster position='top-right' reverseOrder={false} />
       <section className='p-4 mt-4 mb-1 rounded-md bg-white'>
-        <div className='grid grid-cols-[25%_75%] gap-2'>
-          <div className='flex flex-col gap-3 w-full'>
+        <div className='grid grid-cols-[25%_75%] gap-2 SettVenTab938'>
+          <div className='flex flex-col gap-3 w-full SettVenTabsMain'>
             {vendorSettingTabs.map((item, index) => {
               const isLogout = item.value === 'Logout';
               const Icon = item.icon;
@@ -35,7 +35,7 @@ function VendorSettings() {
                 <div 
                   key={index}
                   onClick={isLogout ? handleLogOut : () => setActiveTab(item.value)}
-                  className={` border-gray-200 text-dark gap-2 px-2 py-2 rounded-md text-base cursor-pointer AccNavTabs ${!isLogout && activeTab === item.value ? 'bg-orange-400 border-0 activeTab' : 'border-[1.5px]'}
+                  className={` border-gray-200 text-dark gap-2 px-2 py-2 rounded-md text-base cursor-pointer SettVenTabsd ${!isLogout && activeTab === item.value ? 'bg-orange-400 border-0 activeTab' : 'border-[1.5px]'}
                   ${isLogout ? 'text-red-600 flex items-center gap-2' : 'text-dark'}`}
                   >
                     {Icon && <Icon className='AccNavLog' size={23} />}

@@ -36,7 +36,7 @@ function VendorProfile() {
 
               <div className='flex flex-col space-y-4'>
                 <div className='w-full rounded-xl overflow-hidden relative'>
-                  <div className='h-35 w-full relative'>
+                  <div className='h-45 w-full relative SettVenBanner'>
                     <img
                       src={profile?.banner}
                       alt='banner'
@@ -47,7 +47,7 @@ function VendorProfile() {
 
                   <div className='relative px-8 pt-15'>
                     <div className='absolute -top-10 left-8'>
-                      <div className='w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-md'>
+                      <div className='w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-md SettVenAvatar'>
                         <img 
                           src={profile?.avatar}
                           alt='logo'
@@ -66,15 +66,15 @@ function VendorProfile() {
                     onClick={() => setActiveTab('EditProfile')}
                     className='border-dark border px-2 py-1 flex font-semibold rounded-lg  items-center gap-2 cursor-pointer hover:bg-blue-200 hover:border-none w-fit'>
                     Edit 
-                    <CiEdit className='' strokeWidth={1} size={20} />
+                    <CiEdit className='VenSettIcon' strokeWidth={1} size={20} />
                   </button>
                 </div>
 
                 <div className='flex flex-col gap-2'>
-                  <h1 className='text-dark font-semibold underline'>
+                  <h1 className='text-dark font-semibold underline venSettHead'>
                     Business Information:
                   </h1>
-                  <div className='grid grid-cols-2 gap-3'>
+                  <div className='grid grid-cols-2 gap-3 VenProSetting'>
                     <div className='flex flex-col gap-1'>
                       <label className='text-gray-500 text-base'>
                         Legal Name
@@ -105,10 +105,10 @@ function VendorProfile() {
                 <hr className='flex-1 border-t border-gray-300' />
 
                 <div className='flex flex-col gap-2'>
-                  <h1 className='text-dark font-semibold underline'>
+                  <h1 className='text-dark font-semibold underline venSettHead'>
                     Store Information:
                   </h1>
-                  <div className='grid grid-cols-2 gap-3'>
+                  <div className='grid grid-cols-2 gap-3 VenProSetting'>
                     <div className='flex flex-col gap-1'>
                       <label className='text-gray-500 text-base'>
                         Email
@@ -139,10 +139,10 @@ function VendorProfile() {
                 <hr className='flex-1 border-t border-gray-300' />
 
                 <div className='flex flex-col gap-2'>
-                  <h1 className='text-dark font-semibold underline'>
+                  <h1 className='text-dark font-semibold underline venSettHead'>
                     Payout Information:
                   </h1>
-                  <div className='grid grid-cols-2 gap-3'>
+                  <div className='grid grid-cols-2 gap-3 VenProSetting'>
                     <div className='flex flex-col gap-1'>
                       <label className='text-gray-500 text-base'>
                         Method
@@ -165,10 +165,10 @@ function VendorProfile() {
                 <hr className='flex-1 border-t border-gray-300' />
 
                 <div className='flex flex-col gap-2'>
-                  <h1 className='text-dark font-semibold underline'>
+                  <h1 className='text-dark font-semibold underline venSettHead'>
                     Addresses:
                   </h1>
-                  <div className='grid grid-cols-2 gap-3'>
+                  <div className='grid grid-cols-2 gap-3 VenProSetting'>
                     {Object.entries(profile?.store?.addresses || {}).map(
                       ([key, value], index) => (
                         <div key={index} className='flex flex-col gap-1'>
@@ -200,6 +200,9 @@ function VendorProfile() {
            >
             <EditVendorProfile
               setActiveTab={setActiveTab}
+              profile={profile}
+              user={user}
+              onUpdate={vendorProfileUpdate}
             />
         </motion.div>
       )}

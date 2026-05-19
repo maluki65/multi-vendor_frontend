@@ -45,15 +45,23 @@
     width: 450px;
     height: 250px;
   }
-  .selectImgArr img{
+  .selectImgArr img, .SettVenBanner, .SettVenAvatar img{
     width: 100%;
     height: 100%;
+  }
+  .SettVenBanner img{
+    height: 15vw;
+    width: 100%;
+  }
+  .SettVenAvatar{
+    height: 130px;
+    width: 130px;
   }
   .attrName{
     font-size: 2.5em;
     font-weight: normal;
   }
-  .attrVal, .orderStatusTitles, .orderPopH, .oderPopTd{
+  .attrVal, .orderStatusTitles, .orderPopH, .oderPopTd, .venSettHead, .SettVenTabsd{
     font-size: 2em;
   }
   .VenProdTableCon8u{
@@ -62,7 +70,7 @@
   .prodVenItem{
     font-size: 20px;
   }
-  .venProdIcon4u{
+  .venProdIcon4u, .VenSettIcon{
     height: 40px;
     width: 40px;
   }
@@ -77,6 +85,25 @@
   }
   .VenOrders{
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 769px){
+  .SettVenTab938, .VenProSetting{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .SettVenTabsMain{
+    width:fit-content;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .SettVenTabsd{
+    border: none;
+    font-size: 14px;
+    position: relative;
+  }
+  .SettVenTabsd:last-child{
+    display: none;
   }
 }
 

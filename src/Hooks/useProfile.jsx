@@ -204,7 +204,7 @@ export const useProfile = (role) => {
     updating: updateProfile.isPending,
 
     vendorProfileUpdate: updateVendorProfile.mutateAsync,
-    updating: updateVendorProfile.isPending,
+    updatingVenProfile: updateVendorProfile.isPending,
 
     updateProfileImg: updateProfileImg.mutateAsync,
     updatingImg: updateProfileImg.isPending,
