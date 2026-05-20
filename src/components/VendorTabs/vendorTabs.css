@@ -123,7 +123,7 @@
   .proName{
     width: 100%;
   }
-  .line1, .line2, .VenOrders{
+  .line1, .line2, .VenOrders, .editVenProfileForm{
     grid-template-columns: repeat(1, 1fr);
   }
   .SeaProd{
