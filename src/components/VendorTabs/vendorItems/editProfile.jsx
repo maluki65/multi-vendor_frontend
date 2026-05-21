@@ -120,7 +120,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
   };
 
   return (
-    <section className='p-4 flex flex-col space-y-2'>
+    <section className='p-4 flex flex-col space-y-2 w-full'>
       <div className='flex items-center justify-between'>
         <FaArrowLeft 
           onClick={() => setActiveTab('VendorProfile')}

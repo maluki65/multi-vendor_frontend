@@ -66,3 +66,6 @@ export { default as VendorPayments } from './VendorTabs/Payments';
 export { default as VendorSettings } from './VendorTabs/vendorSettings';
 export { default as EditVendorProfile } from './VendorTabs/vendorItems/editProfile';
 export { default as VendorProfile } from './VendorTabs/vendorItems/vendorProfile';
+export { default as VendorOverviewTab } from './Tabs/VendorOverviewTab';
+export { default as VendorRevenueChart } from './Charts/VendorRevenueCharts';
+export { default as VendorSalesReportChart } from './Charts/VendorSalesReportChart';

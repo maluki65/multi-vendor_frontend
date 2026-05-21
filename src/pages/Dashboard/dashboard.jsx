@@ -6,7 +6,7 @@ import { needsProfile } from '../../utils/userProfiles';
 import { getProfileFormByRole } from '../../utils/profileforms';
 import { useAuth } from '../../Context/AuthContext';
 import { useProfile } from '../../Hooks/useProfile';
-import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductCategory, VendorProducts, VendorOrders, VendorPayments, VendorSettings, BuyerDashboard } from '../../components';
+import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductCategory, VendorProducts, VendorOrders, VendorPayments, VendorSettings, VendorOverviewTab, BuyerDashboard } from '../../components';
 //import { AdLoader } from  '../../components'
 
 function Dashboard() {
@@ -108,8 +108,11 @@ function Dashboard() {
                 {tab === 'overview' && isVendor && <VendorOverview />}
                 {tab === 'overview' && isBuyer && <BuyerOverview />}
               */}
-              {tab === 'overview' && !adminNeedsProfile && (
-                <Overview role={me?.role} />
+              {tab === 'overview' && !adminNeedsProfile && isAdmin && (
+                <Overview  />
+              )}
+              {tab === 'overview' && isVendor && (
+                <VendorOverviewTab />
               )}
               {tab === 'Users' && <Users />}
               {tab === 'Add-admin' && <AddAdmin/>}

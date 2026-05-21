@@ -13,8 +13,8 @@ function VendorProfile() {
 
   const { profile, user, vendorProfileUpdate } = useProfile(role);
 
-  console.log('profile:', profile);
-  console.log('User:', user);
+  //console.log('profile:', profile);
+  //console.log('User:', user);
 
   return (
     <section className='bg-gray-100 rounded-xl p-1 shadow-xs h-[80vh] overflow-y-auto'>

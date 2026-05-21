@@ -11,7 +11,6 @@ import { CiUser, CiHeart } from "react-icons/ci";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { GoHeart } from "react-icons/go";
 
-
 export const menuRoleItems = {
   Admin: [
     { label: 'Dashboard', value: 'overview', icon: RxDashboard, link: "?tab=overview" },

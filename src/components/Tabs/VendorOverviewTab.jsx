@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import './Tabs.css';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PaymentItem, SalesChart, RevenueChart, VendorApprovals } from '..';
-import { PaymentsRequests, VendorApprove } from '../../commons';
-import { IoCalendarOutline, IoChevronForward } from "react-icons/io5";
-import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline } from "react-icons/md";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
-import usePendingVendors from '../../Hooks/usePendingVendors';
-import { FaRecordVinyl } from "react-icons/fa";
-import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
-import { IoIosSearch } from "react-icons/io";
+import { VendorSalesReportChart, VendorRevenueChart } from '..';
+import { IoCalendarOutline, IoChevronForward } from 'react-icons/io5'; 'react-icons/md';
+import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { FaArrowTrendUp, FaArrowTrendDown } from 'react-icons/fa6';
+import { FaRecordVinyl } from 'react-icons/fa';
+import useAnalytics from '../../Hooks/useAnalytics';
 
-function OverviewTab() {
+function VendorOverviewTab() {
+
+  const { getVendorAnalytics } = useAnalytics();
+  const { data, isLoading } = getVendorAnalytics; 
+
+  console.log('Analytics:', data);
+
   const [now, setNow] = React.useState(new Date());
-  
-  const { data, isLoading, isError } = usePendingVendors();
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -24,10 +24,6 @@ function OverviewTab() {
 
     return () => clearInterval(interval);
   }, []);
-
-  const getFirstTwoChars = (name) => {
-    return name.slice(0,2).toUpperCase();
-  }
   
   const formatDate = (date) => {
     const day = date.getDate();
@@ -58,7 +54,6 @@ function OverviewTab() {
 
     return `${formattedDate} • ${formattedTime}`;
   }
-
   return (
     <div className='grid grid-cols-[75%_25%] gap-3 bg-transparent overview'>
       <div className='flex flex-col gap-4 border-r-2 border-gray-300 px-2 OverCard'>
@@ -94,12 +89,12 @@ function OverviewTab() {
           </div>
           <div className='rounded-xl border-2 border-gray-300 bg-white p-2 flex flex-col space-y-2 justify-between'>
             <div className='flex items-center justify-between'>
-              <h3 className='text-md text-gray-800'>Net Income</h3>
+              <h3 className='text-md text-gray-800'>Total Revenue</h3>
               <BiDotsHorizontalRounded className='cursor-pointer Icon' size={20}/>
             </div>
             <h1 className="text-3xl font-semibold">
               <sup className="text-sm align-super mr-1">Ksh</sup>
-              23,000
+              {(data?.totalRevenue / 100).toLocaleString()}
             </h1>
             <p className='text-sm flex items-center gap-2 text-[#787777]'>
               <FaArrowTrendUp className='text-green-400'/>
@@ -110,12 +105,12 @@ function OverviewTab() {
           </div>
           <div className='rounded-xl border-2 border-gray-300 bg-white p-2 flex flex-col space-y-2 justify-between'>
             <div className='flex items-center justify-between'>
-              <h3 className='text-md text-gray-800'>Total Return</h3>
+              <h3 className='text-md text-gray-800'>Platform Commission</h3>
               <BiDotsHorizontalRounded className='cursor-pointer Icon' size={20}/>
             </div>
             <h1 className="text-3xl font-semibold">
               <sup className="text-sm align-super mr-1">Ksh</sup>
-              35,000
+              {(data?.totalCommission / 100).toLocaleString()}
             </h1>
             <p className='text-sm flex items-center gap-2 text-[#787777]'>
               <FaArrowTrendDown className='text-red-500'/>
@@ -131,40 +126,14 @@ function OverviewTab() {
             animate={{ opacity: 1, scale: 1}}
             exit={{opacity: 0, scale: 0.95}}
             transition={{duration: 0.3}}
-            className='grid grid-cols-2 gap-2 my-2 overflow-y-auto overflow-x-hidden PaymentChart'>
-            <div className='rounded-xl border-2 border-gray-300 p-2 flex flex-col gap-1 paymentsReq'>
-              <div className='flex justify-between items-center'>
-                <h1 className='text-md text-dark'>Payment requests</h1>
-                <BsThreeDots className='cursor-pointer Icon' size={20}/>
-              </div>
-              <div className="relative flex w-full py-2 h-[52px] PayIn">
-                <input
-                  type='text'
-                  placeholder='search for payment requests'
-                  required
-                  className="w-full p-2 border-[1.5px] border-gray-400 rounded-md focus:outline-none"
-                />
-                <span
-                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-700"
-                >
-                  <IoIosSearch className='Icon' size={20}/>
-                </span>
-              </div>
-              <div className='flex flex-col gap-2 max-h-[180px] overflow-y-auto pr-1 PayItems'>
-                {PaymentsRequests.map((items, index) =>(
-                  <PaymentItem key={index} payments={items}/>
-                ))}
-              </div>
-            </div>
-            <div className='flex flex-col gap-2 max-h-[200px]'>
-              <div className='bg-white rounded-xl p-2 shadow-sm w-full charts01'>
+            className='grid grid-cols-1 gap-2 my-2 overflow-y-auto overflow-x-hidden PaymentChart'>
+            <div className='flex flex-col gap-2'>
+              <div className='bg-white rounded-xl p-2 shadow-sm w-full min-h-[260px] charts01'>
                 <h3 className='text-sn font-medium mb-3'>Revenue</h3>
-                <RevenueChart />
+                <VendorRevenueChart 
+                  data={data?.monthlyRevenue || []}
+                />
               </div>
-              {/*<div className='bg-white rounded-xl p-2 shadow-sm w-full'>
-                <h3 className='text-sn font-medium mb-3'>Sales Report</h3>
-                <SalesChart />
-              </div>*/}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -172,18 +141,16 @@ function OverviewTab() {
       <div className='flex flex-col gap-2 my-2 overflow-y-auto overflow-x-hidden salesContainer'>
         <div className='bg-white rounded-xl p-2 shadow-sm w-full overflow-hidden salesRev'>
           <div className='flex flex-col gap-2 px-4'>
-           <h3 className='text-md font-medium text-center'>Total Sales Report</h3>
-           <hr className='flex-1 border-t border-gray-300' />
+            <h3 className='text-md font-medium text-center'>Total Sales Report</h3>
+            <hr className='flex-1 border-t border-gray-300' />
           </div>
-          <SalesChart />
+          <VendorSalesReportChart 
+            data={data}
+          />
           <p className='text-muted text-center mb-2'>
             Overview of how key performance metrics are distributed
           </p>
           <div className='grid grid-cols-3 items-center gap-1'>
-            <div className='flex items-center gap-1 Ctext'>
-              <span className='flex items-center rounded-md bg-[#84cc16] p-2'></span>
-              <span className='text-sm text-muted'>Amount</span>
-            </div>
             <div className='flex items-center gap-1 Ctext'>
               <span className='flex items-center rounded-md bg-[#22c55e] p-2'></span>
               <span className='text-sm text-muted'>Earnings</span>
@@ -194,53 +161,9 @@ function OverviewTab() {
             </div>
           </div>
         </div>
-        <div className='p-3 rounded-xl bg-muted vendors'>
-          <h1 className=''>Vendor Approvals</h1>
-          <div className='flex flex-col gap-2 max-h-[90px] overflow-y-auto pr-1 vendorItem'>
-            {isLoading ? (
-              <p className='text-dark'> loading vendor approvals...</p>
-            ) : isError ? (
-              <p className='text-dark text-sm  mt-2 flex flex-col justify-center items-center gap-2'>
-                <MdOutlineErrorOutline className='text-red-500' size={45} />
-                Failed to load vendor approvals
-              </p>
-            ) : (
-              data.length === 0 ? (
-              <p className='text-dark text-sm  mt-2 flex flex-col justify-center items-center gap-2'>
-                <MdOutlineProductionQuantityLimits className='text-red-500' size={45} />
-                No vendors awaiting approval
-              </p>
-            ) : (
-              data.map((vendor) => (
-                <div
-                  key={vendor._id}
-                  className='flex justify-between items-center'
-                >
-                  <p className='rounded-full items-center p-1 text-xs text-white bg-dark'>
-                    {getFirstTwoChars(vendor.storeName || vendor.email)}
-                  </p>
-
-                  <div className='flex flex-col gap-1'>
-                    <p className='text-xs font-medium text-dark'>
-                      {vendor.storeName || 'No store name'}
-                    </p>
-                    <p className='text-[#525151] text-xs'>
-                      {vendor.email}
-                    </p>
-                  </div>
-
-                  <BsThreeDotsVertical
-                    className='cursor-pointer Icon'
-                    size={20}
-                  />
-                </div>
-              ))
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   )
 }
 
-export default OverviewTab
+export default VendorOverviewTab

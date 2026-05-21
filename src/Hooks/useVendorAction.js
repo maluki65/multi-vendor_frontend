@@ -35,7 +35,10 @@ const useVendorAction = () => {
 
   const isLoading = (vendorId) => loadingIds.includes(vendorId);
 
-  return { handleVendorActions, isLoading };
+  return { 
+    handleVendorActions, 
+    isLoading 
+  };
 };
 
 export default useVendorAction;
