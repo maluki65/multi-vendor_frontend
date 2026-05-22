@@ -11,11 +11,21 @@ import usePendingVendors from '../../Hooks/usePendingVendors';
 import { FaRecordVinyl } from "react-icons/fa";
 import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosSearch } from "react-icons/io";
+import { useAuth } from '../../Context/AuthContext';
+import useAnalytics from '../../Hooks/useAnalytics';
 
 function OverviewTab() {
   const [now, setNow] = React.useState(new Date());
   
+  const { userData } = useAuth();
+  const role = userData?.role;
+  
   const { data, isLoading, isError } = usePendingVendors();
+  
+  const { getAdminAnalytics } = useAnalytics(role);
+  const { data: adminAnalytics, isLoading: isAnalyticsLoading, isError: isAnalyticsError } = getAdminAnalytics;
+  
+  console.log('Admin analytics:', adminAnalytics);
 
   React.useEffect(() => {
     const interval = setInterval(() => {

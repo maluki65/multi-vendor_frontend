@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CountUp from 'react-countup';
 import './Tabs.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VendorSalesReportChart, VendorRevenueChart } from '..';
@@ -7,13 +8,25 @@ import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { FaArrowTrendUp, FaArrowTrendDown } from 'react-icons/fa6';
 import { FaRecordVinyl } from 'react-icons/fa';
 import useAnalytics from '../../Hooks/useAnalytics';
+import { useAuth } from '../../Context/AuthContext';
 
 function VendorOverviewTab() {
 
-  const { getVendorAnalytics } = useAnalytics();
+  const { userData } = useAuth();
+  const role = userData?.role;
+  const { getVendorAnalytics } = useAnalytics(role);
   const { data, isLoading } = getVendorAnalytics; 
 
   console.log('Analytics:', data);
+
+  const revenue = (data?.totalRevenue || 0) / 100;
+  const commission = (data?.totalCommission || 0) / 100;
+
+  const revenueTrend = data?.revenueTrend || 0;
+  const platformCommissionTrend = data?.commissionTrend || 0;
+
+  const revenueIncrease = revenueTrend >= 0;
+  const commissionIncrease = platformCommissionTrend >= 0;
 
   const [now, setNow] = React.useState(new Date());
 
@@ -54,6 +67,7 @@ function VendorOverviewTab() {
 
     return `${formattedDate} • ${formattedTime}`;
   }
+
   return (
     <div className='grid grid-cols-[75%_25%] gap-3 bg-transparent overview'>
       <div className='flex flex-col gap-4 border-r-2 border-gray-300 px-2 OverCard'>
@@ -66,7 +80,7 @@ function VendorOverviewTab() {
               An easy way to manage vendors, orders and buyers with ease
             </p>
           </div>
-          <div className='rounded-full border-2 border-gray-300 py-1 px-3 flex items-base w-fit text-gray-600 IContainer'>
+          <div className='rounded-full border-2 border-gray-300 py-1 px-3 gap-2 flex items-base w-fit text-gray-600 IContainer'>
             <IoCalendarOutline className='Icon' size={20}/>
             <p className='text-sm cal'>{formatDateTime(now)}</p>
           </div>
@@ -80,8 +94,26 @@ function VendorOverviewTab() {
                 </div>
                 <p className='text-sm text-white'> Update</p>
               </div>
-              <p className='text-sm text-primary'>Jan 15th 2026</p>
-              <p className='text-white text-md'>Sales revenue increased by <span className='text-primary'>40%</span> in 1 week</p>
+              <p className='text-sm text-primary'>{formatDate(now)}</p>
+              <p className='text-white text-md'>
+                Sales revenue {' '}
+                {data?.hasCurrentRevenue ? (
+                  <>
+                    <span className='text-primary'>
+                      {revenueIncrease ? 'increased' : 'decreased'}
+                    </span>
+                    {' '} by {' '}
+                    <span className='text-primary'>
+                      {Math.abs(revenueTrend)}%
+                    </span>
+                    {' '} this month
+                  </>
+                ) : (
+                  <span className='text-primary'>
+                    No sales recorded this
+                  </span>
+                )}
+              </p>
               <a className='text-[#ada9a9] text-sm flex items-center cursor-pointer hover:underline'>
               see more <IoChevronForward/>
               </a>
@@ -94,13 +126,31 @@ function VendorOverviewTab() {
             </div>
             <h1 className="text-3xl font-semibold">
               <sup className="text-sm align-super mr-1">Ksh</sup>
-              {(data?.totalRevenue / 100).toLocaleString()}
+              <CountUp
+                end={revenue}
+                duration={1.5}
+                separator=','
+                decimal={0}
+              />
             </h1>
             <p className='text-sm flex items-center gap-2 text-[#787777]'>
-              <FaArrowTrendUp className='text-green-400'/>
-              <span className='text-green-400'>
-                +34%
-              </span> from last month
+              {revenueIncrease ? (
+                <FaArrowTrendUp className='text-green-400'/>
+              ) : (
+                <FaArrowTrendDown className='text-red-500'/>
+              )}
+              
+              <span 
+                className={
+                  revenueIncrease
+                    ? 'text-green-400'
+                    : 'text-red-500'
+                }
+                >
+                  {revenueIncrease ? '+' : '-'}
+                  {Math.abs(revenueTrend)}
+                </span>
+                from last month
             </p>
           </div>
           <div className='rounded-xl border-2 border-gray-300 bg-white p-2 flex flex-col space-y-2 justify-between'>
@@ -110,13 +160,41 @@ function VendorOverviewTab() {
             </div>
             <h1 className="text-3xl font-semibold">
               <sup className="text-sm align-super mr-1">Ksh</sup>
-              {(data?.totalCommission / 100).toLocaleString()}
+              <CountUp
+                end={commission}
+                duration={1.5}
+                separator=','
+                decimal={0}
+              />
             </h1>
             <p className='text-sm flex items-center gap-2 text-[#787777]'>
-              <FaArrowTrendDown className='text-red-500'/>
-              <span className='text-red-500'>
-                -24%
-              </span> from last month
+              {commissionIncrease ? (
+                <FaArrowTrendUp className='text-green-400'/>
+              ): (
+                <FaArrowTrendDown className='text-red-500'/>
+              )}
+
+              <span 
+                className={
+                  commissionIncrease
+                    ? 'text-green-400'
+                    : 'text-red-500'
+                }
+                >
+                  {data?.hasCurrentCommission ? (
+                    <span className='flex items-center gap-4'>
+                      <span className=''>
+                        {commissionIncrease ? '+' : '-'}
+                        {Math.abs(platformCommissionTrend)}%
+                      </span>
+                      <span className='text-[#787777]'>
+                       from last month
+                      </span>
+                    </span>
+                  ) : (
+                    'No commission this month'
+                  )}
+                </span>
             </p>
           </div>
         </div>
@@ -157,7 +235,7 @@ function VendorOverviewTab() {
             </div>
             <div className='flex items-center gap-1 Ctext'>
               <span className='flex items-center rounded-md bg-[#fbbf24] p-2'></span>
-              <span className='text-sm text-muted'>Products</span>
+              <span className='text-sm text-muted'>Orders</span>
             </div>
           </div>
         </div>

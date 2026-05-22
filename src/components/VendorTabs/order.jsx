@@ -269,7 +269,7 @@ function Orders() {
                     return (
                       <div 
                        key={order._id}
-                       className='p-2 shadow-xs bg-gray-100 rounded-md'>
+                       className='p-2 shadow-xs bg-gray-200 rounded-md'>
                         <div className='flex gap-2'>
                           <p className='bg-orange-400 rounded-md p-2 text-white text-lg font-semibold uppercase'>
                             {order?.buyer.username.slice(0,2)}
