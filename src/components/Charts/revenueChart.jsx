@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { RevenueData } from '../../commons';
 
-function RevenueChart() {
+function RevenueChart({ data }) {
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
     setAnimate(true);
   }, []);
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('en-KE', {
+      style: 'currency',
+      currency:'KES',
+      minimumFractionDigits: 0,
+    }).format(value / 100);
+  };
+
   return(
-    <div className='w-full h-[230px] RevChart'>
+    <div className='w-full h-[270px] RevChart'>
       <ResponsiveContainer width='100%' height='100%'>
-        <BarChart data={RevenueData}>
+        <BarChart data={data}>
           <XAxis dataKey='month'/>
           <YAxis />
-          <Tooltip />
+          <Tooltip 
+            formatter={(value) => formatCurrency(value)}
+          />
 
           <Bar
-            dataKey='income'
+            dataKey='revenue'
             fill='#84cc16'
             radius={[4, 4, 0, 0]}
             isAnimationActive={animate}
@@ -27,7 +36,7 @@ function RevenueChart() {
           />
 
           <Bar
-            dataKey='expenses'
+            dataKey='commission'
             fill='#14532d'
             radius={[4, 4, 0, 0]}
             isAnimationActive={animate}

@@ -19,10 +19,10 @@ function SalesReportChart({ data }) {
       name: 'Revenue',
       value: data?.totalRevenue || 0,
     },
-    { 
+    /*{ 
       name: 'Platform Commission',
       value: data?.totalCommission || 0,
-    }
+    }*/
   ]
 
   const formatCurrency = (value) => {

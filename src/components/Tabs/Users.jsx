@@ -4,7 +4,7 @@ import { Api } from '../../utils';
 import { debounce } from 'lodash';
 import { CSVLink } from 'react-csv';
 import { Toaster, toast } from 'react-hot-toast';
-import { IoCloudDownload, IoEllipsisVerticalSharp, IoSearch  } from "react-icons/io5";
+import { IoCloudDownload, IoEllipsisVerticalSharp, IoSearch, IoTrashOutline  } from "react-icons/io5";
 import { useAuth } from '../../Context/AuthContext';
 import { HiOutlineUserCircle } from "react-icons/hi2";
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,6 +14,9 @@ import { FaInstagram, FaFacebook, } from "react-icons/fa";
 import { FaXTwitter, FaTiktok } from "react-icons/fa6";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import  { AdLoader } from '..';
+import { GrFormViewHide } from "react-icons/gr";
+import { TbEdit } from "react-icons/tb";
+
 
 const ActionPopUp = ({ row, onDelete, onOpenUserModal, onOpenRoleModal }) => {
 
@@ -205,6 +208,8 @@ function Users() {
 
   const submitRoleUpdate = async () => {
     try {
+      //console.log(selectUser._id)
+      //console.log(newRole)
       await Api.patch(`/admin/promote/${selectUser._id}/`, { role: newRole });
       toast.success('Role updated!');
       queryClient.invalidateQueries(['users']);
@@ -244,11 +249,11 @@ function Users() {
     <div className='p-4'>
       <Toaster position='top-right' reverseOrder={false}/>
       <Modal isOpen={roleModal} onClose={() => setRoleModal(false)}>
-        <h2 className='text-lg font-semibold mb-2 text-black'>Update Role for {displayName}</h2>
+        <h2 className='p-4 text-lg font-semibold mb-2 text-black'>Update Role for {displayName}</h2>
         <select
           type='text'
           required
-          className='p-2 outline-none focus:bg-amber-50 focus:border-2 rounded bg-amber-100 w-full'
+          className='p-4 outline-none focus:bg-amber-50 focus:border-2 rounded bg-amber-100 w-full'
           value={newRole}
           onChange={(e) => setNewRole(e.target.value)}
           >
@@ -257,7 +262,7 @@ function Users() {
             <option value='Vendor'>Vendor</option>
             <option value='Buyer'>Buyer</option>
         </select>
-        <button className='px-3 py-1 bg-primary text-white rounded cursor-pointer'
+        <button className='my-3 px-3 py-1 bg-primary text-white rounded cursor-pointer'
           onClick={submitRoleUpdate}>
             Update Role
           </button>
@@ -536,7 +541,7 @@ function Users() {
             </div>
             <h1 className='text-sm text-primary cursor-pointer hover:underline'>Export users</h1>
            </div>
-           <motion.div className='bg-transparent p-2 overflow-x-auto'
+           <motion.div className='bg-transparent p-2 overflow-x-auto h-[53vh] overflow-y-auto userTableContainer'
              initial={{opacity: 0, scale: 0.95}}
              animate={{opacity: 1, scale: 1}}
              exit={{opacity: 0, scale: 0.95}}
@@ -613,8 +618,84 @@ function Users() {
                   }
                 </tbody>
               </table>
+            </motion.div>
+            <motion.div 
+              initial={{opacity: 0, scale: 0.95}}
+              animate={{opacity: 1, scale: 1}}
+              exit={{opacity: 0, scale: 0.95}}
+              transition={{ duration: 0.3 }}
+              className='cardUser-view'>
+                <div className='rounded-md grid grid-cols-1 gap-3 w-full'>
+                  {fiteredUsers.map((user) => {
+                    return (
+                      <div 
+                        key={user._id}
+                        className='shadow-sm rounded-md p-2'
+                        >
+                          <div className='flex items-center gap-3'>
+                            <h1 className='font-semibold uppercase bg-orange-400 p-3 text-lg text-white rounded-md'>
+                              {
+                                (user.username !== 'None' && user.username
+                                  ? user.username
+                                  : user.storeName !== 'None' && user.storeName
+                                    ? user.storeName
+                                    : 'N/A').slice(0,2)
+                              }
+                            </h1>
 
-              <div className='flex flex-col md:flex-row justify-between items-center mt-4 gap-2 navigator'>
+                            <div className='flex flex-col gap-2 w-full'>
+                              <div className='flex items-center justify-between flex-wrap'>
+                                <p className='text-gray-500'>
+                                  <span className=''>{user?.UUID}</span>
+                                </p>
+                                <div className=''>
+                                  <span 
+                                    className={`px-3 py-1 rounded-full text-xs font-medium border capitalize ${statusStyles[user?.status] || 'bg-gray-100 text-gray-600 border-gray-300'}`}
+                                    >
+                                    {user?.status}
+                                  </span>
+                                </div>
+                              </div>
+                              <p className='text-orange-400'>
+                                {user?.role}
+                              </p>
+                              <p className='text-gray-500'>
+                                User: {
+                                  user.username !== 'None' && user.username
+                                    ? user.username
+                                    : user.storeName !== 'None' && user.storeName
+                                      ? user.storeName
+                                      : 'N/A'
+                                }
+                              </p>
+
+                              <div className='flex items-center justify-between'>
+                                <GrFormViewHide 
+                                  onClick={() => openUserModal(user)}
+                                  className='cursor-pointer text-primary hover:text-orange-400 venProdIcon4u' 
+                                  size={20} 
+                                />
+                                <TbEdit 
+                                  onClick={() => openRoleModal(user)}
+                                  className='cursor-pointer text-primary hover:text-orange-400 venProdIcon4u' 
+                                  size={20} 
+                                />
+                                <IoTrashOutline 
+                                  onClick={() => handleDelete(user._id)}
+                                  className='cursor-pointer text-primary hover:text-red-500 venProdIcon4u' 
+                                  size={20} 
+                                />
+                              </div>
+                            </div>                           
+                          </div>
+                      </div>
+                    )
+                  })}
+                </div>
+            </motion.div>
+
+            
+            <div className='flex justify-between items-center mt-4 gap-2 navigator'>
                 <button
                   disabled={page === 1}
                   onClick={() => setPage(page - 1)}
@@ -632,7 +713,6 @@ function Users() {
                       Next
                   </button>
               </div>
-            </motion.div>
           </div>
         </AnimatePresence>
       </div>

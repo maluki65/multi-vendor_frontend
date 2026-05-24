@@ -5,7 +5,7 @@ function Table({
   columns, data, loading, renderActions, sortField, sortOrder, setSortField, setSortOrder
 }) {
   return (
-    <div className='overflow-x-auto'>
+    <div className='overflow-x-auto h-[50vh] overflow-y-auto'>
       <table className='w-full border-collapse text-sm'>
         <thead className='border-y-[1.5px] border-gray-400'>
           <tr>

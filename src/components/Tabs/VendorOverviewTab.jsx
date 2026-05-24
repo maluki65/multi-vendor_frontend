@@ -110,7 +110,7 @@ function VendorOverviewTab() {
                   </>
                 ) : (
                   <span className='text-primary'>
-                    No sales recorded this
+                    No sales recorded this month
                   </span>
                 )}
               </p>
@@ -147,10 +147,20 @@ function VendorOverviewTab() {
                     : 'text-red-500'
                 }
                 >
-                  {revenueIncrease ? '+' : '-'}
-                  {Math.abs(revenueTrend)}
+                  {data?.hasCurrentRevenue ? (
+                    <span className='flex items-center gap-4'>
+                        <span className=''>
+                          {revenueIncrease ? '+' : '-'}
+                          {Math.abs(revenueTrend)}%
+                        </span>
+                        <span className='text-[#787777]'>
+                        from last month
+                        </span>
+                      </span>
+                    ) : (
+                      'No revenue this month'
+                    )}
                 </span>
-                from last month
             </p>
           </div>
           <div className='rounded-xl border-2 border-gray-300 bg-white p-2 flex flex-col space-y-2 justify-between'>

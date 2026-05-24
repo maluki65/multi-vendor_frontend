@@ -23,7 +23,8 @@ function VendorRevenueChart({ data }) {
           <XAxis dataKey='month'/>
           <YAxis />
           <Tooltip
-           formatter={(value) => formatCurrency(value)}/>
+           formatter={(value) => formatCurrency(value)}
+          />
 
           <Bar
             dataKey='income'

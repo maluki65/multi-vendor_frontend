@@ -1,33 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { SalesReportData } from '../../commons';
 
-const toNumber = (value) => Number(value.replace(/,/g, ''));
-
-function SalesReportChart() {
+function SalesReportChart({ data }) {
   const [animate, setAnimate] = useState(false);
 
   const colors = ['#84cc16', '#22c55e', '#fbbf24'];
 
-  const totalCommission = SalesReportData.find(
-    item => item.name === 'Total commission'
-  );
-
-  const commissionValue = totalCommission ? toNumber(totalCommission.value) : 0;
-
   useEffect(() => {
     setAnimate(true);
   }, []);
+
+  const chartData = [
+    {
+      name: 'Orders',
+      value: data?.totalOrders || 0,
+    },
+    /*{
+      name: 'Revenue',
+      value: data?.totalPlatformCommission || 0,
+    },*/
+    {
+      name: 'Products sold',
+      value: data?.totalProducts || 0,
+    }
+  ]
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('en-KE', {
+      style: 'currency',
+      currency: 'KES',
+      minimumFractionDigits: 0,
+    }).format(value / 100);
+  };
 
   return (
     <div className='w-full h-[250px] min-h-[250px] salesChart'>
       <ResponsiveContainer width='100%' height='100%'>
         <PieChart>
           <Pie
-            data={SalesReportData.map(item => ({
-              ...item,
-              value: toNumber(item.value)
-            }))}
+            data={chartData}
             dataKey='value'
             nameKey='name'
             innerRadius={60}
@@ -38,7 +49,7 @@ function SalesReportChart() {
             animationDuration={1000}
             animationEasing='ease-in-out'
           >
-            {SalesReportData.map((_, index) => (
+            {chartData.map((_, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={colors[index % colors.length]}
@@ -61,9 +72,17 @@ function SalesReportChart() {
             dominantBaseline='middle'
             className='text-xl font-semibold fill-gray-800 p-2'
           >
-            {commissionValue.toLocaleString()}
+            {formatCurrency(data?.totalPlatformCommission || 0)}
           </text>
-          <Tooltip />  
+          <Tooltip 
+            formatter={(value, name) => {
+              if (name === 'Orders' || name === 'Products sold'){
+                return [value, name];
+              }
+
+              return [formatCurrency(value), name];
+            }}
+          />  
         </PieChart>
       </ResponsiveContainer>
     </div>

@@ -10,14 +10,30 @@ const useOrders = () => {
   const orderKey = ['order'];
 
   // On getting all orders (admin)
-  const getAllOrders = useQuery({
-    queryKey: orderKey,
-    queryFn: async () => {
-      const { data } = await Api.get('/orders/admin/all');
-      return data;
-    },
-    enabled: me?.role === 'Admin'
-  });
+  const getAllOrders = ({
+    page = 1,
+    limit = 6,
+    search = '',
+  }) => {
+    return useQuery({
+      queryKey: ['AdminOrders', page, limit, search],
+      queryFn: async () => {
+        const { data } = await Api.get('/orders/admin/all', {
+          params: {
+            page,
+            limit,
+            search
+          },
+        });
+
+        return data
+      },
+
+      enabled: me?.role === 'Admin',
+      keepPreviousData: true,
+      staleTime: 1000 * 60 * 10
+    })
+  }
 
   // On getting buyer orders
   const getBuyerOrder = useQuery({
@@ -51,7 +67,7 @@ const useOrders = () => {
 
       enabled: me?.role === 'Vendor',
       keepPreviousData: true,
-      staleTime: 1000 * 60 * 5,
+      staleTime: 1000 * 60 * 10,
     });
   };
 
@@ -90,6 +106,7 @@ const useOrders = () => {
       console.error('Failed to update order status', error);
     }
   })
+  
   return {
     getAllOrders,
     getBuyerOrder,
