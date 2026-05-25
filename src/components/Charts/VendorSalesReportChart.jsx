@@ -16,8 +16,8 @@ function SalesReportChart({ data }) {
       value: data?.totalOrders || 0,
     },
     { 
-      name: 'Revenue',
-      value: data?.totalRevenue || 0,
+      name: 'Products sold',
+      value: data?.totalProducts || 0,
     },
     /*{ 
       name: 'Platform Commission',
@@ -41,8 +41,8 @@ function SalesReportChart({ data }) {
             data={chartData}
             dataKey='value'
             nameKey='name'
-            innerRadius={60}
-            outerRadius={90}
+            innerRadius={70}
+            outerRadius={100}
             paddingAngle={1}
             isAnimationActive={animate}
             animationBegin={150}
@@ -76,7 +76,7 @@ function SalesReportChart({ data }) {
           </text>
           <Tooltip 
             formatter={(value, name) => {
-              if (name === 'Orders') {
+              if (name === 'Orders' || name === 'Products sold') {
                 return [value, name];
               }
 

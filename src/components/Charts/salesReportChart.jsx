@@ -41,8 +41,8 @@ function SalesReportChart({ data }) {
             data={chartData}
             dataKey='value'
             nameKey='name'
-            innerRadius={60}
-            outerRadius={90}
+            innerRadius={70}
+            outerRadius={100}
             paddingAngle={1}
             isAnimationActive={animate}
             animationBegin={150}

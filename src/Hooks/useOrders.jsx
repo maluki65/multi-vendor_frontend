@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient, useMutation,  } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation, keepPreviousData  } from "@tanstack/react-query";
 import { useCurrentUser } from "./useCurrentUser";
 import toast from 'react-hot-toast';
 import { Api } from "../utils";
@@ -30,7 +30,7 @@ const useOrders = () => {
       },
 
       enabled: me?.role === 'Admin',
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
       staleTime: 1000 * 60 * 10
     })
   }
@@ -66,7 +66,7 @@ const useOrders = () => {
       },
 
       enabled: me?.role === 'Vendor',
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
       staleTime: 1000 * 60 * 10,
     });
   };

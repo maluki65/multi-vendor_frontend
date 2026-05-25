@@ -11,6 +11,7 @@ import { PiReceiptX } from "react-icons/pi";
 import { IoCheckmarkDone } from "react-icons/io5";
 import { BiStopwatch } from "react-icons/bi";
 import { LuFileCheck } from "react-icons/lu";
+import { useCurrentUser } from '../../Hooks/useCurrentUser';
 
 function Orders() {
   const [page, setPage] = useState(1);
@@ -21,17 +22,27 @@ function Orders() {
   const [sortOrder, setSortOrder] = useState('latest');
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const { getVendorOrder, updateOrderStatus } = useOrders();
+  const { data: me } = useCurrentUser();
+
+  const { getAllOrders, getVendorOrder, updateOrderStatus } = useOrders();
   
   //const { data: orderStatus, isLoading: statusLoading, isError: statusError } = updateOrderStatus();
-  const { data, isLoading, isFetching, isError } = getVendorOrder({
-    page,
-    limit: 6,
-    search,
-  });
+  const orderQuery = me?.role === 'Admin' 
+    ? getAllOrders({
+      page,
+      limit: 6,
+      search,
+    })
+    : getVendorOrder({
+      page,
+      limit: 6,
+      search,
+    });
+
+  const { data, isLoading, isFetching, isError } = orderQuery;
 
   const orders = data?.orders || [];
-  console.log('Vendor orders:', orders);
+  console.log('orders:', orders);
 
   const  totalPages = data?.totalPages || 1
 
@@ -213,7 +224,7 @@ function Orders() {
               )
             })}
           </div>
-          <div className='flex gap-3 items-center'>
+          <div className='flex gap-3 items-center orderSortInput'>
             <button
               onClick={() =>
                 setSortOrder((prev) =>
@@ -272,12 +283,12 @@ function Orders() {
                        className='p-2 shadow-xs bg-gray-200 rounded-md'>
                         <div className='flex gap-2'>
                           <p className='bg-orange-400 rounded-md p-2 text-white text-lg font-semibold uppercase'>
-                            {order?.buyer.username.slice(0,2)}
+                            {order?.buyerId.username.slice(0,2)}
                           </p>
                           <div className='flex flex-col gap-1 flex-1'>
                             <div className='flex w-full items-center justify-between'>
                               <p className='font-semibold text-base text-dark capitalize'>
-                                {order?.buyer.username}
+                                {order?.buyerId.username}
                               </p>
                               <p className={`px-2 py-1 rounded-lg text-xs flex items-center gap-1 w-fit capitalize ${currentStatus.bg}`}>
                                 {currentStatus.icon}
@@ -439,20 +450,47 @@ function Orders() {
               <div className='flex items-center justify-between orderShipAdd'>
                 <h2 className='text-dark flex items-center gap-2 orderPopH'>
                   Buyer: <span className='text-gray-600 capitalize'>
-                  {selectedOrder?.buyer?.username}
+                  {selectedOrder?.buyerId?.username}
                   </span>
                 </h2>
                 <h2 className='text-dark flex items-center gap-2 orderPopH'>
                   Phone: <span className='text-gray-600'>
-                  {selectedOrder?.buyer?.phone}
+                  {selectedOrder?.buyerId?.buyerProfile.phone}
                   </span>
                 </h2>
               </div>
               <h2 className='text-dark flex items-center gap-2 orderPopH'>
                 Email: <span className='text-gray-600'>
-                {selectedOrder?.buyer?.email}
+                {selectedOrder?.buyerId?.email}
                 </span>
               </h2>
+
+              {me.role === 'Admin' && (
+                <div className='flex flex-col space-y-2'>
+                  <div className='flex items-center justify-between'>
+                    <h1 className='text-dark font-semibold orderPopH'>
+                      Vendor Contacts
+                    </h1>
+                  </div>
+                  <div className='flex items-center justify-between orderShipAdd'>
+                    <h2 className='text-dark flex items-center gap-2 orderPopH'>
+                      Vendor: <span className='text-gray-600 capitalize'>
+                      {selectedOrder?.vendorId?.businessInfo.legalName}
+                      </span>
+                    </h2>
+                    <h2 className='text-dark flex items-center gap-2 orderPopH'>
+                      Phone: <span className='text-gray-600'>
+                      {selectedOrder?.vendorId?.store.contactPhone}
+                      </span>
+                    </h2>
+                  </div>
+                  <h2 className='text-dark flex items-center gap-2 orderPopH'>
+                    Email: <span className='text-gray-600'>
+                    {selectedOrder?.vendorId?.store.contactEmail}
+                    </span>
+                  </h2>
+                </div>
+              )}
 
               <h1 className='text-dark font-semibold my-2 orderPopH'>
                 Order products:

@@ -238,10 +238,10 @@ function VendorOverviewTab() {
           <p className='text-muted text-center mb-2'>
             Overview of how key performance metrics are distributed
           </p>
-          <div className='grid grid-cols-3 items-center gap-1'>
+          <div className='flex flex-wrap items-center gap-3'>
             <div className='flex items-center gap-1 Ctext'>
               <span className='flex items-center rounded-md bg-[#22c55e] p-2'></span>
-              <span className='text-sm text-muted'>Earnings</span>
+              <span className='text-sm text-muted'>Products sold</span>
             </div>
             <div className='flex items-center gap-1 Ctext'>
               <span className='flex items-center rounded-md bg-[#fbbf24] p-2'></span>

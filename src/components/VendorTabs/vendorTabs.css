@@ -141,3 +141,16 @@
     align-items: start;
   }
 }
+
+@media(max-width: 321px) {
+  .orderSortInput{
+    display: flex;
+    flex-wrap: wrap
+  }
+  .orderSortInput button{
+    justify-items: end;
+  }
+  .orderSortInput input{
+    width: 100%;
+  }
+}
