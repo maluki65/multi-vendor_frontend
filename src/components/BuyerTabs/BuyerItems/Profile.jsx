@@ -38,7 +38,7 @@ function Profiles() {
   //console.log('User:', user);
 
   return (
-    <section className='bg-gray-100 rounded-xl p-2 shadow-xs overflow-hidden'>
+    <section className='bg-gray-100 rounded-xl p-1 shadow-xs h-[80vh] overflow-y-auto'>
       <AnimatePresence mode='wait'>
         {activeTab === 'BuyerProfile' && (
           <motion.div
@@ -88,7 +88,6 @@ function Profiles() {
 
                 <div className='flex flex-col gap-2'>
                   <h4 className='font-semibold text-dark setHeading'> Personal Information </h4>
-                  <div className='grid grid-cols-[70%_30%] gap-3 p-2 SetProCon'>
                     <div className='grid grid-cols-2 gap-2 SetProInner'>
                       <div className='flex flex-col gap-1'>
                         <label className='text-gray-500 text-base'>
@@ -114,20 +113,12 @@ function Profiles() {
                         </p>
                       </div>
                     </div>
-                    {/*<div className='flex justify-end'>
-                      <button className='border-dark border px-2 py-1 font-semibold rounded-lg flex items-center gap-2 cursor-pointer hover:bg-blue-200 hover:border-none h-fit editSetBtn'>
-                        Edit 
-                        <CiEdit className='' strokeWidth={1} size={20} />
-                      </button>
-                    </div>*/}
-                  </div>
                 </div>
 
                 <hr className='flex-1 border-t border-gray-300' />
 
                 <div className='flex flex-col gap-2'>
                   <h4 className='font-semibold text-dark flex items-center gap-1 setHeading'> Addresses <span className='text-gray-600 font-medium'>({profile?.addresses?.[0]?.label})</span></h4>
-                  <div className='grid grid-cols-[70%_30%] gap-3 p-2 SetProCon'>
                     <div className='grid grid-cols-2 gap-2 SetProInner'>
                       <div className='flex flex-col gap-1'>
                         <label className='text-gray-500 text-base'>
@@ -162,13 +153,6 @@ function Profiles() {
                         </p>
                       </div>
                     </div>
-                    {/*<div className='flex justify-end'>
-                      <button className='border-dark border px-2 py-1 font-semibold rounded-lg flex items-center gap-2 cursor-pointer hover:bg-blue-200 hover:border-none h-fit editSetBtn'>
-                        Edit 
-                        <CiEdit className='' strokeWidth={1} size={20} />
-                      </button>
-                    </div>*/}
-                  </div>
                 </div>
 
                 <hr className='flex-1 border-t border-gray-300' />

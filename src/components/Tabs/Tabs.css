@@ -27,7 +27,7 @@
   .IconBg{
     width: 80px;
   }
-  .AnaCards p, .AnaCards a, .AnaCards h3{
+  .AnaCards p, .AnaCards a, .AnaCards h3, .AdminSetHeadSec{
     font-size: 2.3em;
   }
   .AnaCards h1{
@@ -77,7 +77,7 @@
     padding: 2px 10px;
     gap: 3px;
   }
-  .UUIDcon div p, .STitle, .AppSign{
+  .UUIDcon div p, .STitle, .AppSign, .AdminNavTabs{
     font-size: 2em;
   }
   .namesTag{
@@ -210,11 +210,28 @@
     display: flex;
     flex-wrap: wrap;
   }
+  .AdminNavTabsCon{
+    width:fit-content;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .AdminNavTabs{
+    border: none;
+    font-size: 14px;
+    position: relative;
+  }
+  .AdminNavTabs:last-child{
+    display: none;
+  }
   .verImg{
     height: 200px;
   }
   .ApprovalCards, .procuctContainer{
     grid-template-columns: repeat(2, 1fr);
+  }
+  .AdminSettingTabs{
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -246,7 +263,7 @@
   .verImg{
     height: 150px;
   }
-  .ApprovalCards{
+  .ApprovalCards, .AdminSettProLabels8{
     grid-template-columns: repeat(1, 1fr);
   }
   .userIc{
@@ -264,6 +281,15 @@
   }
   .venProdpend{
     flex-wrap: wrap;
+  }
+  .adminProIMgs3{
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .adminProIMgs3 button{
+    align-self: self-end;
   }
 }
 

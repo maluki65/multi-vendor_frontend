@@ -244,7 +244,7 @@ function VendorOverviewTab() {
               <span className='text-sm text-muted'>Products sold</span>
             </div>
             <div className='flex items-center gap-1 Ctext'>
-              <span className='flex items-center rounded-md bg-[#fbbf24] p-2'></span>
+              <span className='flex items-center rounded-md bg-[#84cc16] p-2'></span>
               <span className='text-sm text-muted'>Orders</span>
             </div>
           </div>

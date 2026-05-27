@@ -21,6 +21,7 @@ const InitialFormState = {
     phone: '',
   },
 
+  gender: '',
   phoneNo: '',
   fullNames: '',
   IDPassport: '',  
@@ -234,6 +235,41 @@ function CreateAdminForm() {
             </div>
 
             <div className='grid grid-cols-3 gap-2 my-3 space-y-2 VenRegCon'>
+              <div className='flex flex-col gap-4 my-4 items-start'>
+                <label className='flex items-center space-x-1 text-md'>
+                  <input
+                    type='radio'
+                    name='gender'
+                    value='Male'
+                    checked={form.gender === 'Male'}
+                    onChange={handleChange}
+                    className='accent-primary cursor-pointer'
+                  />
+                  <span className='text-sm text-[#403f3f]'>Male</span>
+                </label>
+                <label className='flex items-center space-x-1 text-md'>
+                  <input
+                    type='radio'
+                    name='gender'
+                    value='Female'
+                    checked={form.gender === 'Female'}
+                    onChange={handleChange}
+                    className='accent-primary cursor-pointer'
+                  />
+                  <span className='text-sm text-[#403f3f]'>Female</span>
+                </label>
+                <label className='flex items-center space-x-1 text-md'>
+                  <input
+                    type='radio'
+                    name='gender'
+                    value='Other'
+                    checked={form.gender === 'Other'}
+                    onChange={handleChange}
+                    className='accent-primary cursor-pointer'
+                  />
+                  <span className='text-sm text-[#403f3f]'>Other</span>
+                </label>
+              </div>
               <div className='flex flex-col gap-1'>
                 <label className='flex items-center gap-2 text-sm'>Fullname <span className='text-red-600'>*</span></label>
                 <input

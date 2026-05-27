@@ -69,3 +69,6 @@ export { default as VendorProfile } from './VendorTabs/vendorItems/vendorProfile
 export { default as VendorOverviewTab } from './Tabs/VendorOverviewTab';
 export { default as VendorRevenueChart } from './Charts/VendorRevenueCharts';
 export { default as VendorSalesReportChart } from './Charts/VendorSalesReportChart';
+export { default as AdminSettings } from './Tabs/AdminSettings/AdminSettings';
+export { default as AdminProfile } from './Tabs/AdminSettings/AdminProfile';
+export { default as EditAdminProfile } from './Tabs/AdminSettings/EditAdminProfile';

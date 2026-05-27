@@ -8,7 +8,7 @@ function ProfileEdit({  profile, user, onUpdate, setActiveTab }) {
   const [username, setUsername] = useState(user?.username || '');
   const [phone, setPhone] = useState(profile?.phone || '');
   const [avatarFile, setAvatarFile] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(user?.avatar || '');
+  const [avatarPreview, setAvatarPreview] = useState(profile?.avatar || '');
   const [addressLabel, setAddressLabel] = useState(profile?.addresses?.[0]?.label || '');
   const [country, setCountry] = useState(profile?.addresses?.[0]?.country || '');
   const [street, setStreet] = useState(profile?.addresses?.[0]?.street || '');
@@ -90,49 +90,66 @@ function ProfileEdit({  profile, user, onUpdate, setActiveTab }) {
           <AdLoader />
         </div>
         ) : (
-          <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+          <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
+            
+            <div className='flex flex-col items-center justify-center gap-3'>
+              {avatarPreview && (
+                <img
+                  src={avatarPreview}
+                  alt='avatar'
+                  className='w-28 h-28 rounded-full object-cover border'
+                />
+              )}
 
-            <div className='grid grid-cols-2 gap-3 profileEditSettings'>
-              <div className='flex flex-col gap-1'>
+              <input
+                type='file'
+                accept='image/*'
+                onChange={(e) => setAvatarFile(e.target.files[0])}
+                className='max-w-full text-sm cursor-pointer text-primary font-semibold'
+              />
+            </div>
+
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+              <div className='flex flex-col gap-1min-w-0'>
                 <label className='text-sm font-semibold'>Username</label>
                 <input
                   type='text'
                   required
                   value={username}
                   onChange={e => setUsername(e.target.value)}
-                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                  className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
                 />
               </div>
 
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col gap-1 min-w-0'>
                 <label className='text-sm font-semibold'>Fullname</label>
                 <input
                   type='text'
                   required
                   value={fullname}
                   onChange={e => setFullname(e.target.value)}
-                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                  className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
                 />
               </div>
 
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col gap-1 min-w-0'>
                 <label className='text-sm font-semibold'>Phone</label>
                 <input
                   type='text'
                   required
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
-                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                  className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
                 />
               </div>
 
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col gap-1 min-w-0'>
                 <label className='text-sm font-semibold'>Address Label</label>
                 <select
                   required
                   value={addressLabel}
                   onChange={e => setAddressLabel(e.target.value)}
-                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                  className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
                  >
                   <option value=''>Select Address Label</option>
                   <option value='Home'>Home</option>
@@ -140,72 +157,56 @@ function ProfileEdit({  profile, user, onUpdate, setActiveTab }) {
                 </select>
               </div>
 
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col gap-1 min-w-0'>
                 <label className='text-sm font-semibold'>Country</label>
                 <input
                   type='text'
                   required
                   value={country}
                   onChange={e => setCountry(e.target.value)}
-                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                  className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
                 />
               </div>
 
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col gap-1 min-w-0'>
                 <label className='text-sm font-semibold'>City</label>
                 <input
                   type='text'
                   required
                   value={city}
                   onChange={e => setCity(e.target.value)}
-                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                  className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
                 />
               </div>
 
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col gap-1 min-w-0'>
                 <label className='text-sm font-semibold'>Street</label>
                 <input
                   type='text'
                   required
                   value={street}
                   onChange={e => setStreet(e.target.value)}
-                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                  className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
                 />
               </div>
 
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col gap-1 min-w-0'>
                 <label className='text-sm font-semibold'>Postal Code</label>
                 <input
                   type='text'
                   required
                   value={postalCode}
                   onChange={e => setPostalCode(e.target.value)}
-                  className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+                  className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
                 />
               </div>
             </div>
 
-            <div className='flex flex-col gap-2'>
-              <label>Profile Image</label>
-
-              {avatarPreview && (
-                <img
-                  src={avatarPreview}
-                  alt='Preview'
-                  className='h-24 w-24 rounded-full object-cover'
-                />
-              )}
-
-              <input
-                type='file'
-                accept='image/*'
-                onChange={e => setAvatarFile(e.target.files[0])}
-                className='text-primary cursor-pointer'
-              />
-            </div>
-
-            <div className='flex gap-3 items-center'>
-              <button className='bg-primary text-white px-4 py-2 font-medium rounded-lg w-fit cursor-pointer hover:bg-transparent hover:border-dark hover:border hover:text-dark'>
+            <div className='flex flex-wrap gap-3 items-center'>
+              <button 
+                type='submit'
+                disabled={isUploading}
+                className='bg-primary text-white px-4 py-2 font-medium rounded-lg w-fit cursor-pointer hover:bg-transparent hover:border-dark hover:border hover:text-dark'>
                 {isUploading ? 'Updating...' : 'Update Profile'}
               </button>
 

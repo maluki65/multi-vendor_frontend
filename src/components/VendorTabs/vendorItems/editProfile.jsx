@@ -120,7 +120,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
   };
 
   return (
-    <section className='p-4 flex flex-col space-y-2 w-full'>
+    <section className='flex flex-col'>
       <div className='flex items-center justify-between'>
         <FaArrowLeft 
           onClick={() => setActiveTab('VendorProfile')}
@@ -139,8 +139,8 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
       )}
       
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <div className='grid grid-cols-2 gap-3 editVenProfileForm'>
-          <div className='flex flex-col gap-2 border rounded-lg p-3'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+          <div className='flex flex-col gap-2 border rounded-lg p-3 min-w-0'>
             <label>Store Logo</label>
 
             {images.logo.preview && (
@@ -180,8 +180,8 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
             )}
           </div>
 
-          <div className='flex flex-col gap-2 border rounded-lg p-3'>
-            <label>Banner Logo</label>
+          <div className='flex flex-col gap-2 border rounded-lg p-3 min-w-0'>
+            <label>Banner</label>
 
             {images.banner.preview && (
               <img
@@ -221,7 +221,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
           </div>
         </div>
 
-        <div className='grid grid-cols-2 gap-3 editVenProfileForm'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
           <div className='flex flex-col gap-1'>
             <label className='text-sm font-semibold'>StoreName</label>
             <input
@@ -229,7 +229,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
               required
               value={legalName}
               onChange={e => setLegalName(e.target.value)}
-              className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+              className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
             />
           </div>
 
@@ -240,7 +240,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
               required
               value={phone}
               onChange={e => setPhone(e.target.value)}
-              className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+              className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
             />
           </div>
 
@@ -251,7 +251,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
               required
               value={tillNumber}
               onChange={e => setTillNumber(e.target.value)}
-              className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+              className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
             />
           </div>
 
@@ -262,7 +262,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
               required
               value={country}
               onChange={e => setCountry(e.target.value)}
-              className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+              className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
             />
           </div>
 
@@ -273,7 +273,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
               required
               value={city}
               onChange={e => setCity(e.target.value)}
-              className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+              className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
             />
           </div>
 
@@ -284,7 +284,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
               required
               value={street}
               onChange={e => setStreet(e.target.value)}
-              className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+              className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
             />
           </div>
 
@@ -295,12 +295,12 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
               required
               value={postal}
               onChange={e => setPostal(e.target.value)}
-              className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+              className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
             />
           </div>
         </div>
 
-        <div className='flex flex-col gap-1 editVenProfileForm'>
+        <div className='flex flex-col gap-1'>
           <label className='text-sm font-semibold'>Description</label>
           <textarea
             type='text'
@@ -308,7 +308,7 @@ function EditVendorProfile({ profile, user, onUpdate, setActiveTab }) {
             rows={6}
             value={description}
             onChange={e => setDescription(e.target.value)}
-            className='p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
+            className='w-full p-2 outline-none focus:bg-[#dfdede] border focus:border-[1.5px] focus:border-orange-400 rounded-lg bg-[#ebe7e7]'
           />
         </div>
 

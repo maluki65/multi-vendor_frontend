@@ -15,6 +15,7 @@ function VendorSettings() {
   const vendorSettingTabs = [
     { name: 'Store Infomation', value: 'store', icon: null },
     { name: 'Password Manager', value: 'password', icon: null },
+    { name: 'Wallet', value: 'wallet', icon: null },
     { name: 'Logout', value: 'Logout', icon: MdLogout }
   ]
 

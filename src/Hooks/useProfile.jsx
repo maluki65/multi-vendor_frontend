@@ -90,6 +90,18 @@ export const useProfile = (role) => {
     }
   })
 
+  // On updating vendor profile
+  const updateAdminProfile = useMutation({
+    mutationFn: async(payload) => {
+      const res = await Api.patch('/admin/update/profile', payload);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(PROFILE_KEY, data.profile);
+      queryClient.invalidateQueries(PROFILE_KEY);
+    }
+  })
+
   const updateNotification = useMutation({
     mutationFn: async ({ type, value }) => {
       const res = await Api.patch('/buyer/profile/preferences/notification', {
@@ -205,6 +217,9 @@ export const useProfile = (role) => {
 
     vendorProfileUpdate: updateVendorProfile.mutateAsync,
     updatingVenProfile: updateVendorProfile.isPending,
+
+    adminProfileUpdate: updateAdminProfile.mutateAsync,
+    updatingAdminProfile: updateAdminProfile.isPending,
 
     updateProfileImg: updateProfileImg.mutateAsync,
     updatingImg: updateProfileImg.isPending,

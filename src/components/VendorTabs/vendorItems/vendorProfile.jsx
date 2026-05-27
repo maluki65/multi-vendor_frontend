@@ -198,12 +198,14 @@ function VendorProfile() {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
            >
-            <EditVendorProfile
-              setActiveTab={setActiveTab}
-              profile={profile}
-              user={user}
-              onUpdate={vendorProfileUpdate}
-            />
+            <div className='p-2'>
+              <EditVendorProfile
+                setActiveTab={setActiveTab}
+                profile={profile}
+                user={user}
+                onUpdate={vendorProfileUpdate}
+              />
+            </div>
         </motion.div>
       )}
      </AnimatePresence>

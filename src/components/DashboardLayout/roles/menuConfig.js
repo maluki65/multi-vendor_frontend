@@ -21,7 +21,7 @@ export const menuRoleItems = {
     { label: 'Orders', value: 'orders', icon: RiShoppingCartLine, requiresApproval: true, link: "?tab=orders" },
     { label: 'Payments', value: 'Payments', icon: MdOutlinePayments, link: '?tab=payments'},
     //{ label: 'Profile', value: 'Profile', icon: CgProfile, link: "?tab=profile"},
-    { label: 'Settings', value: 'Settings', icon: IoSettingsOutline, link: "?tab=settings"},
+    { label: 'Settings', value: 'AdminSettings', icon: IoSettingsOutline, link: "?tab=settings"},
   ],
 
   Vendor: [
