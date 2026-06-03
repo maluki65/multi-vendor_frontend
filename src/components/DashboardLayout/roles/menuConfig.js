@@ -8,7 +8,7 @@ import { RxDashboard } from "react-icons/rx";
 import { CgProfile } from "react-icons/cg";
 import { LuUsers } from "react-icons/lu";
 import { CiUser, CiHeart } from "react-icons/ci";
-import { LiaShoppingCartSolid } from "react-icons/lia";
+import { LiaShoppingCartSolid, LiaWalletSolid } from "react-icons/lia";
 import { GoHeart } from "react-icons/go";
 
 export const menuRoleItems = {
@@ -29,7 +29,7 @@ export const menuRoleItems = {
     { label: 'Add Product', value: 'Add-Product', icon: HiOutlinePlusCircle, link: '?tab=addProduct'},
     { label: 'Products', value: 'products', icon: FiShoppingBag, link: '?tab=myproducts'},
     { label: 'Orders', value: 'orders', icon: RiShoppingCartLine, requiresApproval: true, link: "?tab=orders" },
-    { label: 'Payments', value: 'payments', icon: MdOutlinePayments, requiresApproval: true, link: "?tab=payments" },
+    { label: 'Wallet', value: 'wallet', icon: LiaWalletSolid, requiresApproval: true, link: "?tab=payments" },
     { label: 'Verification', value: 'verification', icon: MdOutlineDomainVerification, requiresApproval: true, link: "?tab=verification" },
     { label: 'Settings', value: 'vendorSettings', icon: IoSettingsOutline, link: "?tab=settings"},
   ],

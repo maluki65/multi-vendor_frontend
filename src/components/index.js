@@ -62,7 +62,7 @@ export { default as Passwords } from './BuyerTabs/BuyerItems/Passwords';
 export { default as ProfileEdit } from './BuyerTabs/BuyerItems/ProfileEdit';
 export { default as WishlistTable } from './BuyerTabs/BuyerItems/WishlistTable';
 export { default as VendorOrders } from './VendorTabs/order';
-export { default as VendorPayments } from './VendorTabs/Payments';
+export { default as VendorPayments } from './VendorTabs/VendorWallet';
 export { default as VendorSettings } from './VendorTabs/vendorSettings';
 export { default as EditVendorProfile } from './VendorTabs/vendorItems/editProfile';
 export { default as VendorProfile } from './VendorTabs/vendorItems/vendorProfile';

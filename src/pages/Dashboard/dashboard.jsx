@@ -125,7 +125,7 @@ function Dashboard() {
                 <VendorProducts vendorId={profile._id} />
               )}
               {tab === 'orders' && <VendorOrders/>}
-              {tab === 'payments' && isVendor && <VendorPayments/>}
+              {tab === 'wallet' && isVendor && <VendorPayments/>}
               {tab === 'vendorSettings' && isVendor && <VendorSettings/>}
               {tab === 'AdminSettings' && isAdmin && <AdminSettings/>}
             </>

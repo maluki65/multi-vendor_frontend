@@ -3,7 +3,7 @@ import './AdLoader.css';
 
 function AdLoader() {
   return (
-    <span className="loader"></span>
+    <span className='loader'></span>
   )
 }
 
