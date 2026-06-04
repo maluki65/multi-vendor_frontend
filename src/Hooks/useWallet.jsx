@@ -17,26 +17,29 @@ const useWallet = (role) => {
   });
 
   // On getting vendor withdrawal requests
-  const getWithdrawalHistory = useQuery({
-    queryKey: ['vendor-withdrawals'],
-    queryFn: async () => {
-      const { data } = await Api.get('/wallet/withdrawals/history');
-      return data;
-    },
-    enabled: role === 'Vendor',
-    staleTime: 1000 * 60 * 10,
-  });
+  const getWithdrawalHistory = (page = 1, limit ) => { 
+    return useQuery({
+      queryKey: ['vendor-withdrawals'],
+      queryFn: async () => {
+        const { data } = await Api.get(`/wallet/withdrawals/history?page=${page}&limit=${limit}`);
+        return data;
+      },
+      enabled: role === 'Vendor',
+      staleTime: 1000 * 60 * 10,
+    });
+  }
 
   // On getting all pending withdrawal requests for admin
-  const getPendingWithdrawalRequests = (role, page = 1, limit = 20) => { return useQuery({
-    queryKey: ['admin-withdrawalsRequests', page, limit],
-    queryFn: async () => {
-      const { data } = await Api.get(`/wallet/pending/withdrawals?page=${page}&limit=${limit}`);
-      return data;
-    },
-    enabled: role === 'Admin',
-    staleTime: 1000 * 60 * 10,
-  });
+  const getPendingWithdrawalRequests = (role, page = 1, limit = 20) => { 
+      return useQuery({
+      queryKey: ['admin-withdrawalsRequests', page, limit],
+      queryFn: async () => {
+        const { data } = await Api.get(`/wallet/pending/withdrawals?page=${page}&limit=${limit}`);
+        return data;
+      },
+      enabled: role === 'Admin',
+      staleTime: 1000 * 60 * 10,
+    });
   };
 
   // On requesting withdrawal

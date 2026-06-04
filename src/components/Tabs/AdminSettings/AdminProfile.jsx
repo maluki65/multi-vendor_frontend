@@ -68,7 +68,7 @@ function AdminProfile() {
                   <hr className='flex-1 border-t border-gray-300' />
 
                   <div className='flex flex-col gap-2'>
-                    <h4 className='font-semibold text-dark AdminSetHeadSec'> Personal Information: </h4>
+                    <h4 className='font-semibold text-dark underline AdminSetHeadSec'> Personal Information: </h4>
                     <div className='grid grid-cols-2 gap-2 AdminSettProLabels8'>
                       <div className='flex flex-col gap-1'>
                         <label className='text-gray-500 text-base'>
@@ -108,7 +108,7 @@ function AdminProfile() {
                   <hr className='flex-1 border-t border-gray-300' />
 
                   <div className='flex flex-col gap-2'>
-                    <h4 className='font-semibold text-dark flex items-center gap-1 AdminSetHeadSec'> 
+                    <h4 className='font-semibold text-dark flex items-center gap-1 underline AdminSetHeadSec'> 
                       Addresses:
                     </h4>
                     <div className='grid grid-cols-2 gap-2 AdminSettProLabels8'>
@@ -150,7 +150,7 @@ function AdminProfile() {
                   <hr className='flex-1 border-t border-gray-300' />
 
                   <div className='flex flex-col gap-2'>
-                    <h4 className='font-semibold text-dark flex items-center gap-1'> 
+                    <h4 className='font-semibold text-dark flex items-center gap-1 underline'> 
                       Next of Kin:
                     </h4>
                     <div className='grid grid-cols-2 gap-2 AdminSettProLabels8'>
