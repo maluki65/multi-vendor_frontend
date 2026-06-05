@@ -60,6 +60,10 @@ const useWallet = (role) => {
       queryClient.invalidateQueries({
         queryKey: ['vendor-withdrawals']
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['wallet']
+      });
     },
 
     onError: (error, variables, context) => {

@@ -230,7 +230,7 @@ function VendorVerification() {
                       />
 
                       <button 
-                        type='botton'
+                        type='button'
                         onClick={() => removeImage(index)}
                         className='absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-red-600 cursor-pointer'>
                           X

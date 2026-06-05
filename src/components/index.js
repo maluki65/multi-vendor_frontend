@@ -72,3 +72,4 @@ export { default as VendorSalesReportChart } from './Charts/VendorSalesReportCha
 export { default as AdminSettings } from './Tabs/AdminSettings/AdminSettings';
 export { default as AdminProfile } from './Tabs/AdminSettings/AdminProfile';
 export { default as EditAdminProfile } from './Tabs/AdminSettings/EditAdminProfile';
+export { default as WithdrawalModal } from './VendorTabs/WithdrawalModal';
