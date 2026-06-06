@@ -17,9 +17,9 @@ const useWallet = (role) => {
   });
 
   // On getting vendor withdrawal requests
-  const getWithdrawalHistory = (page = 1, limit ) => { 
+  const getWithdrawalHistory = (page = 1, limit = 20 ) => { 
     return useQuery({
-      queryKey: ['vendor-withdrawals'],
+      queryKey: ['vendor-withdrawals', page, limit],
       queryFn: async () => {
         const { data } = await Api.get(`/wallet/withdrawals/history?page=${page}&limit=${limit}`);
         return data;

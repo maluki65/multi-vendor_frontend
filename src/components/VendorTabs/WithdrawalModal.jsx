@@ -57,17 +57,17 @@ function WithdrawalModal({ isOpen, onClose, submit, isSubmitting, availableBalan
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto backdrop-blur-sm'>
-      <div className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl'>
+      <div className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl m-2 withdrawalModal'>
         <div className='flex flex-col  justify-between mb-4'>
           <div className='flex items-center justify-between'>
-            <h2 className='text-xl font-semibold'>
+            <h2 className='text-xl font-semibold withdrawalHeading'>
               Request withdrawal
             </h2>
 
             <button 
               onClick={onClose}
               >
-                <RiCloseCircleLine className='text-red-600 cursor-pointer' size={24} />
+                <RiCloseCircleLine className='text-red-600 cursor-pointer withdrawalIcon' size={24} />
             </button>
           </div>
 
@@ -90,7 +90,7 @@ function WithdrawalModal({ isOpen, onClose, submit, isSubmitting, availableBalan
                 className='p-2 outline-none focus:bg-[#dfdede] focus:border-[1.5px] focus:border-orange-500 rounded-lg bg-[#ebe7e7]'
               />
             </div>
-            <div className='grid grid-cols-2 gap-2'>
+            <div className='grid grid-cols-2 gap-2 withdrawalModalGrid01'>
               <div className='flex flex-col gap-1'>
                 <label className='flex items-center text-sm gap-1'>Till number <span className='text-red-600'>*</span></label>
                 <input 

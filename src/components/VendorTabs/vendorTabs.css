@@ -1,3 +1,7 @@
+.withdarawalRequestsCards{
+  display: none;
+}
+
 @media(min-width: 2560px){
   label{
     font-weight: 200;
@@ -14,11 +18,11 @@
     background-size: cover;
     background-repeat: no-repeat;
   }
-  .imgIcon{
+  .imgIcon, .withBalIcon{
     width:70px;
     height: 70px;
   }
-  .suppText, .orderTableH1 td{
+  .suppText, .orderTableH1 td, .withStatus92{
     font-size: 1em;
   }
   .supportPrevImg{
@@ -57,11 +61,11 @@
     height: 130px;
     width: 130px;
   }
-  .attrName{
+  .attrName, .withdrawalHeading, .withBal, .withBal01, .withBal02{
     font-size: 2.5em;
     font-weight: normal;
   }
-  .attrVal, .orderStatusTitles, .orderPopH, .oderPopTd, .venSettHead, .SettVenTabsd{
+  .attrVal, .orderStatusTitles, .orderPopH, .oderPopTd, .venSettHead, .SettVenTabsd, th{
     font-size: 2em;
   }
   .VenProdTableCon8u{
@@ -70,9 +74,27 @@
   .prodVenItem{
     font-size: 20px;
   }
-  .venProdIcon4u, .VenSettIcon{
+  .venProdIcon4u, .VenSettIcon, .withdrawalIcon, .withBalIcon02, .withEyeIcon23{
     height: 40px;
     width: 40px;
+  }
+  .withdrawalModal{
+    max-width: 60vh;
+    min-height: 30vh;
+  }
+  .withdrawalCard{
+    min-height: 19vh;
+  }
+  .withImg{
+    height: 60px;
+    width: 60px;
+  }
+  .CatNav button{
+    padding: 10px 15px;
+    border-radius: 20px;
+  }
+  .CatNav span{
+    font-size: 1.5em;
   }
 }
 
@@ -89,7 +111,7 @@
 }
 
 @media(max-width: 769px){
-  .SettVenTab938, .VenProSetting{
+  .SettVenTab938, .VenProSetting, .withdrawalContainer{
     grid-template-columns: repeat(1, 1fr);
   }
   .SettVenTabsMain{
@@ -117,22 +139,45 @@
     justify-content: start;
     gap: 10px;
   }
+  .withBtn{
+    padding: 5px;
+    font-size: 13px;
+  }
+  .withBal{
+    font-size: 15px;
+  }
 }
 
 @media(max-width: 426px){
   .proName{
     width: 100%;
   }
-  .line1, .line2, .VenOrders, .editVenProfileForm{
+  .line1, .line2, .VenOrders, .editVenProfileForm, .withCardContainer, .Request08Modal{
     grid-template-columns: repeat(1, 1fr);
   }
   .SeaProd{
     width: 100%;
   }
+  .Balances div{
+    height: 20vh;
+  }
+  .withBal02{
+    font-size: 15px;
+  }
+  .withBal03{
+    font-size: 10px;
+  }
+  .PaymentsRequestLg{
+    display: none;
+  }
+  .withdarawalRequestsCards{
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 @media(max-width: 376px){
-  .prodCardsV{
+  .prodCardsV, .withdrawalModalGrid01{
     grid-template-columns: repeat(1, 1fr);
   }
   .orderShipAdd{
@@ -152,5 +197,8 @@
   }
   .orderSortInput input{
     width: 100%;
+  }
+  .withBal{
+    font-size: 11px;
   }
 }
