@@ -10,6 +10,8 @@ import { PiContactlessPaymentLight, PiContactlessPaymentFill } from "react-icons
 import { IoIosArrowRoundDown, IoIosWarning } from "react-icons/io";
 import { IoEyeOffOutline, IoEyeOutline, IoHourglassOutline, IoCheckmarkCircle, IoBan  } from "react-icons/io5";
 import { TbPlayerEjectFilled } from "react-icons/tb";
+import { GrTransaction } from "react-icons/gr";
+import { FaShoppingCart, FaMoneyBillWave, FaMoneyCheckAlt, FaTimesCircle, FaUndo, FaSlidersH, FaPercentage, FaUnlockAlt, FaUniversity } from 'react-icons/fa';
 
 function VendorWallet() {
   const [page, setPage] = useState(1);
@@ -30,13 +32,15 @@ function VendorWallet() {
   const role = me?.role;
   const store = me?.storeName;
 
-  const { getWallet, requestWithdrawal, getWithdrawalHistory } = useWallet(role);
+  const { getWallet, requestWithdrawal, getWithdrawalHistory, getVendorWalletTransactions } = useWallet(role);
 
   const { data, isLoading: isWalletLoading, isError: isWalletError } = getWallet;
-  const { data: requestHistory, isError: isRequestError, isLoading: isRequestLoading } = getWithdrawalHistory(page, 20);
+  const { data: requestHistory, isError: isRequestError, isLoading: isRequestLoading } = getWithdrawalHistory(page, 10);
+  const { data: walletTransactions, isError: isTransactionError, isLoading: isTransactionLoading } = getVendorWalletTransactions;
 
   const wallet = data?.wallet;
   const withdrawalRequest = requestHistory?.withdrawals ?? [];
+  const transactions = walletTransactions?.walletTransactions;
   const totalPages = requestHistory?.pagination?.totalPages;
 
   useEffect(() => {
@@ -109,7 +113,28 @@ function VendorWallet() {
     }
   };
 
+  const transactionIcons = {
+    sale: FaShoppingCart,
+    withdrawal_request: FaMoneyBillWave,
+    withdrawal_paid: FaMoneyCheckAlt,
+    withdrawal_rejected: FaTimesCircle,
+    refund: FaUndo,
+    adjustment: FaSlidersH,
+    commission: FaPercentage,
+    reserve_release: FaUnlockAlt,
+    settlement: FaUniversity,
+  };
+
+  const getSign = (direction) => {
+    return direction === 'credit' ? '+' : '-';
+  };
+
+  const getColor = (direction) => {
+    return direction === 'credit' ? 'text-green-600' : 'text-red-500';
+  };
+
   console.log('History', withdrawalRequest);
+  console.log('Transaction', transactions);
   console.log('Total pages', totalPages);
   console.log('Wallet', wallet);
   console.log('Role', role);
@@ -229,9 +254,9 @@ function VendorWallet() {
                       </div>
                     </div>
                   </div>
-                  <div className='min-h-[50vh] mt-2 py-3'>
-                    <div className='flex items-center justify-between my-3 underline'>
-                      <h1 className='font-semibold text-dark'>
+                  <div className='h-[50vh] overflow-y-auto mt-2 py-3 px-2'>
+                    <div className='flex items-center justify-between my-3'>
+                      <h1 className='font-semibold text-dark underline'>
                         Payment Requests
                       </h1>
                     </div>
@@ -372,7 +397,75 @@ function VendorWallet() {
                     </div>
                   </div>
                 </div>
-                <div className='bg-red-400'>dd</div>
+                <div className='bg-gray-200 relative rounded-lg'>
+                  <div className='absolute inset-0 bg-white/20 backdrop-blur-3xl rounded-lg'/>
+                    {isTransactionLoading ? (
+                      <div className='relative z-10 h-full flex justify-center items-center'>
+                        <p className='text-dark'>Loading transactions...</p>
+                      </div>
+                    ) : isTransactionError ? (
+                      <div className='relative z-10 h-full flex justify-center items-center'>
+                        <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+                          <GrTransaction className='text-red-500' size={45} />
+                          <p className='text-red-500'>Failed to Load wallet transactions!</p>
+                        </div>
+                      </div>
+                    ) : transactions.length > 0 ? (
+                      <div className='relative z-10 p-2 flex flex-col gap-2 shadow-xs h-[80vh] overflow-y-auto'>
+                        <div className='sticky top-0 bg-gray-200 backdrop-blur-md z-20 py-2'>
+                          <h1 className='font-semibold text-dark underline transactHead'>
+                            Wallet Transactions
+                          </h1>
+                        </div>
+                        <div className='flex-1 overflow-y-auto flex flex-col gap-2'>
+                          {transactions.map((item) => {
+                            const Icon = transactionIcons[item?.type] || FaMoneyBillWave;
+
+                            return (
+                              <div
+                                key={item._id}
+                                className='bg-white rounded-md p-2 flex flex-col'>
+                                  <div className='flex gap-2 items-center'>
+                                    <div className='p-3 rounded-full bg-gray-200 h-fit w-fit '>
+                                      <Icon className='text-gray-700 text-base transactIcon'/>
+                                    </div>
+                                    <div className='flex flex-col gap-2 w-full'>
+                                      <div className='flex justify-between'>
+                                        <p className='text-sm font-medium capitalize text-gray-500'>
+                                          {item?.type.replace('_', ' ')}
+                                        </p>
+                                        <p className={`font-normal text-sm ${getColor(item?.direction)}`}>
+                                          {getSign(item?.direction)}KES {(item?.amount / 100).toLocaleString()}
+                                        </p>
+                                      </div>
+
+                                      <div className='flex justify-between'>
+                                        <p className='text-sm font-medium capitalize text-gray-400'>
+                                          {new Date(item?.createdAt).toLocaleDateString()}
+                                        </p>
+                                        <p className='text-sm font-medium capitalize text-gray-400'>
+                                          {item?.referenceModel}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <p className='text-sm my-2 font-medium capitalize text-gray-700'>
+                                    {item?.description}
+                                  </p>
+                                </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='relative z-10 h-full flex justify-center items-center'>
+                        <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
+                          <GrTransaction className='text-red-500' size={45} />
+                          <p className='text-red-500'>No wallet transactions yet!</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
               </div>
             )}
           </div>

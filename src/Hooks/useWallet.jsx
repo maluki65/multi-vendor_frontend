@@ -16,6 +16,18 @@ const useWallet = (role) => {
     enabled: role === 'Vendor',
   });
 
+  // On getting vendor wallet transactions
+  const getVendorWalletTransactions = useQuery({
+    queryKey: ['Vendor-WalletTransactions'],
+    queryFn: async () => {
+      const { data } = await Api.get('/wallet/transactions');
+      return data;
+    },
+
+    enabled: role === 'Vendor',
+    staleTime: 1000 * 60 * 10,
+  });
+
   // On getting vendor withdrawal requests
   const getWithdrawalHistory = (page = 1, limit = 20 ) => { 
     return useQuery({
@@ -30,7 +42,7 @@ const useWallet = (role) => {
   }
 
   // On getting all pending withdrawal requests for admin
-  const getPendingWithdrawalRequests = (role, page = 1, limit = 20) => { 
+  const getPendingWithdrawalRequests = (role, page = 1, limit = 10) => { 
       return useQuery({
       queryKey: ['admin-withdrawalsRequests', page, limit],
       queryFn: async () => {
@@ -64,6 +76,10 @@ const useWallet = (role) => {
       queryClient.invalidateQueries({
         queryKey: ['wallet']
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['Vendor-WalletTransactions']
+      });
     },
 
     onError: (error, variables, context) => {
@@ -94,6 +110,10 @@ const useWallet = (role) => {
 
       queryClient.invalidateQueries({
         queryKey: ['wallet'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['Vendor-WalletTransactions']
       });
     },
 
@@ -126,6 +146,10 @@ const useWallet = (role) => {
       queryClient.invalidateQueries({
         queryKey: ['wallet'],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['Vendor-WalletTransactions']
+      });
     },
 
     onError: (error, variables, context) => {
@@ -138,6 +162,7 @@ const useWallet = (role) => {
   return {
     getWallet,
     getWithdrawalHistory,
+    getVendorWalletTransactions,
     getPendingWithdrawalRequests,
 
     requestWithdrawal,
