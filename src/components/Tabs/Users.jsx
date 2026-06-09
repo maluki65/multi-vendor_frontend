@@ -185,7 +185,7 @@ function Users() {
       } else if (user.role === 'Buyer') {
         endPoint = `/admin/buyers/${user._id}/profile`;
       } else {
-        setProfileMessage('Admins do not have profiles.');
+        setProfileMessage('Admins does not have profiles.');
         setProfileLoading(false);
         return;
       }

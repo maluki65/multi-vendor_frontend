@@ -74,3 +74,4 @@ export { default as AdminProfile } from './Tabs/AdminSettings/AdminProfile';
 export { default as EditAdminProfile } from './Tabs/AdminSettings/EditAdminProfile';
 export { default as WithdrawalModal } from './VendorTabs/WithdrawalModal';
 export { default as WithdrawalRequest } from './VendorTabs/withdrawalRequest';
+export { default as AdminPayments } from './Tabs/AdminPayments';

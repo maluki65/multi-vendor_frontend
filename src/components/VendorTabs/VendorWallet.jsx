@@ -39,7 +39,7 @@ function VendorWallet() {
   const { data: walletTransactions, isError: isTransactionError, isLoading: isTransactionLoading } = getVendorWalletTransactions;
 
   const wallet = data?.wallet;
-  const withdrawalRequest = requestHistory?.withdrawals ?? [];
+  const withdrawalRequest = requestHistory?.withdrawals || [];
   const transactions = walletTransactions?.walletTransactions;
   const totalPages = requestHistory?.pagination?.totalPages;
 
@@ -133,11 +133,11 @@ function VendorWallet() {
     return direction === 'credit' ? 'text-green-600' : 'text-red-500';
   };
 
-  console.log('History', withdrawalRequest);
-  console.log('Transaction', transactions);
-  console.log('Total pages', totalPages);
-  console.log('Wallet', wallet);
-  console.log('Role', role);
+  //console.log('History', withdrawalRequest);
+  //console.log('Transaction', transactions);
+  //console.log('Total pages', totalPages);
+  //console.log('Wallet', wallet);
+  //console.log('Role', role);
 
   return (
     <section className='overflow-hidden'>
@@ -271,7 +271,7 @@ function VendorWallet() {
                           <th className='p-3 rounded-tr-lg'></th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody className=''>
                         {withdrawalRequest.map((item) => {
                           const config = statusConfig[item?.status] ?? statusConfig.pending;
                           const Icon = config.icon;
@@ -291,7 +291,7 @@ function VendorWallet() {
                                 {(item?.paymentMethodSnapshot?.tillNumber)}
                               </td>
                               <td className='p-2'>
-                                <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold withStatus92 ${config.bg} ${config.text}`}
+                                <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium withStatus92 ${config.bg} ${config.text}`}
                                   >
                                   <Icon className='withEyeIcon23' size={15} />
                                   {item?.status}
