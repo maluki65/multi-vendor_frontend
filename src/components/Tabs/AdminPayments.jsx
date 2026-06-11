@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import './Tabs.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import useWallet from '../../Hooks/useWallet';
 import { useCurrentUser } from '../../Hooks/useCurrentUser';
 import { Toaster } from 'react-hot-toast';
-import { AdLoader } from '../';
+import { AdLoader, AdminReqModals } from '../';
 import { MdOutlineSort } from "react-icons/md";
 import { PiContactlessPaymentLight, PiContactlessPaymentFill } from "react-icons/pi";
 import { IoIosWarning } from "react-icons/io";
@@ -12,12 +12,17 @@ import { IoHourglassOutline, IoCheckmarkCircle, IoBan  } from "react-icons/io5";
 import { TbPlayerEjectFilled } from "react-icons/tb";
 import { GrTransaction } from "react-icons/gr";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { debounce } from 'lodash';
 
 function AdminPayments() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [modalType, setModalType] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [sortOrder, setSortOrder] = useState('latest');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [selectedRequest, setSelectedRequest] = useState(null);
 
   const menuRef = useRef(null);
 
@@ -25,12 +30,14 @@ function AdminPayments() {
 
   const role = me?.role;
   const limit = 10;
-  const { getPendingWithdrawalRequests } = useWallet(role);
+  const { getPendingWithdrawalRequests, rejectWithdrawalRequest } = useWallet(role);
   
   const { data: pendingRequests, isLoading, isError } = getPendingWithdrawalRequests(
     page,
     limit,
-  )
+    debouncedSearch,
+    sortOrder
+  );
 
   const paymentRequests = pendingRequests?.withdrawals || [];
   const totalPages = pendingRequests?.pagination?.totalPages;
@@ -79,8 +86,9 @@ function AdminPayments() {
   const handleView = (request) => {
     console.log('View', request);
     setOpenMenuId(null);
-  
-    // Open modal here
+    setSelectedRequest(request);
+    setModalType('view');
+    setShowModal(true);
   };
   
   const handleApprove = (request) => {
@@ -93,8 +101,9 @@ function AdminPayments() {
   const handleReject = (request) => {
     console.log('Reject', request);
     setOpenMenuId(null);
-  
-    // Open rejection modal here
+    setSelectedRequest(request);
+    setModalType('reject');
+    setShowModal(true);
   };
 
   useEffect(() => {
@@ -113,6 +122,43 @@ function AdminPayments() {
       );
   }, []);
 
+  const debouncedSetSearch = useCallback(
+    debounce((value) => {
+      setDebouncedSearch(value);
+      setPage(1);
+    }, 500),
+    []
+  );
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    setSearch(value);
+    debouncedSetSearch(value);
+  };
+
+  useEffect(() => {
+    return () => {
+      debouncedSetSearch.cancel();
+    };
+  }, [debouncedSearch]);
+
+  const sortOptions = [
+    'latest',
+    'oldest',
+    'amount-high',
+    'amount-low'
+  ];
+
+  const handleSort = () => {
+    const currentIndex = sortOptions.indexOf(sortOrder);
+
+    const nextIndex = currentIndex === sortOptions.length - 1 ? 
+      0 : currentIndex + 1;
+    
+    setSortOrder(sortOptions[nextIndex]);
+  };
+
   console.log('Request', paymentRequests);
 
   return (
@@ -127,12 +173,20 @@ function AdminPayments() {
           <button
             className='px-2 py-1 border-[1.3px] rounded cursor-pointer hover:border-primary hover:text-primary flex items-center gap-1'>
               <MdOutlineSort className='' size={22} />
-              <span className='text-xs text-dark hover:text-primary capitalize'>
-                {sortOrder}
-              </span>
+              <select 
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className='text-xs text-dark hover:text-primary capitalize'>
+                <option value='latest'>Latest</option>
+                <option value='oldest'>Oldest</option>
+                <option value='amount-high'>Amount High → Low</option>
+                <option value='amount-low'>Amount Low → High</option>
+              </select>
           </button>
           <input
             type='text'
+            value={search}
+            onChange={handleSearchChange}
             placeholder='Search by request UUID'
             className='p-1 outline-none  bg-gray-200 focus:border-[1.5px] focus:border-orange-400 rounded-lg'
           />
@@ -257,6 +311,23 @@ function AdminPayments() {
         </div>
         
       </div>
+
+      <AdminReqModals
+        isOpen={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedRequest(null);
+          setModalType(null)
+        }}
+        request={selectedRequest}
+        type={modalType}
+        onReject={(rejectionReason) => 
+          rejectWithdrawalRequest.mutateAsync({
+            withdrawalId: selectedRequest._id,
+            rejectionReason,
+          })
+        }
+      />
     </section>
   )
 }

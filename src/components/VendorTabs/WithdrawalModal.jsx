@@ -51,7 +51,7 @@ function WithdrawalModal({ isOpen, onClose, submit, isSubmitting, availableBalan
       setForm(withdrawalForm)
       onClose();
     } catch (error) {
-      console.error('Failed to request withdrawal', error)      
+      console.error('Failed to request withdrawal', error);      
     }
   }
 
