@@ -3,8 +3,8 @@ import './HomeSwiperItems.css';
 
 function ProductSkeleton() {
   return (
-    <div className='rounded-md ng-gray-100 overflow-hidden animate-pulse'>
-      <div className='h-[170px] w-full bg-linear-to-r from-fgray-200 via-gray-300 to-gray-200 animate-shimmer'/>
+    <div className='rounded-md bg-gray-100 overflow-hidden animate-pulse'>
+      <div className='h-[170px] w-full bg-linear-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer'/>
       <div className='p-2 space-y-2'>
         <div className='h-4 w-3/4 bg-linear-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer rounded'/>
 

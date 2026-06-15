@@ -76,3 +76,5 @@ export { default as WithdrawalModal } from './VendorTabs/WithdrawalModal';
 export { default as WithdrawalRequest } from './VendorTabs/withdrawalRequest';
 export { default as AdminPayments } from './Tabs/AdminPayments';
 export { default as AdminReqModals } from './Tabs/AdminReqModals';
+export { default as usePaymentApprove } from './Tabs/approvePayments';
+export { default as TableSkeleton } from './Tabs/tableSkeleton';

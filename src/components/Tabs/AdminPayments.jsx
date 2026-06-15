@@ -3,16 +3,17 @@ import './Tabs.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import useWallet from '../../Hooks/useWallet';
 import { useCurrentUser } from '../../Hooks/useCurrentUser';
-import { Toaster } from 'react-hot-toast';
-import { AdLoader, AdminReqModals } from '../';
+import toast, { Toaster } from 'react-hot-toast';
+import { AdLoader, AdminReqModals, usePaymentApprove, TableSkeleton } from '../';
 import { MdOutlineSort } from "react-icons/md";
 import { PiContactlessPaymentLight, PiContactlessPaymentFill } from "react-icons/pi";
 import { IoIosWarning } from "react-icons/io";
 import { IoHourglassOutline, IoCheckmarkCircle, IoBan  } from "react-icons/io5";
-import { TbPlayerEjectFilled } from "react-icons/tb";
+import { TbPlayerEjectFilled, TbCreditCardOff } from "react-icons/tb";
 import { GrTransaction } from "react-icons/gr";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { debounce } from 'lodash';
+import { BsCreditCard2Front } from "react-icons/bs";
 
 function AdminPayments() {
   const [page, setPage] = useState(1);
@@ -30,7 +31,8 @@ function AdminPayments() {
 
   const role = me?.role;
   const limit = 10;
-  const { getPendingWithdrawalRequests, rejectWithdrawalRequest } = useWallet(role);
+  const { getPendingWithdrawalRequests, rejectWithdrawalRequest, approveWithdrawalRequest } = useWallet(role);
+  const confirmApproval = usePaymentApprove();
   
   const { data: pendingRequests, isLoading, isError } = getPendingWithdrawalRequests(
     page,
@@ -39,8 +41,9 @@ function AdminPayments() {
     sortOrder
   );
 
-  const paymentRequests = pendingRequests?.withdrawals || [];
+  const paymentRequests = pendingRequests?.withdrawals;
   const totalPages = pendingRequests?.pagination?.totalPages;
+  const totalRequests = pendingRequests?.results;
 
   const statusConfig = {
     pending: {
@@ -91,11 +94,19 @@ function AdminPayments() {
     setShowModal(true);
   };
   
+
   const handleApprove = (request) => {
-    console.log('Approve', request);
     setOpenMenuId(null);
   
-    // Call approve mutation here
+    confirmApproval({
+      vendor: request?.vendorName,
+      onApprove: () => {
+        approveWithdrawalRequest.mutate({
+          withdrawalId: request?._id,
+          adminNotes: '',
+        });
+      },
+    });
   };
   
   const handleReject = (request) => {
@@ -160,6 +171,7 @@ function AdminPayments() {
   };
 
   console.log('Request', paymentRequests);
+  console.log('totalRequests', totalRequests);
 
   return (
     <section className='overflow-hidden'>
@@ -191,104 +203,173 @@ function AdminPayments() {
             className='p-1 outline-none  bg-gray-200 focus:border-[1.5px] focus:border-orange-400 rounded-lg'
           />
         </div>
+        <AnimatePresence mode='wait'>
+          <motion.div
+            initial={{opacity: 0, scale: 0.95}}
+            animate={{opacity: 1, scale: 1}}
+            exit={{opacity: 0, scale: 0.95}}
+            transition={{ duration: 0.3 }}
+            className='h-[53vh] overflow-y-auto withdrwalRequestTable'
+            > 
+            {isLoading && (
+              <TableSkeleton
+                rows={8}
+                columns={[
+                  'Request ID',
+                  'Vendor',
+                  'Amount',
+                  'Status',
+                  'Created At',
+                  ''
+                ]}   
+              />   
+            )}
 
-        <motion.div
-          initial={{opacity: 0, scale: 0.95}}
-          animate={{opacity: 1, scale: 1}}
-          exit={{opacity: 0, scale: 0.95}}
-          transition={{ duration: 0.3 }}
-          className='h-[53vh] overflow-y-auto'
-          >
-            <table className='w-full border-[1.4px] border-gray-300 border-separate border-spacing-0 rounded-lg overflow-x-auto mt-4'>
-              <thead className=''>
-                <tr className='bg-gray-200 text-left text-sm text-gray-600 rounded-lg font-light'>
-                  <th className='p-3 rounded-tl-lg'>Request ID</th>
-                  <th className='p-3'>Vendor</th>
-                  <th className='p-3'>Amount</th>
-                  <th className='p-3'>Status</th>
-                  <th className='p-3'>Created At</th>
-                  <th className='p-3'></th>
-                </tr>
-              </thead>
-              <tbody className=''>
-                {paymentRequests.map((item) => {
-                  const config = statusConfig[item?.status] ?? statusConfig.pending;
-                  const Icon = config.icon;
+            {isError && (
+              <div className='h-full text-center text-gray-500 flex flex-col justify-center items-center gap-2'>
+                <TbCreditCardOff className='text-red-500' size={65} />
+                <p className='text-red-500'>Failed to load  payment requests!</p>
+              </div>
+            )}
 
-                  return (
-                    <tr
-                      key={item._id}
-                      className='last:[&>td]:border-b-0 [&>td]:border-b-[1.2px] [&>td]:border-gray-300 text-gray-500 text-md'
-                      >
-                        <td className='p-3'>
-                          {item?.requestUUID}
-                        </td>
-                        <td className='p-3'>
-                          {item?.vendorName}
-                        </td>
-                        <td className='p-3'>
-                          Ksh {(item?.amount / 100).toLocaleString()}
-                        </td>
-                        <td className='p-3'>
-                          <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${config.bg} ${config.text}`}
-                            >
-                            <Icon className='withEyeIcon23' size={15} />
-                            {item?.status}
-                          </span>
-                        </td>
-                        <td className='p-3'>
-                          {formatDate(item?.createdAt)}
-                        </td>
-                        <td className='p-3 relative'>
-                          <HiOutlineDotsHorizontal
-                            className='cursor-pointer'
-                            size={24}
-                            onClick={() =>
-                              setOpenMenuId(
-                                openMenuId === item._id ? null : item._id
-                              )
-                            }
-                          />
-
-                          <AnimatePresence>
-                            {openMenuId === item._id && (
-                              <motion.div 
-                                ref={menuRef}
-                                initial={{ opacity: 0, scale: 0.95, y: -5 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.95, y: -5 }}
-                                transition={{ duration: 0.15 }}
-                                className='absolute right-8 top-8 z-50 min-h-[100px] rounded-lg min-w-[100px] border-[1.3px] border-gray-400 bg-white shadow-lg overflow-hidden'
-                                >
-                                  <button
-                                    className='cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-100'
-                                    onClick={() => handleView(item)}
-                                    >
-                                    View
-                                  </button>
-                                  <button
-                                    className='cursor-pointer w-full text-left px-4 py-2 text-green-600 hover:bg-green-50'
-                                    onClick={() => handleApprove(item)}
-                                    >
-                                    Approve
-                                  </button>
-
-                                  <button
-                                    className='cursor-pointer w-full text-left px-4 py-2 text-red-600 hover:bg-red-50'
-                                    onClick={() => handleReject(item)}
-                                    >
-                                    Reject
-                                  </button>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </td>
+            {!isLoading && !isError && (
+              totalRequests > 0 ? (
+                <table className='w-full border-[1.4px] border-gray-300 border-separate border-spacing-0 rounded-lg overflow-x-auto mt-4'>
+                  <thead className=''>
+                    <tr className='bg-gray-200 text-left text-sm text-gray-600 rounded-lg font-light'>
+                      <th className='p-3 rounded-tl-lg'>Request ID</th>
+                      <th className='p-3'>Vendor</th>
+                      <th className='p-3'>Amount</th>
+                      <th className='p-3'>Status</th>
+                      <th className='p-3'>Created At</th>
+                      <th className='p-3'></th>
                     </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-        </motion.div>
+                  </thead>
+                  <tbody className=''>
+                    {paymentRequests.map((item) => {
+                      const config = statusConfig[item?.status] ?? statusConfig.pending;
+                      const Icon = config.icon;
+
+                      return (
+                        <tr
+                          key={item._id}
+                          className='last:[&>td]:border-b-0 [&>td]:border-b-[1.2px] [&>td]:border-gray-300 text-gray-500 text-md'
+                          >
+                            <td className='p-3'>
+                              {item?.requestUUID}
+                            </td>
+                            <td className='p-3'>
+                              {item?.vendorName}
+                            </td>
+                            <td className='p-3'>
+                              Ksh {(item?.amount / 100).toLocaleString()}
+                            </td>
+                            <td className='p-3'>
+                              <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${config.bg} ${config.text}`}
+                                >
+                                <Icon className='withEyeIcon23' size={15} />
+                                {item?.status}
+                              </span>
+                            </td>
+                            <td className='p-3'>
+                              {formatDate(item?.createdAt)}
+                            </td>
+                            <td className='p-3 relative'>
+                              <HiOutlineDotsHorizontal
+                                className='cursor-pointer'
+                                size={24}
+                                onClick={() =>
+                                  setOpenMenuId(
+                                    openMenuId === item._id ? null : item._id
+                                  )
+                                }
+                              />
+
+                              <AnimatePresence>
+                                {openMenuId === item._id && (
+                                  <motion.div 
+                                    ref={menuRef}
+                                    initial={{ opacity: 0, scale: 0.95, y: -5 }}
+                                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95, y: -5 }}
+                                    transition={{ duration: 0.15 }}
+                                    className='absolute right-8 top-8 z-50 min-h-[100px] rounded-lg min-w-[100px] border-[1.3px] border-gray-400 bg-white shadow-lg overflow-hidden'
+                                    >
+                                      <button
+                                        className='cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-100'
+                                        onClick={() => handleView(item)}
+                                        >
+                                        View
+                                      </button>
+                                      <button
+                                        className='cursor-pointer w-full text-left px-4 py-2 text-green-600 hover:bg-green-50'
+                                        onClick={() => handleApprove(item)}
+                                        >
+                                        Approve
+                                      </button>
+
+                                      <button
+                                        className='cursor-pointer w-full text-left px-4 py-2 text-red-600 hover:bg-red-50'
+                                        onClick={() => handleReject(item)}
+                                        >
+                                        Reject
+                                      </button>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              ) : (
+                <div className='h-full flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
+                  <BsCreditCard2Front className='text-red-500' size={65} />
+                  <p className='text-base text-gray-600'>
+                    No payment requests yet!
+                  </p>
+                </div>
+              )
+            )}
+              
+          </motion.div>
+
+          <motion.div
+            initial={{opacity: 0, scale: 0.95}}
+            animate={{opacity: 1, scale: 1}}
+            exit={{opacity: 0, scale: 0.95}}
+            transition={{ duration: 0.3 }}
+            className='withdrwalRequestCards'
+            >
+              {isLoading && (
+                <div className='fixed inset-0 flex items-center justify-center bg-white/90 z-50'>
+                  <AdLoader/>
+                </div>
+              )}
+
+              {isError && (
+                <div className='h-full text-center text-gray-500 flex flex-col justify-center items-center gap-2'>
+                  <TbCreditCardOff className='text-red-500' size={65} />
+                  <p className='text-red-500'>Failed to load  payment requests!</p>
+                </div>
+              )}
+
+              {!isLoading && !isError && (
+                totalRequests > 0 ? (
+                  <div className=''>Card</div>
+                ) : (
+                  <div className='h-full flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
+                    <BsCreditCard2Front className='text-red-500' size={65} />
+                    <p className='text-base text-gray-600'>
+                      No payment requests yet!
+                    </p>
+                  </div>
+                )
+              )}
+          </motion.div>
+        </AnimatePresence>
+        
 
         <div className='flex justify-between items-center CatNav mt-4'>
           <button 

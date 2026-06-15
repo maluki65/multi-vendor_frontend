@@ -68,7 +68,7 @@ const useWallet = (role) => {
     },
 
     onSuccess: (data, variables, context) => {
-      toast.success('Withdrawal request submitted', { id: context.toastId});
+      toast.success('Withdrawal request submitted', { id: context.toastId });
 
       queryClient.invalidateQueries({
         queryKey: ['vendor-withdrawals']
@@ -84,7 +84,7 @@ const useWallet = (role) => {
     },
 
     onError: (error, variables, context) => {
-      toast.error(error?.response?.data?.message || 'failed to request withdrawal. Try again later', { id: context.toastId})
+      toast.error(error?.response?.data?.message || 'failed to request withdrawal. Try again later', { id: context.toastId })
 
       console.error('failed to request withdrawal', error);
     }
@@ -103,7 +103,7 @@ const useWallet = (role) => {
     },
 
     onSuccess: (data, variables, context) => {
-      toast.success('Request approved and payment made', { id: context.toastId});
+      toast.success('Request approved and payment made', { id: context.toastId });
 
       queryClient.invalidateQueries({
         queryKey: ['admin-withdrawalsRequests'],
@@ -119,7 +119,7 @@ const useWallet = (role) => {
     },
 
     onError: (error, variables, context) => {
-      toast.error(error?.response?.data?.message || 'failed to approve withdrawal. Try again later', { id: context.toastId})
+      toast.error(error?.response?.data?.message || 'failed to approve withdrawal. Try again later', { id: context.toastId })
 
       console.error('failed to approve withdrawal request', error);
     }
@@ -138,7 +138,7 @@ const useWallet = (role) => {
     },
 
     onSuccess: (data, variables, context) => {
-      toast.success('Withdrawal request rejected', { id: context.toastId});
+      toast.success('Withdrawal request rejected', { id: context.toastId });
 
       queryClient.invalidateQueries({
         queryKey: ['admin-withdrawalsRequests'],
@@ -154,7 +154,7 @@ const useWallet = (role) => {
     },
 
     onError: (error, variables, context) => {
-      toast.error(error?.response?.data?.message || 'failed to reject withdrawal. Try again later', { id: context.toastId})
+      toast.error(error?.response?.data?.message || 'failed to reject withdrawal. Try again later', { id: context.toastId })
 
       console.error('failed to reject withdrawal request', error);
     }
