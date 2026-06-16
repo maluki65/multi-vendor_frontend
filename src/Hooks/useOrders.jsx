@@ -94,6 +94,10 @@ const useOrders = () => {
         queryClient.invalidateQueries({
           queryKey: ['BuyerOrders'],
         }),
+        
+        queryClient.invalidateQueries({
+          queryKey: ['AdminOrders'],
+        }),
       
         queryClient.invalidateQueries({
           queryKey: orderKey,

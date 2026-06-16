@@ -312,6 +312,17 @@
   .adminProIMgs3 button{
     align-self: self-end;
   }
+  .paymentInputContainer98{
+    justify-content: start;
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+  .paymentInputContainer98 div{
+    flex-direction: row-reverse;
+  }
+  .paymentInputContainer98 button, .statusSelect{
+    width: fit-content;
+  }
 }
 
 @media(max-width: 376px){

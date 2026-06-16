@@ -42,11 +42,11 @@ const useWallet = (role) => {
   }
 
   // On getting all pending withdrawal requests for admin
-  const getPendingWithdrawalRequests = (page = 1, limit = 10, search = '', sort = 'latest') => { 
+  const getPendingWithdrawalRequests = (page = 1, limit = 10, search = '', sort = 'latest', status = 'pending') => { 
       return useQuery({
-      queryKey: ['admin-withdrawalsRequests', page, limit, search, sort],
+      queryKey: ['admin-withdrawalsRequests', page, limit, search, sort, status],
       queryFn: async () => {
-        const { data } = await Api.get(`/wallet/pending/withdrawals?page=${page}&limit=${limit}&search=${search}&sort=${sort}`);
+        const { data } = await Api.get(`/wallet/pending/withdrawals?page=${page}&limit=${limit}&search=${search}&sort=${sort}&status=${status}`);
         
         return data;
       },

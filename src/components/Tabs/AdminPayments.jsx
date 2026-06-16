@@ -3,14 +3,13 @@ import './Tabs.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import useWallet from '../../Hooks/useWallet';
 import { useCurrentUser } from '../../Hooks/useCurrentUser';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { AdLoader, AdminReqModals, usePaymentApprove, TableSkeleton } from '../';
 import { MdOutlineSort } from "react-icons/md";
 import { PiContactlessPaymentLight, PiContactlessPaymentFill } from "react-icons/pi";
 import { IoIosWarning } from "react-icons/io";
 import { IoHourglassOutline, IoCheckmarkCircle, IoBan  } from "react-icons/io5";
 import { TbPlayerEjectFilled, TbCreditCardOff } from "react-icons/tb";
-import { GrTransaction } from "react-icons/gr";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { debounce } from 'lodash';
 import { BsCreditCard2Front } from "react-icons/bs";
@@ -22,6 +21,7 @@ function AdminPayments() {
   const [showModal, setShowModal] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [sortOrder, setSortOrder] = useState('latest');
+  const [statusFilter, setStatusFilter] = useState('pending');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedRequest, setSelectedRequest] = useState(null);
 
@@ -38,7 +38,8 @@ function AdminPayments() {
     page,
     limit,
     debouncedSearch,
-    sortOrder
+    sortOrder,
+    statusFilter,
   );
 
   const paymentRequests = pendingRequests?.withdrawals;
@@ -87,7 +88,7 @@ function AdminPayments() {
   };
 
   const handleView = (request) => {
-    console.log('View', request);
+    //console.log('View', request);
     setOpenMenuId(null);
     setSelectedRequest(request);
     setModalType('view');
@@ -110,7 +111,7 @@ function AdminPayments() {
   };
   
   const handleReject = (request) => {
-    console.log('Reject', request);
+    //console.log('Reject', request);
     setOpenMenuId(null);
     setSelectedRequest(request);
     setModalType('reject');
@@ -170,8 +171,18 @@ function AdminPayments() {
     setSortOrder(sortOptions[nextIndex]);
   };
 
-  console.log('Request', paymentRequests);
-  console.log('totalRequests', totalRequests);
+  const statusOptions = [
+    //'all',
+    'pending',
+    'approved',
+    'paid',
+    'rejected',
+    'cancelled',
+    'failed',
+  ];
+
+  //console.log('Request', paymentRequests);
+  //console.log('totalRequests', totalRequests);
 
   return (
     <section className='overflow-hidden'>
@@ -181,20 +192,36 @@ function AdminPayments() {
           <PiContactlessPaymentLight className='text-primary' size={35} />
           Payments requests
         </h1>
-        <div className='flex gap-3 justify-end'>
-          <button
-            className='px-2 py-1 border-[1.3px] rounded cursor-pointer hover:border-primary hover:text-primary flex items-center gap-1'>
-              <MdOutlineSort className='' size={22} />
-              <select 
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value)}
-                className='text-xs text-dark hover:text-primary capitalize'>
-                <option value='latest'>Latest</option>
-                <option value='oldest'>Oldest</option>
-                <option value='amount-high'>Amount High → Low</option>
-                <option value='amount-low'>Amount Low → High</option>
-              </select>
-          </button>
+        <div className='flex gap-3 justify-end my-3 paymentInputContainer98'>
+          <div className='flex items-center gap-2'>
+            <select 
+              value={statusFilter}
+              onChange={(e) => {
+                setStatusFilter(e.target.value);
+                setPage(1);
+              }}
+              className='py-1 text-sm border rounded cursor-pointer hover:border-primary hover:text-primary statusSelect'>
+                {statusOptions.map((status) => (
+                  <option key={status} value={status}>
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </option>
+                ))}
+            </select>
+            <button
+              className='px-2 py-1 border-[1.3px] rounded cursor-pointer hover:border-primary hover:text-primary flex items-center gap-1'>
+                <MdOutlineSort className='' size={22} />
+                <select 
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  className='text-xs text-dark hover:text-primary capitalize'>
+                  <option value='latest'>Latest</option>
+                  <option value='oldest'>Oldest</option>
+                  <option value='amount-high'>Amount High → Low</option>
+                  <option value='amount-low'>Amount Low → High</option>
+                </select>
+            </button>
+          </div>
+          
           <input
             type='text'
             value={search}
@@ -242,7 +269,7 @@ function AdminPayments() {
                       <th className='p-3'>Amount</th>
                       <th className='p-3'>Status</th>
                       <th className='p-3'>Created At</th>
-                      <th className='p-3'></th>
+                      <th className='p-3 rounded-tr-lg'></th>
                     </tr>
                   </thead>
                   <tbody className=''>
@@ -252,7 +279,7 @@ function AdminPayments() {
 
                       return (
                         <tr
-                          key={item._id}
+                          key={item?._id}
                           className='last:[&>td]:border-b-0 [&>td]:border-b-[1.2px] [&>td]:border-gray-300 text-gray-500 text-md'
                           >
                             <td className='p-3'>
@@ -357,7 +384,51 @@ function AdminPayments() {
 
               {!isLoading && !isError && (
                 totalRequests > 0 ? (
-                  <div className=''>Card</div>
+                  <div className='flex flex-col gap-2'>
+                    {paymentRequests.map((item) => {
+                      const config = statusConfig[item?.status] ?? statusConfig.pending;
+                      const Icon = config.icon;
+
+                      return (
+                        <div
+                          key={item?._id}
+                          className='shadow-md p-4 rounded-md flex flex-col gap-3'
+                          >
+                            <div className='flex items-center justify-between'>
+                              <p className='text-gray-500'>{item?.requestUUID}</p>
+                              <p className=''>
+                                <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${config.bg} ${config.text}`}
+                                  >
+                                  <Icon className='withEyeIcon23' size={15} />
+                                  {item?.status}
+                                </span>
+                              </p>
+                            </div>
+                            <div className='flex items-center justify-between'>
+                             <p className='text-gray-500'>{item?.vendorName}</p>
+                             <p className='text-gray-500 font-semibold'>{(item?.amount / 100).toLocaleString()}</p>
+                            </div>
+                            <div className='flex items-center justify-between'>
+                              <button
+                                onClick={() => handleView(item)}
+                                className='text-gray-500 hover:underline cursor-pointer hover:text-primary'>
+                                  view
+                              </button>
+                              <button
+                                onClick={() => handleApprove(item)}
+                                className='hover:underline cursor-pointer text-green-500'>
+                                  approve
+                              </button>
+                              <button 
+                                onClick={() => handleReject(item)}
+                                className='hover:underline cursor-pointer text-red-500'>
+                                  reject
+                              </button>
+                            </div>
+                        </div>
+                      )
+                    })}
+                  </div>
                 ) : (
                   <div className='h-full flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
                     <BsCreditCard2Front className='text-red-500' size={65} />

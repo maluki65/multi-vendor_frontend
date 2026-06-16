@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import './vendorTabs.css';
 import useOrders from '../../Hooks/useOrders';
 import { Toaster } from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
-import { AdLoader, VerifyDoc } from '../';
+import { AdLoader, VerifyDoc, TableSkeleton } from '../';
 import { MdOutlineSort } from "react-icons/md";
 import { debounce } from 'lodash';
 import { TbReceiptOff, TbTruckDelivery, TbCancel } from "react-icons/tb";
@@ -12,16 +12,19 @@ import { IoCheckmarkDone } from "react-icons/io5";
 import { BiStopwatch } from "react-icons/bi";
 import { LuFileCheck } from "react-icons/lu";
 import { useCurrentUser } from '../../Hooks/useCurrentUser';
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
 function Orders() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [activeTab, setActiveTab] = useState('all');
   const [modalOpen, setModalOpen] = useState(false);
-  const [searchInput, setSearchInput] = useState('');
+  const [activeTab, setActiveTab] = useState('all');
+  const [openMenuId, setOpenMenuId] = useState(null);
   const [sortOrder, setSortOrder] = useState('latest');
+  const [debouncedSearch, setDebouncedSearch] = useState('');  
   const [selectedOrder, setSelectedOrder] = useState(null);
 
+  const menuRef = useRef(null);
   const { data: me } = useCurrentUser();
 
   const { getAllOrders, getVendorOrder, updateOrderStatus } = useOrders();
@@ -31,12 +34,12 @@ function Orders() {
     ? getAllOrders({
       page,
       limit: 6,
-      search,
+      search: debouncedSearch,
     })
     : getVendorOrder({
       page,
       limit: 6,
-      search,
+      search: debouncedSearch,
     });
 
   const { data, isLoading, isFetching, isError } = orderQuery;
@@ -89,23 +92,24 @@ function Orders() {
     { name: 'Completed', value: 'completed', statuses: ['completed'] },
   ]
 
-  const debouncedSearch = useMemo(
-    () => debounce((val) => {
-      setSearch(val.trim());
+  const debouncedSetSearch = useCallback(
+    debounce((value) => {
+      setDebouncedSearch(value);
       setPage(1);
-    }, 800),
+    }, 500),
     []
-  );
+  )
 
-  const handleSearchChange = useCallback((e) => {
-    const val = e.target.value;
-    setSearchInput(val);
-    debouncedSearch(val);
-  }, [debouncedSearch]);
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    setSearch(value);
+    debouncedSetSearch(value);
+  }
 
   useEffect(() => {
     return () => {
-      debouncedSearch.cancel();
+      debouncedSetSearch.cancel();
     };
   }, [debouncedSearch]);
 
@@ -152,15 +156,15 @@ function Orders() {
 
   const statusConfig = {
     pending: {
-      bg: 'bg-yellow-100 text-dark',
+      bg: 'bg-yellow-200 text-dark',
       icon: <LuFileCheck />,
     },
     processing: {
-      bg: 'bg-yellow-100 text-dark',
+      bg: 'bg-yellow-200 text-dark',
       icon: <BiStopwatch />,
     },
     shipped: {
-      bg: 'bg-yellow-100 text-dark',
+      bg: 'bg-yellow-200 text-dark',
       icon: <TbTruckDelivery />,
     },
     completed: {
@@ -168,7 +172,7 @@ function Orders() {
       icon: <IoCheckmarkDone />,
     },
     cancelled: {
-      bg: 'bg-red-100 text-dark',
+      bg: 'bg-red-200 text-dark',
       icon: <TbCancel />
     }
   }
@@ -181,7 +185,8 @@ function Orders() {
     cancelled: [],
   }
 
-  const handleSelectedOrder = (order) => {
+  const handleViewOrder = (order) => {
+    setOpenMenuId(null);
     setSelectedOrder(order);
     setModalOpen(true);
   }
@@ -191,20 +196,22 @@ function Orders() {
     icon: null
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpenMenuId(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <section className='overflow-hidden'>
-    <Toaster position='top-right' reverseOrder={false} />
-    {isLoading ? (
-      <div className='fixed inset-0 flex items-center justify-center bg-white/40 z-50'>
-        <AdLoader/>
-      </div>
-    ) : (
+      <Toaster position='top-right' reverseOrder={false} />
       <div className='p-4 rounded-md my-5 bg-white'>
-        {isFetching && (
-          <div className='absolute top-2 right-2'>
-            <AdLoader />
-          </div>
-        )}
         <div className='flex items-center justify-between'>
           <h2 className='font-semibold text-dark text-lg'>Orders</h2>
           <p className='font-medium text-dark text-sm'>{formatDate().date}</p>
@@ -241,7 +248,7 @@ function Orders() {
             </button>
             <input 
               type='text'
-              value={searchInput}
+              value={search}
               onChange={handleSearchChange}
               placeholder='Search by order Id...'
               className='p-1 outline-none border-none bg-gray-200 focus:border-[1.2px] focus:border-orange-400 rounded-lg'
@@ -256,18 +263,43 @@ function Orders() {
            exit={{ opacity: 0, y: -20 }}
            transition={{ duration: 0.3 }}
            className='my-5 w-full min-h-[50vh]'>
+            {isLoading && (
+              <TableSkeleton
+                rows={8}
+                columns={[
+                  'Order ID',
+                  'Settled',
+                  'Amount',
+                  'Status',
+                  'Created At',
+                  ''
+                ]}   
+              />   
+            )}
+
             {isError && (
               <div className='text-center text-gray-500 flex flex-col items-center gap-2'>
                 <PiReceiptX className='text-red-500' size={65} />
-                <p className='text-red-500'>Failed to get vendor products!</p>
+                <p className='text-red-500'>Failed to get orders!</p>
               </div>
             )}
 
-            {!isError && (
+            {!isLoading && !isError && (
               filteredOrders.length > 0 ? (
-                <div className='grid grid-cols-3 gap-3 VenOrders'>
-                  {filteredOrders.map((order) => {
-                    const currentStatus = statusConfig[order.orderStatus] || {
+                <table className='w-full border-[1.4px] border-gray-300 border-separate border-spacing-0 rounded-lg overflow-x-auto mt-4'>
+                  <thead className=''>
+                  <tr className='bg-orange-400 text-left text-sm text-dark rounded-lg font-light'>
+                      <th className='p-3 rounded-tl-lg'>Order ID</th>
+                      <th className='p-3'>Settled</th>
+                      <th className='p-3'>Amount</th>
+                      <th className='p-3'>Status</th>
+                      <th className='p-3'>Created At</th>
+                      <th className='p-3 rounded-tr-lg'></th>
+                    </tr>
+                  </thead>
+                  <tbody className=''>
+                    {filteredOrders.map((order) => {
+                      const currentStatus = statusConfig[order.orderStatus] || {
                       bg: 'bg-gray-300 text-dark',
                       icon: null
                     };
@@ -278,127 +310,102 @@ function Orders() {
                     });
 
                     return (
-                      <div 
-                       key={order._id}
-                       className='p-2 shadow-xs bg-gray-200 rounded-md'>
-                        <div className='flex gap-2'>
-                          <p className='bg-orange-400 rounded-md p-2 text-white text-lg font-semibold uppercase'>
-                            {order?.buyerId.username.slice(0,2)}
-                          </p>
-                          <div className='flex flex-col gap-1 flex-1'>
-                            <div className='flex w-full items-center justify-between'>
-                              <p className='font-semibold text-base text-dark capitalize'>
-                                {order?.buyerId.username}
-                              </p>
-                              <p className={`px-2 py-1 rounded-lg text-xs flex items-center gap-1 w-fit capitalize ${currentStatus.bg}`}>
-                                {currentStatus.icon}
-                                {order?.orderStatus}
-                              </p>
-                            </div>
-                            <p className='text-xs text-gray-500'>
-                              Order: {order?.orderNumber}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className='flex items-center justify-between my-2'>
-                          <p className='text-sm text-gray-500'>
+                      <tr
+                        key={order?._id}
+                        className='last:[&>td]:border-b-0 [&>td]:border-b-[1.2px] [&>td]:border-gray-300 text-gray-500 text-md'
+                        >
+                          <td className='p-3'>
+                            {order?.orderNumber}
+                          </td>
+                          <td className='p-3'>
+                            {order?.settled ? (
+                              <span className='bg-green-200 text-sm rounded-full px-2 py-1 text-green-600 font-medium'>
+                                settled
+                              </span>
+                            ) : (
+                              <span className='bg-yellow-200 text-sm rounded-full px-2 py-1 text-yellow-600 font-medium'>
+                                pending
+                              </span>
+                            )}
+                          </td>
+                          <td className='p-3'>
+                            ksh {(order?.totalAmount / 100).toLocaleString()}
+                          </td>
+                          <td className='p-3'>
+                            <span className={`px-2 py-1 rounded-lg text-xs flex items-center gap-1 w-fit capitalize ${currentStatus.bg}`}>
+                              {currentStatus.icon}
+                              {order?.orderStatus}
+                            </span>
+                          </td>
+                          <td className='p-3'>
                             {orderDate.date}
-                          </p>
-                          <p className='text-sm text-gray-500'>
-                            {orderDate.time}
-                          </p>
-                        </div>
+                          </td>
 
-                        <p className='flex items-center justify-between text-sm my-2 orderShipAdd'>
-                          <span className='text-gray-700'>Shipping address:</span>
-                          <span className='text-gray-500'>{order?.shippingAddress}</span>
-                        </p>
+                          <td className='p-3 relative'>
+                            <HiOutlineDotsHorizontal
+                              className='cursor-pointer'
+                              size={24}
+                              onClick={() =>
+                                setOpenMenuId(
+                                  openMenuId === order._id ? null : order._id
+                                )
+                              }
+                            />
 
-                        <hr className='flex-1 border-t border-gray-300' />
+                            <AnimatePresence>
+                              {openMenuId === order?._id && (
+                                <motion.div  
+                                  ref={menuRef}
+                                  initial={{ opacity: 0, scale: 0.95, y: -5 }}
+                                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                                  exit={{ opacity: 0, scale: 0.95, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                  className='absolute right-8 top-8 z-50 min-h-[100px] rounded-lg min-w-[100px] border-[1.3px] border-gray-400 bg-white shadow-lg overflow-hidden'>
+                                    <button
+                                      className='cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-100'
+                                      onClick={() => handleViewOrder(order)}
+                                      >
+                                        View
+                                      </button>
+                                      <select
+                                        value={order?.orderStatus}
+                                        onChange={(e) => {
+                                          const newStatus = e.target.value;
 
-                        <table className='w-full border-none my-2'>
-                          <thead className=''>
-                            <tr className=''>
-                              <td className='text-sm text-gray-400 oderPopTd'>Name</td>
-                              <td className='text-sm text-gray-400 text-center oderPopTd'>Qty</td>
-                              <td className='text-sm text-gray-400 text-end oderPopTd'>Price</td>
-                            </tr>
-                          </thead>
+                                          if (newStatus === order?.orderStatus) return;
 
-                          <tbody className=''>
-                            {order?.products?.map((item) => {
-                              return (
-                                <tr 
-                                  key={item._id}
-                                  className=''>
-                                    <td className='text-sm text-gray-700 py-2'>{item?.name}</td>
-                                    <td className='text-sm text-gray-700 py-2 text-center'>{item?.quantity}</td>
-                                    <td className='text-sm text-gray-700 py-2 text-end'>ksh {(item?.price / 100).toLocaleString()}</td>
-                                </tr>
-                              )
-                            })}
-                          </tbody>
-                        </table>
+                                          updateOrderStatus.mutate({
+                                            orderId: order._id,
+                                            status: newStatus,
+                                          });
+                                        }}
 
-                        <hr className='flex-1 border-t border-gray-300' />
-                         
-                        <div className='flex items-center justify-between my-1'>
-                          <p className='font-semibold text-dark text-base'>
-                            Total
-                          </p>
-                          <p className='font-semibold text-dark text-base'>
-                            Ksh {(order?.totalAmount / 100).toLocaleString()}
-                          </p>
-                        </div>
-
-                        <div className='grid grid-cols-2 gap-2 mt-2'>
-                          <button
-                            onClick={() => handleSelectedOrder(order)}
-                            className='bg-gray-300 rounded-md px-3 py-1 text-orange-400 cursor-pointer'>
-                              See details
-                          </button>
-                          
-                          <select 
-                            value={order?.orderStatus}
-                            onChange={(e) => {
-                              const newStatus = e.target.value;
-
-                              if (newStatus === order?.orderStatus) return;
-
-                              updateOrderStatus.mutate({
-                                orderId: order._id,
-                                status: newStatus,
-                              });
-                            }}
-
-                            disabled={
-                              order?.orderStatus === 'completed' ||
-                              order?.orderStatus === 'cancelled' ||
-                              updateOrderStatus.isPending
-                            }
-
-                            className='bg-primary rounded-md px-3 py-1 text-white cursor-pointer capitalize disabled:opacity-50'
-                             >
-                              <option value={order?.orderStatus}>{order?.orderStatus}</option>
-                              {nextStatusMap[order.orderStatus]?.map((status) => (
-                                <option
-                                  key={status}
-                                  value={status}
-                                  >
-                                    {status}
-                                </option>
-                              ))}
-                          </select>
-                        </div>
-                       </div>
+                                        disabled={
+                                          order?.orderStatus === 'completed' || 
+                                          order?.orderStatus === 'cancelled' ||
+                                          updateOrderStatus.isPending
+                                        }
+                                        className='bh-primary rounded-md px-3 py-1 cursor-pointer disabled:opacity-50'
+                                        >
+                                          <option value={order?.orderStatus}>{order?.orderStatus}</option>
+                                          
+                                          {nextStatusMap[order?.orderStatus]?.map((status) => (
+                                            <option key={status} value={status}>{status}</option>
+                                          ))}
+                                        </select>
+                                  </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </td>
+                        </tr>
                     )
-                  })}
-                </div>
+                    })}
+                  </tbody>
+                </table>
               ): (
                 <div className='my-5 flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
                   <TbReceiptOff className='text-red-500' size={65} />
-                  <p className='text-dark font-semibold text-xl'>No orders found</p>
+                  <p className='text-dark font-semibold text-xl'>No orders found!</p>
                 </div>
               )
             )}
@@ -538,7 +545,6 @@ function Orders() {
             </div>
         </VerifyDoc>
       </div>
-    )}
     </section>
   )
 }
