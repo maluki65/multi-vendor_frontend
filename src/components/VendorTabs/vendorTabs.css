@@ -1,4 +1,4 @@
-.withdarawalRequestsCards{
+.withdarawalRequestsCards, .orderCardSmall{
   display: none;
 }
 
@@ -22,7 +22,7 @@
     width:70px;
     height: 70px;
   }
-  .suppText, .orderTableH1 td, .withStatus92{
+  .suppText, .orderTableH1 td, .orderTableLarge td span, .withStatus92{
     font-size: 1em;
   }
   .supportPrevImg{
@@ -145,6 +145,12 @@
   }
   .withBal{
     font-size: 15px;
+  }
+  .orderCardSmall{
+    display: flex;
+  }
+  .orderTableLarge{
+    display: none;
   }
 }
 

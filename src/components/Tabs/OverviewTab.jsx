@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PaymentItem, SalesChart, RevenueChart, AdLoader } from '..';
 import { PaymentsRequests } from '../../commons';
 import { IoCalendarOutline, IoChevronForward } from 'react-icons/io5';
-import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline } from 'react-icons/md';
+import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline, MdOutlinePayments } from 'react-icons/md';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { FaArrowTrendUp, FaArrowTrendDown } from 'react-icons/fa6';
 import usePendingVendors from '../../Hooks/usePendingVendors';
@@ -15,17 +15,25 @@ import { useAuth } from '../../Context/AuthContext';
 import useAnalytics from '../../Hooks/useAnalytics';
 import { Toaster } from 'react-hot-toast';
 import CountUp from 'react-countup';
+import useWallet from '../../Hooks/useWallet';
+import { CiCreditCardOff } from "react-icons/ci";
+import { PiContactlessPaymentFill } from "react-icons/pi";
 
 function OverviewTab() {
   const [now, setNow] = React.useState(new Date());
+    const [statusFilter, setStatusFilter] = useState('pending');
+  
   
   const { userData } = useAuth();
   const role = userData?.role;
   
   const { data, isLoading, isError } = usePendingVendors();
+  const { getPendingWithdrawalRequests } = useWallet(role);
   
   const { getAdminAnalytics } = useAnalytics(role);
   const { data: adminAnalytics, isLoading: isAnalyticsLoading, isError: isAnalyticsError } = getAdminAnalytics;
+  const { data: pendingRequests, isLoading: paymentLoading, isError: paymentError } = getPendingWithdrawalRequests(1, 10);
+
   
   //console.log('Admin analytics:', adminAnalytics);
   const commission = (adminAnalytics?.totalPlatformCommission || 0) / 100;
@@ -33,6 +41,7 @@ function OverviewTab() {
 
   const revenueTrend = adminAnalytics?.revenueTrend || 0;
   const commissionTrend = adminAnalytics?.commissionTrend || 0;
+  const paymentRequests = pendingRequests?.withdrawals || []
 
   const revenueIncrease = revenueTrend >= 0;
   const commissionIncrease = commissionTrend >= 0;
@@ -79,6 +88,7 @@ function OverviewTab() {
     return `${formattedDate} • ${formattedTime}`;
   }
 
+  console.log('payments', paymentRequests)
   return (
     <>
       <Toaster position='top-right' reverseOrder={false} />
@@ -139,7 +149,7 @@ function OverviewTab() {
             <div className='rounded-xl border-2 border-gray-300 bg-white p-2 flex flex-col space-y-2 justify-between'>
               <div className='flex items-center justify-between'>
                 <h3 className='text-md text-gray-800'>Total Revenue</h3>
-                <BiDotsHorizontalRounded className='cursor-pointer Icon' size={20}/>
+                {/*<BiDotsHorizontalRounded className='cursor-pointer Icon' size={20}/>*/}
               </div>
               <h1 className="text-3xl font-semibold">
                 <sup className="text-sm align-super mr-1">Ksh</sup>
@@ -183,7 +193,7 @@ function OverviewTab() {
             <div className='rounded-xl border-2 border-gray-300 bg-white p-2 flex flex-col space-y-2 justify-between'>
               <div className='flex items-center justify-between'>
                 <h3 className='text-md text-gray-800'>Platform Commission</h3>
-                <BiDotsHorizontalRounded className='cursor-pointer Icon' size={20}/>
+                {/*<BiDotsHorizontalRounded className='cursor-pointer Icon' size={20}/>*/}
               </div>
               <h1 className="text-3xl font-semibold">
                 <sup className="text-sm align-super mr-1">Ksh</sup>
@@ -231,13 +241,13 @@ function OverviewTab() {
               animate={{ opacity: 1, scale: 1}}
               exit={{opacity: 0, scale: 0.95}}
               transition={{duration: 0.3}}
-              className='grid grid-cols-2 gap-2 my-2 overflow-y-auto overflow-x-hidden PaymentChart'>
+              className='grid grid-cols-2 gap-2 my-1 p-1 overflow-y-auto overflow-x-hidden PaymentChart'>
               <div className='rounded-xl border-2 border-gray-300 p-2 flex flex-col gap-1 paymentsReq'>
                 <div className='flex justify-between items-center'>
-                  <h1 className='text-md text-dark'>Payment requests</h1>
-                  <BsThreeDots className='cursor-pointer Icon' size={20}/>
+                  <h1 className='text-md font-semibold underline text-dark my-2'>Payment requests</h1>
+                  {/*<BsThreeDots className='cursor-pointer Icon' size={20}/>*/}
                 </div>
-                <div className='relative flex w-full py-2 h-[52px] PayIn'>
+                {/*}<div className='relative flex w-full py-2 h-[52px] PayIn'>
                   <input
                     type='text'
                     placeholder='search for payment requests'
@@ -249,11 +259,39 @@ function OverviewTab() {
                   >
                     <IoIosSearch className='Icon' size={20}/>
                   </span>
-                </div>
+                </div>*/}
                 <div className='flex flex-col gap-2 max-h-[180px] overflow-y-auto pr-1 PayItems'>
-                  {PaymentsRequests.map((items, index) =>(
-                    <PaymentItem key={index} payments={items}/>
-                  ))}
+                  {paymentLoading && (
+                    <div className='h-full text-center text-gray-500 flex flex-col justify-center items-center gap-2'>
+                      <MdOutlinePayments className='text-gray-500 text-linear-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer' size={65} />
+                      <p className='text-gray-500 text-linear-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer'>Loading payments...</p>
+                    </div>
+                  )}
+
+                  {paymentError && (
+                    <div className='h-full text-center text-gray-500 flex flex-col justify-center items-center gap-2'>
+                      <CiCreditCardOff className='text-red-500' size={65} />
+                      <p className='text-red-500'>Failed to load  payment requests!</p>
+                    </div>
+                  )}
+
+                  {!paymentLoading && !paymentError && (
+                    paymentRequests?.length > 0 ? (
+                      paymentRequests.map((item) => (
+                        <PaymentItem
+                          key={item?._id}
+                          payment={item}
+                        />
+                      ))
+                    ) : (
+                      <div className='h-full flex flex-col justify-center items-center text-center text-gray-500 gap-2'>
+                        <PiContactlessPaymentFill className='text-red-500' size={65} />
+                        <p className='text-base text-gray-600'>
+                          No payment requests yet!
+                        </p>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
               <div className='flex flex-col gap-2 min-h-[260px]'>
