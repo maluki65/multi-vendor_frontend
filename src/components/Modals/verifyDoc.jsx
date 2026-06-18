@@ -1,5 +1,6 @@
 import React from 'react';
 import './VerifyDoc.css';
+import { RiCloseCircleLine } from "react-icons/ri";
 
 function VerifyDoc({ isOpen, onClose, title, children, className = '' }) {
   if(!isOpen) return null;
@@ -18,9 +19,12 @@ function VerifyDoc({ isOpen, onClose, title, children, className = '' }) {
             </h2>
             <button 
               onClick={onClose}
-              className='text-white bg-gray-400 px-3 py-1 rounded-md hover:text-gray-800 cursor-pointer text-xl modalT'>
-                X
-              </button>
+              >
+                <RiCloseCircleLine
+                  size={28}
+                  className='text-red-600 cursor-pointer'
+                />
+            </button>
           </div>
           <div className='modal-body'>
             {children}

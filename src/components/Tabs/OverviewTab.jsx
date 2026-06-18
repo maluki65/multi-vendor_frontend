@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState  } from 'react';
 import './Tabs.css';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PaymentItem, SalesChart, RevenueChart, AdLoader } from '..';
-import { PaymentsRequests } from '../../commons';
+import { PaymentItem, SalesChart, RevenueChart, AdLoader, usePaymentApprove, AdminReqModals } from '..';
 import { IoCalendarOutline, IoChevronForward } from 'react-icons/io5';
 import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline, MdOutlinePayments } from 'react-icons/md';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
@@ -20,15 +19,18 @@ import { CiCreditCardOff } from "react-icons/ci";
 import { PiContactlessPaymentFill } from "react-icons/pi";
 
 function OverviewTab() {
-  const [now, setNow] = React.useState(new Date());
-    const [statusFilter, setStatusFilter] = useState('pending');
-  
+  const [modalType, setModalType] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+
+  const [now, setNow] = React.useState(new Date());  
   
   const { userData } = useAuth();
   const role = userData?.role;
   
   const { data, isLoading, isError } = usePendingVendors();
-  const { getPendingWithdrawalRequests } = useWallet(role);
+  const { getPendingWithdrawalRequests, rejectWithdrawalRequest, approveWithdrawalRequest } = useWallet(role);
   
   const { getAdminAnalytics } = useAnalytics(role);
   const { data: adminAnalytics, isLoading: isAnalyticsLoading, isError: isAnalyticsError } = getAdminAnalytics;
@@ -45,6 +47,8 @@ function OverviewTab() {
 
   const revenueIncrease = revenueTrend >= 0;
   const commissionIncrease = commissionTrend >= 0;
+
+  const confirmApproval = usePaymentApprove();
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -88,7 +92,35 @@ function OverviewTab() {
     return `${formattedDate} • ${formattedTime}`;
   }
 
-  console.log('payments', paymentRequests)
+  const handleView = (request) => {
+    setOpenMenuId(null);
+    setSelectedRequest(request);
+    setModalType('view');
+    setShowModal(true);
+  }
+
+  const handleApprove = (request) => {
+    setOpenMenuId(null);
+
+    confirmApproval({
+      vendor: request?.vendorName,
+      onApprove: () => {
+        approveWithdrawalRequest.mutate({
+          withdrawalId: request?._id,
+          adminNotes: '',
+        });
+      },
+    });
+  };
+
+  const handleReject = (request) => {
+    setOpenMenuId(null);
+    setSelectedRequest(request);
+    setModalType('reject');
+    setShowModal(true);
+  };
+
+  //console.log('payments', paymentRequests)
   return (
     <>
       <Toaster position='top-right' reverseOrder={false} />
@@ -260,7 +292,7 @@ function OverviewTab() {
                     <IoIosSearch className='Icon' size={20}/>
                   </span>
                 </div>*/}
-                <div className='flex flex-col gap-2 max-h-[180px] overflow-y-auto pr-1 PayItems'>
+                <div className='flex flex-col gap-2 h-full overflow-y-auto pr-1 PayItems'>
                   {paymentLoading && (
                     <div className='h-full text-center text-gray-500 flex flex-col justify-center items-center gap-2'>
                       <MdOutlinePayments className='text-gray-500 text-linear-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer' size={65} />
@@ -281,6 +313,11 @@ function OverviewTab() {
                         <PaymentItem
                           key={item?._id}
                           payment={item}
+                          setOpenMenuId={setOpenMenuId}
+                          openMenuId={openMenuId}
+                          handleView={handleView}
+                          handleApprove={handleApprove}
+                          handleReject={handleReject}
                         />
                       ))
                     ) : (
@@ -354,7 +391,7 @@ function OverviewTab() {
                   No vendors awaiting approval
                 </p>
               ) : (
-                data.map((vendor) => (
+                data.slice(0, 3).map((vendor) => (
                   <div
                     key={vendor._id}
                     className='flex justify-between items-center'
@@ -382,6 +419,23 @@ function OverviewTab() {
             </div>
           </div>
         </div>
+
+        <AdminReqModals
+          isOpen={showModal}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedRequest(null);
+            setModalType(null)
+          }}
+          request={selectedRequest}
+          type={modalType}
+          onReject={(rejectionReason) => 
+            rejectWithdrawalRequest.mutateAsync({
+              withdrawalId: selectedRequest._id,
+              rejectionReason,
+            })
+          }
+        />
       </div>
     </>
   )

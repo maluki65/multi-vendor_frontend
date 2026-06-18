@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RiCloseCircleLine } from "react-icons/ri";
 
 function AdminReqModals({ isOpen, onClose, request, type, onReject, isSubmitting }) {
   const [rejectionReason, setRejectionReason] = useState('');
   const [error, setError] = useState('');
+  
+  useEffect(() => {
+    if (isOpen) {
+      setRejectionReason('');
+      setError('')
+    }
+  }, [isOpen]);
 
   if (!isOpen || !request) return null;
 
@@ -19,8 +26,6 @@ function AdminReqModals({ isOpen, onClose, request, type, onReject, isSubmitting
 
         return;
       }
-      console.log('onReject prop:', onReject);
-      console.log('typeof onReject:', typeof onReject);
       
       await onReject(rejectionReason);
       setRejectionReason('');
@@ -47,7 +52,7 @@ function AdminReqModals({ isOpen, onClose, request, type, onReject, isSubmitting
         </div>
 
         {error &&(
-          <div className='text-red-600 bg-red-100 border-red-400 p-2 rounded mt-3 mb-0'>
+          <div className='text-red-600 bg-red-100 border-red-400 p-2 rounded mt-3 mb-2'>
             {error}
           </div>
         )}

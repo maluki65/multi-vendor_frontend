@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import './Tabs.css';
-import { VerifyDoc } from '..';
 import { Toaster } from 'react-hot-toast';
 import { LuAlarmClock } from "react-icons/lu";
 import { FaFileContract } from "react-icons/fa";
+import { VerifyDoc, RejectVendorModal } from '..';
 import useVerification from '../../Hooks/useVerification';
 import useVendorAction from '../../Hooks/useVendorAction';
 import usePendingVendors  from '../../Hooks/usePendingVendors';
 import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline } from "react-icons/md";
 
 function Approvals() {
-  const { getVerificationByUserId } = useVerification();
+  const [rejectModal, setRejectModal] = useState(null);
   const [verifyModal, setVerifyModal] = useState(false);
+  const [selectedVendor, setSelectedVendor] = useState(null);
   const [selectedVendorId, setSelectedVendorId] = useState(null);
+
+  const { getVerificationByUserId } = useVerification();
   
   const { data, isLoading: isDataLoading, isError } = usePendingVendors();
   const { handleVendorActions, isLoading: isActionLoading } = useVendorAction();
@@ -48,6 +51,11 @@ function Approvals() {
     setSelectedVendorId(vendorId);
     setVerifyModal(true);
   }
+
+  const openRejectModal = (vendor) => {
+    setSelectedVendor(vendor);
+    setRejectModal(true);
+  };
 
   return (
     <>
@@ -107,14 +115,13 @@ function Approvals() {
                       </button>
                       <button
                         disabled={isActionLoading(vendor._id)}
-                        onClick={() => handleVendorActions(
-                          vendor._id, 
-                          'reject', 
-                          'Incomplete Info'
-                        )}
-                        className={`px-3 py-1 rounded-lg cursor-pointer text-light hover:border-[1.5px] hover:border-red-500 ${isActionLoading(vendor._id) ? 'bg-gray-[#424242]' : 'bg-[#424242]'}`}
+                        onClick={() => openRejectModal(vendor)}
+                        className={`px-3 py-1 rounded-lg cursor-pointer text-light hover:border-[1.5px] hover:border-red-500 ${isActionLoading(vendor._id) 
+                          ? 'bg-gray-[#424242]' 
+                          : 'bg-[#424242]'
+                        }`}
                       >
-                        {isActionLoading(vendor._id) ? 'Rejecting...' : 'Reject'}
+                        Reject
                       </button>
                     </div>
                   </div>
@@ -125,6 +132,28 @@ function Approvals() {
                   </button>
               </div>
             ))}
+
+            <RejectVendorModal
+              isOpen={rejectModal}
+              vendor={selectedVendor}
+              onClose={() => {
+                setRejectModal(false)
+                setSelectedVendor(null);
+              }}
+              isSubmitting={
+                selectedVendor ? isActionLoading(selectedVendor?._id) : false
+              }
+              onReject={async (reason) => {
+                await handleVendorActions(
+                  selectedVendor?._id,
+                  'reject',
+                  reason
+                );
+
+                setRejectModal(false);
+                setSelectedVendor(null);
+              }}
+            />
 
             <VerifyDoc
               isOpen={verifyModal}
