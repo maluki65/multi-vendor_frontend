@@ -28,16 +28,16 @@ const useVerification = () => {
       const { data } = await Api.post('/vendor/verification', payload);
       return data;
     },
-    onMutate: () => {
+    /*onMutate: () => {
       const id = toast.loading('submitting verification info...');
       return { toastId: id };
-    },
+    },*/
     onSuccess: (data, variables, context) => {
-      toast.success('Verification submitted successfully', { id: context.toastId });
+      /*toast.success('Verification submitted successfully', { id: context.toastId });*/
       queryClient.invalidateQueries({ queryKey: ['myVerification'] });
     },
     onError: (error, variables, context) => {
-      toast.error(error?.response?.data?.message || 'Failed to submit verification info!', { id: context.toastId });
+      /*toast.error(error?.response?.data?.message || 'Failed to submit verification info!', { id: context.toastId });*/
       console.error('Failed to submit verification info!', error);
     },
   });
@@ -80,20 +80,20 @@ const useVerification = () => {
     },
   });
 
-    //: on getting verification by id
-    const getVerificationByUserId = (userId) => useQuery({
-      queryKey: ['vendorVerification', userId],
-      queryFn: async () => {
-        const { data } = await Api.get(`/admin/verification/${userId}`);
-        return data.verification;
-      },
-      enabled: !!userId && me?.role === 'Admin',
-      staleTime: 1000 * 60,
-      onError: (error) => {
-        toast.error(error?.response?.data?.message || 'Failed to get user verification');
-        console.error('Failed to fetch vendor verification', error);
-      },
-    });
+  //: on getting verification by id
+  const getVerificationByUserId = (userId) => useQuery({
+    queryKey: ['vendorVerification', userId],
+    queryFn: async () => {
+      const { data } = await Api.get(`/admin/verification/${userId}`);
+      return data.verification;
+    },
+    enabled: !!userId && me?.role === 'Admin',
+    staleTime: 1000 * 60,
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || 'Failed to get user verification');
+      console.error('Failed to fetch vendor verification', error);
+    },
+  });
 
    //: on updating rejection status
   /*const updateVerificationStatus = useMutation(

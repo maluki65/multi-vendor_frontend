@@ -1,7 +1,7 @@
-import React, { useEffect, useState  } from 'react';
+import React, { useEffect, useState, useRef  } from 'react';
 import './Tabs.css';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PaymentItem, SalesChart, RevenueChart, AdLoader, usePaymentApprove, AdminReqModals } from '..';
+import { PaymentItem, SalesChart, RevenueChart, AdLoader, usePaymentApprove, AdminReqModals, VerifyDoc, RejectVendorModal } from '..';
 import { IoCalendarOutline, IoChevronForward } from 'react-icons/io5';
 import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline, MdOutlinePayments } from 'react-icons/md';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
@@ -17,21 +17,34 @@ import CountUp from 'react-countup';
 import useWallet from '../../Hooks/useWallet';
 import { CiCreditCardOff } from "react-icons/ci";
 import { PiContactlessPaymentFill } from "react-icons/pi";
+import useVerification from '../../Hooks/useVerification';
+import useVendorAction from '../../Hooks/useVendorAction';
 
 function OverviewTab() {
   const [modalType, setModalType] = useState(null);
+  const [rejectionModal, setRejecionModal] = useState(null);
+  const [verifyModal, setVerifyModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [selectedVendorId, setSelectedVendorId] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [openVendorMenuId, setOpenVendorMenuId] = useState(null);
 
   const [now, setNow] = React.useState(new Date());  
   
   const { userData } = useAuth();
   const role = userData?.role;
+  const vendorRef = useRef();
   
   const { data, isLoading, isError } = usePendingVendors();
   const { getPendingWithdrawalRequests, rejectWithdrawalRequest, approveWithdrawalRequest } = useWallet(role);
-  
+
+  const { getVerificationByUserId } = useVerification();
+  const { handleVendorActions, isLoading: isActionLoading } = useVendorAction();
+
+  const vendorVerificationQuery = getVerificationByUserId(selectedVendorId);
+
   const { getAdminAnalytics } = useAnalytics(role);
   const { data: adminAnalytics, isLoading: isAnalyticsLoading, isError: isAnalyticsError } = getAdminAnalytics;
   const { data: pendingRequests, isLoading: paymentLoading, isError: paymentError } = getPendingWithdrawalRequests(1, 10);
@@ -119,6 +132,29 @@ function OverviewTab() {
     setModalType('reject');
     setShowModal(true);
   };
+
+  const openVendorModal = (vendor) => {
+    setSelectedVendorId(vendor._id);
+    setSelectedVendor(vendor);
+    setVerifyModal(true);
+  }
+
+  const openRejectionModal = (vendor) => {
+    setSelectedVendor(vendor);
+    setRejecionModal(true);
+  }
+
+  useEffect (() => {
+    const handleClickOutside = (e) => {
+      if (vendorRef.current && !vendorRef.current.contains(e.target)) {
+        setOpenVendorMenuId(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   //console.log('payments', paymentRequests)
   return (
@@ -376,7 +412,7 @@ function OverviewTab() {
           </div>
           <div className='p-3 rounded-xl bg-muted vendors'>
             <h1 className=''>Vendor Approvals</h1>
-            <div className='flex flex-col gap-2 max-h-[90px] overflow-y-auto pr-1 vendorItem'>
+            <div className='flex flex-col gap-2 pr-1 vendorItem'>
               {isLoading ? (
                 <p className='text-dark'> loading vendor approvals...</p>
               ) : isError ? (
@@ -394,7 +430,7 @@ function OverviewTab() {
                 data.slice(0, 3).map((vendor) => (
                   <div
                     key={vendor._id}
-                    className='flex justify-between items-center'
+                    className='relative flex justify-between items-center'
                   >
                     <p className='rounded-full items-center p-1 text-xs text-white bg-dark'>
                       {getFirstTwoChars(vendor.storeName || vendor.email)}
@@ -410,9 +446,50 @@ function OverviewTab() {
                     </div>
 
                     <BsThreeDotsVertical
+                      onClick={() => setOpenVendorMenuId(
+                        openVendorMenuId === vendor?._id ? null : vendor?._id
+                      )}
                       className='cursor-pointer Icon'
                       size={20}
                     />
+
+                    <AnimatePresence>
+                      {openVendorMenuId === vendor?._id && (
+                        <motion.div
+                          ref={vendorRef}
+                          initial={{ opacity: 0, scale: 0.95, y: -5 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95, y: -5 }}
+                          transition={{ duration: 0.15 }}
+                          className='absolute right-8 top-8 z-50 flex flex-col rounded-lg border-[1.3px] border-gray-400 bg-white shadow-lg overflow-hidden'
+                          >
+                            <button
+                              onClick={() => openVendorModal(vendor)}
+                              className='cursor-pointer w-fit text-left px-4 py-2 hover:bg-gray-100'
+                              >
+                              View
+                            </button>
+                            <button
+                              disabled={isActionLoading(vendor?._id)}
+                              onClick={() => handleVendorActions(
+                                vendor?._id,
+                                'approve'
+                              )}
+                              className='cursor-pointer w-fit text-left px-4 py-2 text-green-600 hover:bg-green-50'
+                              >
+                              Approve
+                            </button>
+          
+                            <button
+                              disabled={isActionLoading(vendor._id)}
+                              onClick={() => openRejectionModal(vendor)}
+                              className='cursor-pointer w-fit text-left px-4 py-2 text-red-600 hover:bg-red-50'
+                              >
+                              Reject
+                            </button>
+                          </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 ))
               ))}
@@ -436,6 +513,78 @@ function OverviewTab() {
             })
           }
         />
+
+        <RejectVendorModal
+          isOpen={rejectionModal}
+          vendor={selectedVendor}
+          onClose={() => {
+            setRejecionModal(false)
+            setSelectedVendor(null);
+          }}
+          isSubmitting={
+            selectedVendor ? isActionLoading(selectedVendor?._id) : false
+          }
+          onReject={async (reason) => {
+            await handleVendorActions(
+              selectedVendor?._id,
+              'reject',
+              reason
+            );
+
+            setRejecionModal(false);
+            setSelectedVendor(null);
+          }}
+        />
+
+        <VerifyDoc
+          isOpen={verifyModal}
+          onClose={() => {
+            setVerifyModal(false);
+            setSelectedVendorId(null);
+          }}
+          title= {`Verification documents for ${selectedVendor?.storeName}`}
+          >
+            {vendorVerificationQuery.isLoading ? (
+              <p>Loading docs...</p>
+            ) : vendorVerificationQuery.isError ? (
+              <p className='text-red-600'>Failed to load documents</p>
+            ): vendorVerificationQuery.data?.verificationFiles?.length > 0 ? (
+              <div className='flex flex-col gap-2'>
+                <div className='grid grid-cols-2 gap-2 verifyImg '>
+                  {vendorVerificationQuery.data.verificationFiles.map((file, idx) => (
+                    <img 
+                      key={idx}
+                      src={file.url}
+                      className='w-full h-32 object-cover rounded verImg'
+                    />
+                  ))}
+                </div>
+
+                <div className='bg-gray-100 p-3 rounded-lg'>
+                  <p className='text-sm text-gray-500 AppSign'>Signature</p>
+                  <p className='text-dark font-medium wrap-break-words'>
+                    {vendorVerificationQuery.data.signature}
+                  </p>
+                </div>
+                
+                <div className='bg-gray-100 p-3 rounded-lg'>
+                  <p className='text-sm text-gray-600'>Terms & Conditions</p>
+                  <p className={`font-medium ${vendorVerificationQuery.data.termsConditions 
+                    ? 'text-green-600'
+                    : 'text-red-600'
+                    }`}>
+                      {vendorVerificationQuery.data.termsConditions
+                        ? 'Accepted'
+                        : 'Note Accepted'
+                      }
+                    </p>
+                </div>
+              </div>
+            ) : (
+              <p className=''> No documents uploaded by this vendor</p>
+            )}
+            
+        </VerifyDoc>
       </div>
     </>
   )

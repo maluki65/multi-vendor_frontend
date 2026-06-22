@@ -3,7 +3,7 @@ import './DashBoardItems.css';
 import { FaArrowRight } from "react-icons/fa";
 import { AnimatePresence, motion } from 'framer-motion';
 
-function PaymentItem({ payment, setOpenMenuId, openMenuId, handleView, handleApprove, handleReject}) {
+function PaymentItem({ payment, setOpenMenuId, openMenuId, handleView, handleApprove, handleReject }) {
 
   const menuRef = useRef();
 
@@ -56,23 +56,23 @@ function PaymentItem({ payment, setOpenMenuId, openMenuId, handleView, handleApp
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -5 }}
                 transition={{ duration: 0.15 }}
-                className='absolute right-8 top-8 z-50 min-h-[100px] rounded-lg min-w-[60px] border-[1.3px] border-gray-400 bg-white shadow-lg overflow-hidden'
+                className='absolute right-8 top-8 z-50 flex flex-col rounded-lg border-[1.3px] border-gray-400 bg-white shadow-lg overflow-hidden'
                 >
                   <button
-                    className='cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-100'
+                    className='cursor-pointer w-fit text-left px-4 py-2 hover:bg-gray-100'
                     onClick={() => handleView(payment)}
                     >
                     View
                   </button>
                   <button
-                    className='cursor-pointer w-full text-left px-4 py-2 text-green-600 hover:bg-green-50'
+                    className='cursor-pointer w-fit text-left px-4 py-2 text-green-600 hover:bg-green-50'
                     onClick={() => handleApprove(payment)}
                     >
                     Approve
                   </button>
 
                   <button
-                    className='cursor-pointer w-full text-left px-4 py-2 text-red-600 hover:bg-red-50'
+                    className='cursor-pointer w-fit text-left px-4 py-2 text-red-600 hover:bg-red-50'
                     onClick={() => handleReject(payment)}
                     >
                     Reject

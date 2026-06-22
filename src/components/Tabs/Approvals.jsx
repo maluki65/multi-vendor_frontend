@@ -3,7 +3,7 @@ import './Tabs.css';
 import { Toaster } from 'react-hot-toast';
 import { LuAlarmClock } from "react-icons/lu";
 import { FaFileContract } from "react-icons/fa";
-import { VerifyDoc, RejectVendorModal } from '..';
+import { VerifyDoc, RejectVendorModal, AdLoader } from '..';
 import useVerification from '../../Hooks/useVerification';
 import useVendorAction from '../../Hooks/useVendorAction';
 import usePendingVendors  from '../../Hooks/usePendingVendors';
@@ -62,7 +62,9 @@ function Approvals() {
       <Toaster position='top-right' reverseOrder={false} />
       <div>
         {isDataLoading ? (
-          <p> Loading vendors...</p>
+          <div className='fixed inset-0 flex items-center justify-center bg-white z-50'>
+            <AdLoader/>
+          </div>
         ) : isError ? (
           <p className='h-[80vh] text-dark text-md  mt-2 flex flex-col justify-center items-center gap-2'>
             <MdOutlineErrorOutline className='text-red-500' size={60} />

@@ -5,6 +5,7 @@ import { VendorTerms } from '../../commons';
 import { toast, Toaster } from 'react-hot-toast';
 import useVerification from '../../Hooks/useVerification';
 import UploadVerificationImgs from '../../utils/verificationDoc';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function VendorVerification() {
   const { getMyVerification, submitVerification, resubmitVerification, getAllVerification } = useVerification();
@@ -52,11 +53,18 @@ function VendorVerification() {
 
   if (vendorUser && userStatus == 'pending'){
     return (
-      <div className='p-4 bg-yellow-50 border border-green-300 rounded-lg'>
-        <h3 className='font-medium text-green-800 mb-2'>
-          Verification for this profile is already submitted. Awaiting Admin approval.
-        </h3>
-      </div>
+      <AnimatePresence mode='wait'>
+        <motion.div 
+          initial={{opacity: 0, scale: 0.95}}
+          animate={{opacity: 1, scale: 1}}
+          exit={{opacity: 0, scale: 0.95}}
+          transition={{ duration: 0.3 }}
+          className='p-4 bg-yellow-50 border border-green-300 rounded-lg'>
+            <h3 className='font-medium text-green-800 mb-2'>
+              Verification for this profile is already submitted. Awaiting Admin approval.
+            </h3>
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
@@ -124,43 +132,67 @@ function VendorVerification() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!termsAccepted) return toast.error('You must accept vendor agreement!')
+  
+    if (!termsAccepted)
+      return toast.error('You must accept vendor agreement!');
+  
     if (verificationFiles.length === 0)
       return toast.error('Please upload your verification documents!');
-
-    try{
-      //const toastId = toast.loading('Submitting verification docs...');
-
+  
+    const toastId = toast.loading('Submitting verification documents...');
+  
+    try {
       const uploadedFiles = await UploadVerificationImgs(
-        verificationFiles.map((item) => item.file)
+        verificationFiles.map(item => item.file)
       );
-
-      const verificationFilesPayload = uploadedFiles.map((f) => ({
+  
+      const verificationFilesPayload = uploadedFiles.map(f => ({
         url: f.url,
         fileId: f.fileId,
       }));
-
+  
       const payload = {
         verificationFiles: verificationFilesPayload,
         termsConditions: termsAccepted,
         signature,
       };
-
+  
       const onSuccess = () => {
-        //toast.success('verification submitted. Awaiting Admin approval', { id: toastId});
+        toast.success(
+          'Verification submitted successfully!',
+          { id: toastId }
+        );
+  
         setVerificationFiles([]);
         setSignature('');
         setTermsAccepted(false);
-      }
-
+      };
+  
+      const onError = (error) => {
+        toast.error(
+          error?.response?.data?.message ||
+          'Failed to submit verification!',
+          { id: toastId }
+        );
+      };
+  
       if (userStatus === 'rejected') {
-        resubmitVerification.mutate(payload, { onSuccess});
+        resubmitVerification.mutate(payload, {
+          onSuccess,
+          onError,
+        });
       } else {
-        submitVerification.mutate(payload, { onSuccess });
+        submitVerification.mutate(payload, {
+          onSuccess,
+          onError,
+        });
       }
-    } catch(error){
-      console.error('Verification docs upload failed', error);
-      //toast.error('Failed to upload verification docs!');
+  
+    } catch (error) {
+      toast.error(
+        'Failed to upload verification documents!',
+        { id: toastId }
+      );
     }
   };
   return (

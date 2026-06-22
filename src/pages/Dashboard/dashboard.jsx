@@ -37,7 +37,7 @@ function Dashboard() {
     fullName: userData.username || userData.storename,
     role: userData.role,
     email: userData.email,
-    storeName: userData.storeName
+    storeName: userData.storeName,
   }
   //console.log("ME:", me);
   //console.log("AdminProfile:", me?.adminProfile);
@@ -48,7 +48,7 @@ function Dashboard() {
           fullName={user.fullName} 
           role={user.role} 
           email={user.email}
-          storeName={user.storeName}
+          storeName={user.storeName}          
           disableNavigation={adminNeedsProfile || isVendorPending || isVendorRejected}
           >
           {isVendorRejected &&  tab !== 'verification' && (
@@ -59,6 +59,9 @@ function Dashboard() {
               <p className='text-sm'>
                 Unfortunately your vendor application was not approved.
                 Please contact support or submit a new verification request.
+              </p>
+              <p className='mt-2 flex items-center gap-2 font-semibold text-sm'>
+                Reason: <span className='font-normal'>{me?.rejectionReason}</span>
               </p>
               <button 
               onClick={() => {
