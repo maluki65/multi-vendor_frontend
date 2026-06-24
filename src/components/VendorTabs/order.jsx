@@ -240,7 +240,7 @@ function Orders() {
               }
               className='p-1 rounded bg-gray-200 flex items-center gap-1 cursor-pointer'
             >
-              <MdOutlineSort size={23} />
+              <MdOutlineSort className='' size={23} />
 
               <span className='text-xs text-dark capitalize'>
                 {sortOrder}
@@ -251,7 +251,7 @@ function Orders() {
               value={search}
               onChange={handleSearchChange}
               placeholder='Search by order Id...'
-              className='p-1 outline-none border-none bg-gray-200 focus:border-[1.2px] focus:border-orange-400 rounded-lg'
+              className='p-1 outline-none bg-gray-200 focus:border-[1.2px] focus:border-orange-400 rounded-lg'
             />
           </div>
         </div>

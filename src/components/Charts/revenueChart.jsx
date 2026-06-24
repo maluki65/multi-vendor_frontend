@@ -18,10 +18,20 @@ function RevenueChart({ data }) {
 
   return(
     <div className='w-full h-[270px] RevChart'>
+      {/*<p className="text-xs text-gray-500 mb-2">
+        Revenue (KES '000)
+      </p>*/}
       <ResponsiveContainer width='100%' height='100%'>
         <BarChart data={data}>
           <XAxis dataKey='month'/>
-          <YAxis />
+          <YAxis 
+            tickFormatter={(value) => value / 100000}
+            label={{
+              value: "KES ('000')",
+              angle: -90,
+              position: 'insideLeft',
+            }}
+          />
           <Tooltip 
             formatter={(value) => formatCurrency(value)}
           />

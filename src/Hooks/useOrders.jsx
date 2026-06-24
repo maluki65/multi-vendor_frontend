@@ -36,14 +36,30 @@ const useOrders = () => {
   }
 
   // On getting buyer orders
-  const getBuyerOrder = useQuery({
-    queryKey: ['BuyerOrders'],
-    queryFn: async () => {
-      const { data } = await Api.get('/orders/buyer');
-      return data;
-    },
-    enabled: me?.role === 'Buyer'
-  });
+  const getBuyerOrder = ({
+    page = 1,
+    limit = 3,
+    search = '',
+  }) => {
+    return useQuery({
+      queryKey: ['BuyerOrders', page, limit, search],
+      queryFn: async () => {
+        const { data } = await Api.get('/orders/buyer', {
+          params: {
+            page,
+            limit,
+            search
+          },
+        });
+
+        return data;
+      },
+
+      enabled: me?.role === 'Buyer',
+      placeholderData: keepPreviousData,
+      staleTime: 1000 * 60 * 10,
+    });
+  };
 
   // On getting vendor orders
   const getVendorOrder = ({ 
