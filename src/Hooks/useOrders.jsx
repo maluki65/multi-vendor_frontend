@@ -38,17 +38,19 @@ const useOrders = () => {
   // On getting buyer orders
   const getBuyerOrder = ({
     page = 1,
-    limit = 3,
+    limit = 5,
     search = '',
+    status = 'all',
   }) => {
     return useQuery({
-      queryKey: ['BuyerOrders', page, limit, search],
+      queryKey: ['BuyerOrders', page, limit, search, status],
       queryFn: async () => {
         const { data } = await Api.get('/orders/buyer', {
           params: {
             page,
             limit,
-            search
+            search,
+            status,
           },
         });
 

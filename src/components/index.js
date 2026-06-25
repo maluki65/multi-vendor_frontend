@@ -79,3 +79,4 @@ export { default as AdminReqModals } from './Tabs/AdminReqModals';
 export { default as usePaymentApprove } from './Tabs/approvePayments';
 export { default as TableSkeleton } from './Tabs/tableSkeleton';
 export { default as RejectVendorModal } from './Tabs/rejectVendorModal';
+export { default as OrderModal } from './BuyerTabs/BuyerComponents/OrderModal';

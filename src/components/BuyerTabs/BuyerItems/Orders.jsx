@@ -1,22 +1,26 @@
 import React, { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
 import useOrders from '../../../Hooks/useOrders';
-import { AdLoader } from '../../';
+import { AdLoader, OrderModal } from '../../';
 import { MdError, MdOutlineSort } from "react-icons/md";
 import { LuBox } from "react-icons/lu";
 import { debounce } from 'lodash';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 function Orders() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [modalType, setModalType] = useState(null);
   const [activeTab, setActiveTab] = useState('all');
   const [sortOrder, setSortOrder] = useState('latest');
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const [debouncedSearch, setDebouncedSearch] = useState('');
 
   const { getBuyerOrder, updateOrderStatus } = useOrders();
   const { data, isLoading, isError } = getBuyerOrder({
     page,
-    limit: 3,
+    limit: 5,
+    status: activeTab,
     search: debouncedSearch,
   })
   
@@ -28,7 +32,7 @@ function Orders() {
   const orderTabs = [
     { name: 'All', value: 'all', statuses: [] },
     { name: 'Processing', value: 'processing', statuses: ['pending', 'processing', 'shipped'] },
-    { name: 'Cancelled', value: 'cancelled', statuses: [] },
+    { name: 'Cancelled', value: 'cancelled', statuses: ['cancelled'] },
     { name: 'Completed', value: 'completed', statuses: ['completed'] },
   ]
 
@@ -53,38 +57,103 @@ function Orders() {
   }, [debouncedSearch]);
 
   const filteredOrder = useMemo(() => {
-    const currentTab = orderTabs.find(
-      (tab) => tab.value === activeTab
-    );
-
-    let filtered = orders;
-
-    if (currentTab && activeTab !== 'all') {
-      filtered =orders.filter((order) => currentTab.statuses.includes(order.orderStatus));
-    }
-
-    const sorted = [...filtered].sort((a, b) => {
+    return [...orders].sort((a, b) => {
       const dateA = new Date(a.createdAt);
       const dateB = new Date(b.createdAt);
-
-      return sortOrder === 'latest' ? dateB - dateA : dateA - dateB;
+  
+      return sortOrder === 'latest'
+        ? dateB - dateA
+        : dateA - dateB;
     });
+  }, [orders, sortOrder]);
 
-    return sorted
-  }, [orders, activeTab, sortOrder]);
+  const canCancelOrder = (order) => ['pending', 'processing'].includes(order.orderStatus);
+  const canCompleteOrder = (order) => ['shipped'].includes(order.orderStatus);
+
+  const handleCancelOrder = (order) => {
+    if (!canCancelOrder(order)) {
+      return toast.error('This order can no longer be cancelled.');
+    }
+
+    toast((t) => (
+      <span className='flex flex-col gap-2 text-sm'>
+        <p className='font-medium'>
+          Are you sure you want to cancel this order{' '}
+          <span className='text-orange-400'>{order?.orderNumber}</span>          
+        </p>
+        <div className='flex justify-end gap-2'>
+          <button
+            onClick={() => {
+              toast.dismiss(t.id);
+
+              updateOrderStatus.mutate({
+                orderId: order._id,
+                status: 'cancelled',
+              });
+            }}
+            className='px-3 cursor-pointer py-1 text-white bg-red-600 rounded-md hover:bg-red-700'
+            >
+              Yes
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className='px-3 py-1 cursor-pointer bg-gray-300 rounded-md hover:bg-gray-400r'
+            >
+              No
+          </button>
+        </div>
+      </span>
+    ))
+  }
+
+  const handleCompleteOrder = (order) => {
+    if (!canCompleteOrder(order)) {
+      return toast.error("You can only mark an order as 'Completed' if its current status is 'Shipped'.");
+    }
+
+    toast((t) => (
+      <span className='flex flex-col gap-2 text-sm'>
+        <p className='font-medium'>
+          Are you sure you want to mark this order as completed?{' '}
+          <span className='text-orange-400'>{order?.orderNumber}</span>          
+        </p>
+        <div className='flex justify-end gap-2'>
+          <button
+            onClick={() => {
+              toast.dismiss(t.id);
+
+              updateOrderStatus.mutate({
+                orderId: order._id,
+                status: 'completed',
+              });
+            }}
+            className='px-3 cursor-pointer py-1 text-white bg-red-600 rounded-md hover:bg-red-700'
+            >
+              Yes
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className='px-3 py-1 cursor-pointer bg-gray-300 rounded-md hover:bg-gray-400r'
+            >
+              Cancel
+          </button>
+        </div>
+      </span>
+    ))
+  }
 
   console.log('Buyer order:', orders);
 
   return (
     <section className='flex flex-col gap-3 overflow-hidden py-2 px-4'>
       <div className='flex items-center justify-between orders09'>
-        <div className='flex gap-3 items-center'>
+        <div className='flex gap-3 items-center orderBuyerTabs83'>
           {orderTabs.map((item, index) => {
             return (
               <div 
                 key={index}
                 onClick={() => setActiveTab(item.value)}
-                className={`rounded-md bg-gray-200 px-3 py-1 text-dark font-medium cursor-pointer ${item.value === activeTab ? 'bg-orange-400 text-white' : ''}`}
+                className={`rounded-md bg-gray-200 px-3 py-1 text-dark font-medium cursor-pointer  ${item.value === activeTab ? 'bg-orange-400 text-white' : ''}`}
                 >
                   {item.name}
               </div>
@@ -96,9 +165,9 @@ function Orders() {
             onClick={() => setSortOrder((prev) => prev === 'latest' ? 'oldest' : 'latest')}
             className='p-1 rounded bg-gray-200 flex items-center gap-1 cursor-pointer'
             >
-              <MdOutlineSort className='' size={23} />
+              <MdOutlineSort className='sortOrderBtn' size={23} />
 
-              <span className='text-xs text0dark capitalize'>
+              <span className='text-xs text-dark capitalize sortOrderText'>
                 {sortOrder}
               </span>
           </button>
@@ -193,22 +262,25 @@ function Orders() {
                       <div className='flex items-center justify-between my-3 orderActions'>
                         <div className='flex items-center gap-4'>
                           <button
+                            onClick={() => {
+                              setSelectedOrder(order);
+                              setModalType('track');
+                            }}
                             className='rounded-full px-3 py-1 text-white bg-primary cursor-pointer'>
                               Track order
                           </button>
 
                           <button
+                            onClick={() => {
+                              setSelectedOrder(order)
+                              setModalType('invoice')
+                            }}
                             className='rounded-full px-3 py-1 text-primary border-[1.3px] border-primary cursor-pointer'>
                               Invoice
                           </button>
                         </div>
                         <button
-                          onClick={() => {
-                            updateOrderStatus.mutate({
-                              orderId: order._id,
-                              status: 'completed',
-                            });
-                          }}
+                          onClick={() => handleCompleteOrder(order)}
 
                           disabled={
                             order.orderStatus !== 'shipped' ||
@@ -224,7 +296,15 @@ function Orders() {
                               ? 'Order received'
                               : 'Mark as received'}
                         </button>
-                        <a className='text-orange-400 font-semibold cursor-pointer hover:underline orderCancel'>Cancel Order</a>
+                        <button 
+                         onClick={() => handleCancelOrder(order)}
+                         disabled={!canCancelOrder(order) || updateOrderStatus.isPending}
+                         className={`font-semibold orderCancel transition ${['shipped', 'completed', 'cancelled'].includes(order?.orderStatus) ? 'text-gray-400 cursor-not-allowed' : 'text-orange-400 hover:underline cursor-pointer'}`}
+                         >
+                          {order?.orderStatus === 'cancelled'
+                            ? 'cancelled'
+                            : updateOrderStatus.isPending ? 'Cancelling' : 'Cancel Order'}
+                        </button>
                       </div>
                     </div>
                   </motion.div>
@@ -258,6 +338,16 @@ function Orders() {
           </button>
         </div>
       </div>
+
+      <OrderModal
+        isOpen={!!selectedOrder}
+        order={selectedOrder}
+        type={modalType}
+        onClose={() => {
+          setSelectedOrder(null);
+          setModalType(null);
+        }}
+      />
     </section>
   )
 }

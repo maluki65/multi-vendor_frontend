@@ -12,6 +12,17 @@ function AdminReqModals({ isOpen, onClose, request, type, onReject, isSubmitting
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+  
+
   if (!isOpen || !request) return null;
 
   const handleRejectionSubmit = async (e) => {
@@ -36,8 +47,12 @@ function AdminReqModals({ isOpen, onClose, request, type, onReject, isSubmitting
   }
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto backdrop-blur-sm'>
-      <div className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl m-2 withdrawalModal'>
+    <div 
+     onClick={onClose}
+     className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto backdrop-blur-sm'>
+      <div 
+       onClick={(e) => e.stopPropagation()}
+       className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl m-2 withdrawalModal'>
         <div className='flex justify-between items-center mb-4'>
           <h2 className='font-semibold text-lg capitalize'>
             {type} Withdrawal Request

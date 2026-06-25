@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RiCloseCircleLine } from "react-icons/ri";
 
 const withdrawalForm = {
@@ -10,6 +10,17 @@ const withdrawalForm = {
 function WithdrawalModal({ isOpen, onClose, submit, isSubmitting, availableBalance }) {
   const [form, setForm] = useState(withdrawalForm);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleChange = (e) => {
@@ -56,8 +67,12 @@ function WithdrawalModal({ isOpen, onClose, submit, isSubmitting, availableBalan
   }
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto backdrop-blur-sm'>
-      <div className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl m-2 withdrawalModal'>
+    <div 
+     onClick={onClose}
+     className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto backdrop-blur-sm'>
+      <div 
+       onClick={(e) => e.stopPropagation()}
+       className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl m-2 withdrawalModal'>
         <div className='flex flex-col  justify-between mb-4'>
           <div className='flex items-center justify-between'>
             <h2 className='text-xl font-semibold withdrawalHeading'>

@@ -12,6 +12,16 @@ function RejectVendorModal({ isOpen, onClose, vendor, onReject, isSubmitting }) 
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen || !vendor) return null;
 
   const handleRejectVendor = async (e) => {
@@ -29,8 +39,12 @@ function RejectVendorModal({ isOpen, onClose, vendor, onReject, isSubmitting }) 
   };
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto backdrop-blur-sm'>
-      <div className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl m-2 withdrawalModal'>
+    <div 
+     onClick={onClose}
+     className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto backdrop-blur-sm'>
+      <div 
+       onClick={(e) => e.stopPropagation()}
+       className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl m-2 withdrawalModal'>
         <div className='flex justify-between items-center mb-4'>
           <h2 className='font-semibold text-lg capitalize'>
             Reject {vendor?.storeName || vendor?.storeSlug}

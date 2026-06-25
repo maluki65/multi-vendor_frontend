@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RiCloseCircleLine } from "react-icons/ri";
 
 function WithdrawalRequest({ selectedRequest, onClose, status  }) {
+  useEffect(() => {
+    if (!selectedRequest) return;
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedRequest]);
+  
   if (!selectedRequest) return null;
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto backdrop-blur-sm'>
-      <div className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl m-2 withdrawalModal'>
+    <div
+     onClick={onClose} 
+     className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 overflow-y-auto backdrop-blur-sm'>
+      <div
+       onClick={(e) => e.stopPropagation()}
+       className='bg-white rounded-2xl w-full max-w-md p-6 shadow-xl m-2 withdrawalModal'>
         <div className='flex items-center justify-between'>
           <h2 className='text-md font-semibold text-gray-600 withdrawalHeading'>
             Request: {selectedRequest?.requestUUID}
