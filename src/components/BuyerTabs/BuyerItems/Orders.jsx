@@ -194,12 +194,12 @@ function Orders() {
         </div>
       )}
       
-      <div className='flex flex-col gap-3'>
-        {!isLoading && !isError && (
-          filteredOrder.length > 0 ? (
-            filteredOrder.map((order) => {
-              return (
-                <AnimatePresence mode='wait'>
+      <AnimatePresence mode='wait'>
+        <div className='flex flex-col gap-3'>
+          {!isLoading && !isError && (
+            filteredOrder.length > 0 ? (
+              filteredOrder.map((order) => {
+                return (
                   <motion.div 
                     key={order?._id}
                     initial={{ opacity: 0, y: 20 }}
@@ -239,7 +239,6 @@ function Orders() {
                       <Fragment key={product?._id}>
                         <hr className='flex-1 border-t border-gray-300' />
                         <div 
-                          key={product._id}
                           className='flex items-center gap-3 py-4 px-3'>
                             <img 
                               src={product.image}
@@ -297,10 +296,10 @@ function Orders() {
                               : 'Mark as received'}
                         </button>
                         <button 
-                         onClick={() => handleCancelOrder(order)}
-                         disabled={!canCancelOrder(order) || updateOrderStatus.isPending}
-                         className={`font-semibold orderCancel transition ${['shipped', 'completed', 'cancelled'].includes(order?.orderStatus) ? 'text-gray-400 cursor-not-allowed' : 'text-orange-400 hover:underline cursor-pointer'}`}
-                         >
+                          onClick={() => handleCancelOrder(order)}
+                          disabled={!canCancelOrder(order) || updateOrderStatus.isPending}
+                          className={`font-semibold orderCancel transition ${['shipped', 'completed', 'cancelled'].includes(order?.orderStatus) ? 'text-gray-400 cursor-not-allowed' : 'text-orange-400 hover:underline cursor-pointer'}`}
+                          >
                           {order?.orderStatus === 'cancelled'
                             ? 'cancelled'
                             : updateOrderStatus.isPending ? 'Cancelling' : 'Cancel Order'}
@@ -308,36 +307,37 @@ function Orders() {
                       </div>
                     </div>
                   </motion.div>
-                </AnimatePresence>
-              )
-            })
-          ) : (
-            <div className='col-span-full text-center text-gray-600 flex flex-col items-center gap-2'>
-              <LuBox className='text-red-500' size={65} />
-              <p className=''>No orders found!</p>
-            </div>
-          )
-        )}
-        <div className='flex justify-between items-center CatNav mt-4'>
-          <button 
-            disabled={page <= 1} 
-            onClick={() => setPage(page - 1)}
-            className='px-3 py-1 border rounded cursor-pointer disabled:opacity-50'
+                )
+              })
+            ) : (
+              <div className='col-span-full text-center text-gray-600 flex flex-col items-center gap-2'>
+                <LuBox className='text-red-500' size={65} />
+                <p className=''>No orders found!</p>
+              </div>
+            )
+          )}
+          <div className='flex justify-between items-center CatNav mt-4'>
+            <button 
+              disabled={page <= 1} 
+              onClick={() => setPage(page - 1)}
+              className='px-3 py-1 border rounded cursor-pointer disabled:opacity-50'
+                >
+                Prev
+            </button>
+            <span className=''>
+              Page {page} of {totalPages}
+            </span>
+            <button 
+              disabled={page >= totalPages} 
+              onClick={() => setPage(page + 1)}
+              className='px-3 py-1 border rounded cursor-pointer disabled:opacity-50'
               >
-              Prev
-          </button>
-          <span className=''>
-            Page {page} of {totalPages}
-          </span>
-          <button 
-            disabled={page >= totalPages} 
-            onClick={() => setPage(page + 1)}
-            className='px-3 py-1 border rounded cursor-pointer disabled:opacity-50'
-            >
-              Next
-          </button>
+                Next
+            </button>
+          </div>
         </div>
-      </div>
+      </AnimatePresence>
+      
 
       <OrderModal
         isOpen={!!selectedOrder}

@@ -196,6 +196,14 @@ function Orders() {
     icon: null
   };
 
+  const settlementStatusStyles = {
+    pending: 'bg-yellow-200 text-yellow-600',
+    processing: 'bg-blue-200 text-blue-600',
+    settled: 'bg-green-200 text-green-600',
+    failed: 'bg-red-200 text-red-600',
+    cancelled: 'bg-gray-200 text-gray-600',
+  };
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -317,16 +325,15 @@ function Orders() {
                           <td className='p-3'>
                             {order?.orderNumber}
                           </td>
-                          <td className='p-3'>
-                            {order?.settled ? (
-                              <span className='bg-green-200 text-sm rounded-full px-2 py-1  text-green-600 font-medium'>
-                                settled
-                              </span>
-                            ) : (
-                              <span className='bg-yellow-200 text-sm rounded-full px-2 py-1 text-yellow-600 font-medium'>
-                                pending
-                              </span>
-                            )}
+                          <td className="p-3">
+                            <span
+                              className={`text-sm rounded-full px-2 py-1 font-medium ${
+                                settlementStatusStyles[order?.settlementStatus] ??
+                                "bg-yellow-200 text-yellow-600"
+                              }`}
+                            >
+                              {order?.settlementStatus || "pending"}
+                            </span>
                           </td>
                           <td className='p-3'>
                             ksh {(order?.totalAmount / 100).toLocaleString()}

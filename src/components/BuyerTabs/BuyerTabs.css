@@ -96,6 +96,10 @@
   display: none;
 }
 
+.TrackVeriticalLine{
+  display: none;
+}
+
 @media(min-width: 2560px){
   .logo, .cat908 h2, .Subscribe h2, .PathName, .detName, .prodDetVenCon div h1{
     font-size: 3.3rem;
@@ -373,6 +377,12 @@
   .orderBuyerTabs83{
     flex-wrap: wrap;
   }
+  .TrackorizontalLine{
+    display: none;
+  }
+  .TrackVeriticalLine{
+    display: block;
+  }
 }
 
 @media(max-width: 376px){
@@ -409,6 +419,11 @@
   }
   .wishNameStock{
     flex-direction: column;
+    align-items: start;
+  }
+  .TrackOrderNumbers{
+    flex-direction: column;
+    justify-content: start;
     align-items: start;
   }
 }
