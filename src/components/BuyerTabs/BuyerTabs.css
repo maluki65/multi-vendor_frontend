@@ -100,6 +100,12 @@
   display: none;
 }
 
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
 @media(min-width: 2560px){
   .logo, .cat908 h2, .Subscribe h2, .PathName, .detName, .prodDetVenCon div h1{
     font-size: 3.3rem;
@@ -150,7 +156,7 @@
   .Slider{
     height: 10px;
   }
-  .priceRange, .detDesc, .reviewSec h2, .RevCount, .reviewSec h3, .RevSelc, .RevUser span, .RevText textarea, .orderSummary span, .WishTable td{
+  .priceRange, .detDesc, .reviewSec h2, .RevCount, .reviewSec h3, .RevSelc, .RevUser span, .RevText textarea, .orderSummary span, .WishTable td, .trackingTitle{
     font-size: 2em;
   }
   .prodMainImg{
@@ -185,7 +191,7 @@
   .reviewSec{
     width: 70%;
   }
-  .StarIcon, .CartIcon, .AccNavLog{
+  .StarIcon, .CartIcon, .AccNavLog, .trackingIcon{
     height: 40px;
     width: 40px;
   }
@@ -205,6 +211,10 @@
   }
   .CartVenItem, .sortOrderText{
     font-size: 1em;
+  }
+  .orderTrackingWhite{
+    max-width: 70vh;
+    min-height: 30vh;
   }
 }
 
@@ -383,6 +393,10 @@
   .TrackVeriticalLine{
     display: block;
   }
+  .orderSupport button{
+    padding: 2px 5px;
+    font-size: 12px;
+  }
 }
 
 @media(max-width: 376px){
@@ -425,6 +439,18 @@
     flex-direction: column;
     justify-content: start;
     align-items: start;
+  }
+  .orderProductModal{
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 10px;
+  }
+  .productOrderPrice{
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
 }
 
