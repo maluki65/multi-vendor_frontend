@@ -2,22 +2,16 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from 'react-hot-toast';
 import { Api } from '../utils';
 
-const useCart = (location) => {
+const useCart = () => {
   const queryClient = useQueryClient();
 
-  const cartKey = ['cart', location]; 
+  const cartKey = ['cart']; 
 
   // On getting cart
   const getCart = useQuery({
     queryKey: cartKey,
     queryFn: async () => {
-      let url = '/cart';
-
-      if (location?.county) {
-        url += `?county=${location.county}&area=${location.area}`;
-      }
-
-      const { data } = await Api.get(url);
+      const { data } = await Api.get('/cart');
       return data;
     },
     staleTime: 1000 * 60 * 5,
@@ -136,6 +130,8 @@ const useCart = (location) => {
         cart: data.cart,
         totalItems: data.totalItems,
       }));
+
+      queryClient.invalidateQueries({ queryKey: cartKey });
     },
   
     onError: (error, _, context) => {
@@ -192,16 +188,16 @@ const useCart = (location) => {
       return { previousCart };
     },
 
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cartKey });
+    },
+
     onError: (error, _, context) => {
       queryClient.setQueryData(cartKey, context.previousCart);
 
       toast.error(
         error?.response?.data?.message || 'Failed to update quantity'
       );
-    },
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: cartKey });
     },
   });
 
@@ -301,7 +297,11 @@ const useCart = (location) => {
       items: flattenedItems,
     },
     totalItems: getCart.data?.totalItems || 0,
-    pricing: getCart.data?.pricing || null,
+    pricing: getCart.data?.pricing ?? {
+      subtotal: 0,
+      tax: 0,
+      total: 0,
+    },
     isLoading: getCart.isLoading,
     isError: getCart.isError,
 

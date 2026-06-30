@@ -142,7 +142,7 @@ function Orders() {
     ))
   }
 
-  console.log('Buyer order:', orders);
+  //console.log('Buyer order:', orders);
 
   return (
     <section className='flex flex-col gap-3 overflow-hidden py-2 px-4'>
@@ -269,14 +269,14 @@ function Orders() {
                               Track order
                           </button>
 
-                          <button
+                          {/*<button
                             onClick={() => {
                               setSelectedOrder(order)
                               setModalType('invoice')
                             }}
                             className='rounded-full px-3 py-1 text-primary border-[1.3px] border-primary cursor-pointer'>
                               Invoice
-                          </button>
+                          </button>*/}
                         </div>
                         <button
                           onClick={() => handleCompleteOrder(order)}
@@ -336,8 +336,7 @@ function Orders() {
             </button>
           </div>
         </div>
-      </AnimatePresence>
-      
+      </AnimatePresence>  
 
       <OrderModal
         isOpen={!!selectedOrder}

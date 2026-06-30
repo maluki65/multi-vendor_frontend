@@ -104,7 +104,7 @@ function OrderModal({ isOpen, onClose, order, onTrack, onInvoice, type }) {
                 </p>
               </div>
             </div>
-          ): (
+          ) : (
             <>
               {type === 'track' && (
                 <div 

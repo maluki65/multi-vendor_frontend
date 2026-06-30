@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../BuyerTabs.css';
 import { Inner } from '../../../commons';
 import useCart from '../../../Hooks/useCart';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { cartB1, cartB2 } from '../../../assets';
 import { useNavigate } from 'react-router-dom';
-import { CartTable, LocationSelector, OrderSummary, Footer } from '../../';
+import { CartTable, OrderSummary, Footer } from '../../';
+import { useProfile } from '../../../Hooks/useProfile';
+import { useCurrentUser } from '../../../Hooks/useCurrentUser';
 import useCheckout from '../../../Hooks/useCheckout';
 
 function Cart() {
-  const [location, setLocation] = useState(null);  
-
   const { 
     cart, 
     updateQuantity, 
@@ -20,23 +20,39 @@ function Cart() {
     totalItems, 
     isLoading, 
     isError 
-  } = useCart(location);
+  } = useCart();
+
+  const { data: me } = useCurrentUser();
+  const role = me?.role;
+
+  const { data: profile } = useProfile(role);
+  const { prepareCheckout, isPending } = useCheckout();  
 
   const navigate = useNavigate();
-  const { prepareCheckout, isPending } = useCheckout();
+
+  const shippingAddress = profile?.profile?.addresses?.[0];
 
   //console.log('Cart items:', cart);
+  //console.log('profile', profile)
 
-  const appyLocation = (loc) => {
-    setLocation(loc);
-  }
-  const canCheckOut = location && pricing;
+  const canCheckOut = Boolean(
+    totalItems > 0 && 
+    shippingAddress?.city && 
+    shippingAddress?.street
+  )
 
   const handleCheckout = () => {
-    if (!location) return;
+    if (!shippingAddress?.city || !shippingAddress?.street) {
+      toast.error('Please complete your shipping address first!');
+      navigate('/buyer/account');
+      return;
+    }
 
     prepareCheckout.mutate({
-      location,
+      location: {
+        county: shippingAddress?.city,
+        area: shippingAddress?.street,
+      },
     });
   };
 
@@ -76,35 +92,29 @@ function Cart() {
               isError={isError}
             />
 
-            <div className='flex justify-between items-center px-4 CoupClear'>
-              <p className=''>Appy coupon</p>
-              <p 
-                onClick={() => clearCart.mutate()}
-                className='text-primary text-ms underline cursor-pointer font-semibold'>
-                  Clear shopping cart
-              </p>
-            </div>
+            {!isLoading && canCheckOut && !isError && (
+              <div className='flex justify-between items-center px-4 CoupClear'>
+                <p className=''>Appy coupon</p>
+                <p 
+                  onClick={() => clearCart.mutate()}
+                  className='text-primary text-ms underline cursor-pointer font-semibold'>
+                    Clear shopping cart
+                </p>
+              </div>
+            )}
+
+            
           </div>
 
           <div className='flex flex-col gap-4 my-7'>
-            <LocationSelector
-              location={location}
-              setLocation={appyLocation}
-            />
-
             <OrderSummary
               pricing={pricing}
+              cartItems={cart?.items}
               totalItems={totalItems}
               canCheckOut={canCheckOut}
               onCheckout ={handleCheckout}
               isLoading={isPending}
             />
-
-            {!location && (
-              <p className='text-sm text-red-500'>
-                Select delivery location to continue
-              </p>
-            )}
           </div>
         </div>
       </section>

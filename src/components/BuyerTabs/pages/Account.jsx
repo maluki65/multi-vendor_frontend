@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLogout } from '../../../Hooks/useLogout';
 import { MdLogout } from "react-icons/md";
-import { Orders, Profiles, Passwords } from '../../';
+import { Orders, Profiles, Passwords, Footer } from '../../';
 
 function Account() {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -122,6 +122,10 @@ function Account() {
           </div>
         </div>
       </section>
+
+      <div className='p-2'>
+       <Footer />
+      </div>
     </Inner>
   )
 }
