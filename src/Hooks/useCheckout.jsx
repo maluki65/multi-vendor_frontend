@@ -116,6 +116,38 @@ const useCheckout = (sessionId) => {
     },
   });
 
+  const updateShipping = useMutation({
+    mutationFn: async ({ sessionId, county, area }) => {
+      const { data } = await Api.patch(`/checkout/shipping/${sessionId}`, {
+          county,
+          area,
+        })
+      return data;
+    },
+
+    onMutate: () => {
+      const toastId = toast.loading('Updating shipping...');
+      return { toastId }
+    },
+
+    onSuccess: (data, sessionId, context) => {
+      toast.success('Shipping updated', { id: context.toastId });
+
+      queryClient.invalidateQueries({
+        queryKey: ['checkout', sessionId],
+      });
+    },
+
+    onError: (error, _, context) => {
+      toast.error(
+        error?.response?.data?.message || 'Failed to update shipping',
+        { id: context.toastId }
+      );
+
+      console.error('Failed to update shipping', error);
+    },
+  })
+
   return {
     isPending: prepareCheckout.isPending, 
     
@@ -123,6 +155,7 @@ const useCheckout = (sessionId) => {
     checkoutSessionQuery,
     getAllCheckoutSessions,
     resumeCheckout,
+    updateShipping,
     completeCheckout,
   };
 };

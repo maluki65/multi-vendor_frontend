@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, Fragment } from 'react';
 import { RiCloseCircleLine } from "react-icons/ri";
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPrinter } from "react-icons/fi";
@@ -255,9 +255,8 @@ function OrderModal({ isOpen, onClose, order, onTrack, onInvoice, type }) {
                     <div className='flex flex-col gap-2'>
                       {order?.products.map((product) => {
                         return (
-                          <>
+                          <Fragment key={product?._id}>
                             <div 
-                              key={product?._id}
                               className='flex items-center justify-between orderProductModal'
                               >
                                 <div className='flex items-center gap-2'>
@@ -286,7 +285,7 @@ function OrderModal({ isOpen, onClose, order, onTrack, onInvoice, type }) {
                                 </div>
                             </div>
                             <hr className='flex-1 border-t border-gray-300' />                            
-                          </>
+                          </Fragment>
                         )
                       })}
                     </div>

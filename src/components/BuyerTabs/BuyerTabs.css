@@ -331,7 +331,7 @@
   .BuyeWHY, .simProd{
     grid-template-columns: repeat(2, 1fr);
   }
-  .catLastCon, .cartSessions, .cardMpesaIn{
+  .catLastCon, .cartSessions, .cardMpesaIn, .shippingModal{
     grid-template-columns: repeat(1, 1fr);
   }
   .fanImgs{

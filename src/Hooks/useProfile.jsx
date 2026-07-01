@@ -72,10 +72,24 @@ export const useProfile = (role) => {
       const res = await Api.patch('/buyer/profile/update', payload);
       return res.data;
     },
-    onSuccess: (data) => {
-      queryClient.setQueryData(PROFILE_KEY, data.profile);
-      queryClient.invalidateQueries(PROFILE_KEY);
+    onMutate: () => {
+      const id = toast.loading('Updating profile...');
+      return { toastId: id };
     },
+
+    onSuccess: (data, variables, context) => {
+      queryClient.setQueryData(PROFILE_KEY, data/*.profile*/);
+      queryClient.invalidateQueries(PROFILE_KEY);
+
+      toast.success('Profile updated successfully', {
+        id: context.toastId,
+      });
+    },
+
+    onError: (error, variables, context) => {
+      toast.error(error?.response?.data?.message || 'Failed to update profile', { id: context.toastId });
+      console.error('Failed to update profile', error);
+    }
   });
 
   // on updating vendor profile
