@@ -106,7 +106,7 @@ function AddressModal({
               <button onClick={onClose}>
                 <RiCloseCircleLine
                   size={30}
-                  className='text-red-500'
+                  className='text-red-500 cursor-pointer'
                 />
               </button>
             </div>
