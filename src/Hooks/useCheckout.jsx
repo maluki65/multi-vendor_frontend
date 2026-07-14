@@ -98,12 +98,18 @@ const useCheckout = (sessionId) => {
       return { toastId }
     },
 
-    onSuccess: (data, sessionId, context) => {
+    onSuccess: async (data, sessionId, context) => {
       toast.success('Payment successful...Order created!', { id: context.toastId });
 
-      queryClient.invalidateQueries(['Orders']);
+      await queryClient.invalidateQueries({
+        queryKey: ['Orders'],
+      });
 
-      navigate('/buyer/account');
+      await queryClient.invalidateQueries({
+        queryKey: ['cart'],
+      });
+
+      //navigate('/buyer/account');
     },
 
     onError: (error, _, context) => {

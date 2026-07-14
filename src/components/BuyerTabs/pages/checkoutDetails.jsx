@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../BuyerTabs.css';
 import { useParams } from 'react-router-dom';
 import useCheckout from '../../../Hooks/useCheckout';
-import { AdLoader, Footer, AddressModal } from '../../';
+import { AdLoader, Footer, AddressModal, BuyerPrompt, OrderSuccess } from '../../';
 import { FiCheckCircle } from "react-icons/fi";
 import { cartB1, cartB2, cartB3, cartB4, cartB5, cartB11 } from '../../../assets';
 import { Inner } from '../../../commons';
@@ -28,6 +28,7 @@ function CheckoutDetails() {
   const { data: profile, updateProfile, updating } = useProfile(role);
 
   const [editAddress, setEditAddress] = useState(profile?.profile?.addresses?.[0]);
+  const [createdOrder, setCreatedOrder] = useState(null);
   const [form, setForm] = useState(ShippingPaymentInfo);
   const [activeTab, setActiveTab] = useState('M-pesa');
   const [modalType, setModalType] = useState(null);
@@ -57,8 +58,20 @@ function CheckoutDetails() {
   //console.log('checkout session:', session);
 
   const handlePayNow = () => {
-    completeCheckout.mutate(sessionId)
-  }
+    completeCheckout.mutate(sessionId, {
+      onSuccess: (data) => {
+        const order = data.orders[0];
+
+        setCreatedOrder(order);
+        setModalType('successOrder');
+
+        setTimeout(() => {
+          setModalType(null);
+          navigate('/buyer/account');
+        }, 20000);
+      },
+    });
+  };
 
   const handleAddressSave = async (data) => {
     await updateProfile(data);
@@ -365,6 +378,12 @@ function CheckoutDetails() {
           saving={updating}
           onClose={() => setModalType(null)}
           onSave={handleAddressSave}
+        />
+
+        <OrderSuccess
+          isOpen = {modalType === 'successOrder'}
+          order={createdOrder}
+          onClose={() => setModalType(null)}
         />
       </section>      
     </Inner>

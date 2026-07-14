@@ -7,7 +7,6 @@ import { CiUser } from "react-icons/ci";
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [sticky, setSticky] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -24,7 +23,6 @@ function Navbar() {
 
   const handleHamburgerClick = () => {
     setMenuOpen(prev => !prev);
-    setIsOpen(prev => !prev);
   };
 
   const closeNavBar = () => {
@@ -124,8 +122,8 @@ function Navbar() {
           </button>
         </div>
 
-        <div className={`hamburger ${isOpen ? 'open' : ''}`} id='hambuger' onClick={handleHamburgerClick}>
-          {isOpen ? <FaXmark/> : <FaBarsStaggered/> }
+        <div className={`hamburger ${menuOpen ? 'open' : ''}`} id='hambuger' onClick={handleHamburgerClick}>
+          {menuOpen ? <FaXmark/> : <FaBarsStaggered/> }
         </div>
       </div>
     </>

@@ -62,10 +62,10 @@ export default function Inner ({children}) {
   }
 
   return (
-    <div className="inner">
-      <motion.div {...anime(slide)} className="slide"/>
-      <motion.div {...anime(perspective)} className="">
-          <motion.div {...anime(opacity)} className="page">
+    <div className='inner'>
+      <motion.div {...anime(slide)} className='slide'/>
+      <motion.div {...anime(perspective)} className=''>
+          <motion.div {...anime(opacity)} className='page'>
             {children}
           </motion.div>
       </motion.div>

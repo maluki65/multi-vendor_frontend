@@ -145,13 +145,13 @@ function OrderModal({ isOpen, onClose, order, onTrack, onInvoice, type }) {
 
                       <p
                         className={`text-sm ${
-                          isOverdue ? "text-red-500" : "text-gray-500"
+                          isOverdue ? 'text-red-500' : 'text-gray-500'
                         }`}
                       >
-                        {order?.completedAt ? "Order delivered:" : "Expected delivery:"}{" "}
-                        <span className="font-medium">
+                        {order?.completedAt ? 'Order delivered:' : 'Expected delivery:'}{' '}
+                        <span className='font-medium'>
                           {order?.completedAt
-                            ? format(new Date(order.completedAt), "dd MMM yyyy")
+                            ? format(new Date(order.completedAt), 'dd MMM yyyy')
                             : estimated}
                         </span>
                       </p>

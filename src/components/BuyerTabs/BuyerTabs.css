@@ -156,7 +156,7 @@
   .Slider{
     height: 10px;
   }
-  .priceRange, .detDesc, .reviewSec h2, .RevCount, .reviewSec h3, .RevSelc, .RevUser span, .RevText textarea, .orderSummary span, .WishTable td, .trackingTitle{
+  .priceRange, .detDesc, .reviewSec h2, .RevCount, .reviewSec h3, .RevSelc, .RevUser span, .RevText textarea, .orderSummary span, .WishTable td, .trackingTitle, .orderSuccess h1{
     font-size: 2em;
   }
   .prodMainImg{
@@ -212,7 +212,7 @@
   .CartVenItem, .sortOrderText{
     font-size: 1em;
   }
-  .orderTrackingWhite{
+  .orderTrackingWhite, .orderSuccess{
     max-width: 70vh;
     min-height: 30vh;
   }

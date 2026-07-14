@@ -81,3 +81,5 @@ export { default as TableSkeleton } from './Tabs/tableSkeleton';
 export { default as RejectVendorModal } from './Tabs/rejectVendorModal';
 export { default as OrderModal } from './BuyerTabs/BuyerComponents/OrderModal';
 export { default as AddressModal } from './BuyerTabs/BuyerComponents/AddressModal';
+export { default as BuyerPrompt } from './BuyerTabs/pages/buyerPrompt';
+export { default as OrderSuccess } from './BuyerTabs/pages/orderSuccess';

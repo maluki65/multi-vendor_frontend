@@ -370,8 +370,8 @@ function home() {
           </div>
         </section>
         <div className='p-2'>
-               <Footer />
-              </div>
+          <Footer />
+        </div>
       </ReactLenis>
     </Inner>
   )
