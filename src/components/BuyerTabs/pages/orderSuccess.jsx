@@ -18,21 +18,26 @@ function OrderSuccess({ isOpen, onClose, order }) {
   }, [isOpen]);
 
   useEffect(() => {
-    if (!isOpen) return;
-
-    setCountDown(20);
-
-    const interval = setInterval(() => {
-      setCountDown(prev => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-
-        return prev - 1;
-      });
-    }, 1000);
+    if (isOpen) {
+      setCountDown(20);
+    }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+  
+    if (countDown === 0) {
+      navigate('/buyer/account');
+      return;
+    }
+  
+    const timeout = setTimeout(() => {
+      setCountDown(prev => prev - 1);
+    }, 1000);
+  
+    return () => clearTimeout(timeout);
+  
+  }, [countDown, isOpen, navigate]);
 
   if (!isOpen || !order) return null;
 
@@ -56,6 +61,7 @@ function OrderSuccess({ isOpen, onClose, order }) {
                 <h1 className='text-center text-xl font-semibold text-dark'>
                   You order has been successfully submitted!
                 </h1>
+                <p className='text-green-500 text-center'>Redirection to account in {countDown} sec(s)</p>
               </div>
               <div className='my-2 border-[1.5px] border-gray-300 rounded-md p-4 bg-gray-200'>
                 <div className='flex items-center justify-between my-2'>
@@ -69,7 +75,7 @@ function OrderSuccess({ isOpen, onClose, order }) {
                 </div>
                 <hr className='flex-1 border-t border-gray-300' />                            
                 <div className='flex items-center justify-between my-2'>
-                  <p className='text-gray-500'>Order ID</p>
+                  <p className='text-gray-500'>Created At</p>
                   <p className='text-dark font-medium'>{format(new Date(order?.createdAt), 'dd MMM yyyy')}</p>
                 </div>
                 <hr className='flex-1 border-t border-gray-300' />                            

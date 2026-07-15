@@ -94,7 +94,7 @@ function Cart() {
 
             {!isLoading && canCheckOut && !isError && (
               <div className='flex justify-between items-center px-4 CoupClear'>
-                <p className=''>Appy coupon</p>
+                <p className='text-muted cursor-not-allowed'>Appy coupon</p>
                 <p 
                   onClick={() => clearCart.mutate()}
                   className='text-primary text-ms underline cursor-pointer font-semibold'>
