@@ -8,6 +8,9 @@ import useCategory from '../../../Hooks/useCategory';
 
 function BuyerSideBar({
   products = [],
+  brands = [],
+  categories = [],
+  serverPriceRange,
   selectedProductBrand,
   setSelectedProductBrand,
   selectedCategories,
@@ -24,16 +27,8 @@ function BuyerSideBar({
   const [isPriceOpen, setIsPriceOpen] = useState(true);
 
   const { getActiveCategories } = useCategory();
-  const { data: categories = [] } = getActiveCategories;
+  //const { data: categories = [] } = getActiveCategories;
   //console.log(categories);
-
-  const brands = useMemo(() => {
-    const set = new Set();
-    products.forEach(p => {
-      if (p?.brand) set.add(p.brand);
-    });
-    return Array.from(set);
-  }, [products]);
 
   const priceRanges = [
     { label: 'Under 1K', value: 'under1k', range: [0, 1000 * 100] },
@@ -72,8 +67,10 @@ function BuyerSideBar({
   const filteredBrands = useMemo(() => {
     const lower = (brandSearch || '').toLowerCase();
 
-    return brands.filter(b =>
-      b.toLowerCase().includes(lower)
+    return brands.filter(
+      ({ name }) =>
+        typeof name === 'string' &&
+        name.toLowerCase().includes(lower)
     );
   }, [brands, brandSearch]);
 
@@ -121,14 +118,14 @@ function BuyerSideBar({
             />*/}
 
             <div className='flex flex-col gap-1 max-h-[170px] overflow-y-auto my-3'>
-              {filteredBrands.map((brand, i) => (
-                <label key={i} className='flex items-center gap-2 text-sm'>
+              {filteredBrands.map((brand) => (
+                <label key={brand.name} className='flex items-center gap-2 text-sm'>
                   <input
                     type='checkbox'
-                    checked={selectedProductBrand.includes(brand)}
-                    onChange={() => toggleBrand(brand)}
+                    checked={selectedProductBrand.includes(brand.name)}
+                    onChange={() => toggleBrand(brand.name)}
                   />
-                  <span className='font-medium'>{brand}</span>
+                  <span className='flex items-center font-medium'>{brand.name}({brand?.count})</span>
                 </label>
               ))}
             </div>
@@ -154,7 +151,7 @@ function BuyerSideBar({
                   checked={selectedCategories.includes(cat._id)}
                   onChange={() => toggleCategory(cat._id)}
                 />
-                <span className='font-medium'>{cat.name}</span>
+                <span className='flex items-center font-medium'>{cat.name}({cat?.count})</span>
               </label>
             ))}
           </div>
@@ -187,13 +184,13 @@ function BuyerSideBar({
 
             {selectedPriceRange === 'custom' && (
               <>
-                <Slider
-                  range
-                  min={0}
-                  max={1000000 * 100} 
-                  value={priceRange}
-                  onChange={setPriceRange}
-                />
+              <Slider
+                range
+                min={serverPriceRange?.min ?? 0}
+                max={serverPriceRange?.max ?? 1000000 * 100}
+                value={priceRange}
+                onChange={setPriceRange}
+              />
 
                 <div className='text-sm mt-2'>
                   Ksh {(priceRange[0] / 100).toLocaleString()} - Ksh {(priceRange[1] / 100).toLocaleString()}

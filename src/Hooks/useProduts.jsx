@@ -58,6 +58,20 @@ const useProducts = () => {
     }
   });
 
+  // On getting faceted search sideBar filter
+  const getProductFilters = (params) => useQuery({
+    queryKey: ['product-filters', params],
+    queryFn: async () => {
+      const { data } = await Api.get('/buyer/products/filters', {
+        params
+      });
+
+      return data;
+    },
+
+    staleTime: 1000 * 60
+  });
+
   // On getting featured products
   const getFeaturedProducts = (limit = 8) => {
     return useQuery({
@@ -304,6 +318,7 @@ const useProducts = () => {
     getSmartRecommendations,
     createProduct,
     approveProducts,
+    getProductFilters,
     rejectProducts,
     updateProduct,
     deleteProduct

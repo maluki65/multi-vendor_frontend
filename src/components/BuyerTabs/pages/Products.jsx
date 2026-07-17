@@ -19,7 +19,8 @@ function Products() {
 
   const [selectedProductBrand, setSelectedProductBrand] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 1000000]);
+  const [priceRange, setPriceRange] = useState([0, 1000000 * 100]);
+  const [initialized, setInitialized] = useState(false);
   const [sortOrder, setSortOrder] = useState('newest');
   const [brandSearch, setBrandSearch] = useState('');
   const [sortOpen, setSortOpen] = useState(false);
@@ -29,6 +30,11 @@ function Products() {
 
   const page = parseInt(searchParams.get('page')) || 1;
   const search = searchParams.get('search') || '';
+
+  const { getAllProducts, getFeaturedProducts, getProductFilters } = useProducts();
+  const { data: featuredData, isLoading: featureLoading, isError: featureError } = getFeaturedProducts(8);
+
+  const featuredProducts = featuredData?.products || [];
 
   const filters = useMemo(() => {
     const f = {
@@ -52,13 +58,22 @@ function Products() {
     return f;
   }, [page, search, selectedProductBrand, selectedCategories, priceRange, brandSearch, sortOrder]);
 
-  const { getAllProducts, getFeaturedProducts } = useProducts();
   const { data, isLoading, isError } = getAllProducts(filters);
-  const { data: featuredData, isLoading: featureLoading, isError: featureError } = getFeaturedProducts(8);
-
-  const featuredProducts = featuredData?.products || [];
+  const { data: filterData } = getProductFilters(filters);  
+  const serverPriceRange = filterData?.priceRange;
 
   //console.log('Featured', featuredProducts);
+
+  useEffect(() => {
+    if (!initialized && serverPriceRange) {
+      setPriceRange([
+        serverPriceRange.min,
+        serverPriceRange.max
+      ]);
+  
+      setInitialized(true);
+    }
+  }, [serverPriceRange, initialized]);
 
   useEffect(() => {
     setSearchParams(prev => {
@@ -110,7 +125,10 @@ function Products() {
           
           <div className='p-2 BuyerSideBAr'>
             <BuyerSideBar
-              products={data?.products || []}
+              products={products}
+              brands={filterData?.brands || []}
+              categories={filterData?.categories || []}
+              serverPriceRange={serverPriceRange}
               selectedProductBrand={selectedProductBrand}
               setSelectedProductBrand={setSelectedProductBrand}
               selectedCategories={selectedCategories}
