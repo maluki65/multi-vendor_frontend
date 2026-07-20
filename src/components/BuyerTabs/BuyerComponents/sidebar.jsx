@@ -67,12 +67,22 @@ function BuyerSideBar({
   const filteredBrands = useMemo(() => {
     const lower = (brandSearch || '').toLowerCase();
 
-    return brands.filter(
-      ({ name }) =>
-        typeof name === 'string' &&
-        name.toLowerCase().includes(lower)
+    const mergedBrands = [...brands];
+
+    selectedProductBrand.forEach((selected) => {
+      if (!mergedBrands.find((b) => b.name === selected)) {
+        mergedBrands.push({
+          name: selected,
+          count: 0
+        });
+      }
+    });
+
+    return mergedBrands.filter(
+      ({ name }) => 
+       typeof name === 'string' && name.toLowerCase().includes(lower)
     );
-  }, [brands, brandSearch]);
+  }, [brands, brandSearch, selectedProductBrand]);
 
   const debouncedBrandSearch = useCallback(
     debounce((val) => setBrandSearch(val), 300),
