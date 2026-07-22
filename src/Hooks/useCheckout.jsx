@@ -70,17 +70,24 @@ const useCheckout = (sessionId) => {
 
     onMutate: () => {
       const toastId = toast.loading('resuming checkout session...');
-      return toastId;
+      return { toastId };
     },
 
-    onSuccess: (session) => {
+    onSuccess: async(session, _, context) => {
+      toast.success('Checkout session resumed', { id: context.toastId });
+
       queryClient.setQueryData(['checkoutSessions', session._id], session);
+
+      await queryClient.invalidateQueries({
+        queryKey: ['checkoutSessions'],
+      });
+
       navigate(`/buyer/checkout/${session._id}`);
     },
 
-    onError: (error) => {
+    onError: (error, _, context) => {
       toast.error(
-        error?.response?.data?.message || 'Failed to resume checkout session'
+        error?.response?.data?.message || 'Failed to resume checkout session', { id: context.toastId }
       );
 
       console.error('Failed to resume checkout session', error);

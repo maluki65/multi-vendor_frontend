@@ -100,6 +100,10 @@
   display: none;
 }
 
+.cartSessions{
+  display: none;
+}
+
 @media print {
   .no-print {
     display: none !important;
@@ -209,7 +213,7 @@
   .cartItem, .wishPrice, .wishDate{
     font-size: 1.3em;
   }
-  .CartVenItem, .sortOrderText{
+  .CartVenItem, .sortOrderText, .checkoutTable td span{
     font-size: 1em;
   }
   .orderTrackingWhite, .orderSuccess{
@@ -274,6 +278,15 @@
     align-items: start;
     gap: 15px;
   }
+  .checkoutTable{
+    display: none;
+  }
+  .cartSessions{
+    display: grid;
+  }
+  .cartSessions{
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media(max-width: 626px){
@@ -286,9 +299,6 @@
   }
   .CanCards, .simProd{
     grid-template-columns: repeat(3, 1fr);
-  }
-  .cartSessions{
-    grid-template-columns: repeat(2, 1fr);
   }
   .ProdVendor673, .reviewSec, .AccPassContainer{
     width: 90%;
