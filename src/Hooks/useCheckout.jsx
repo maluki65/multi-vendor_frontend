@@ -54,13 +54,20 @@ const useCheckout = (sessionId) => {
     enabled: !!sessionId,
   });
 
-  const getAllCheckoutSessions = useQuery({
-    queryKey: ['checkoutSessions'],
-    queryFn: async () => {
-      const { data } = await Api.get('/checkout/sessions');
-      return data.sessions;
-    },
-  });
+  const getAllCheckoutSessions = (page = 1, limit = 10) => 
+    useQuery({
+      queryKey: ['checkoutSessions', page, limit],
+      queryFn: async () => {
+        const { data } = await Api.get('/checkout/sessions', {
+          params: {
+            page,
+            limit
+          },
+        });
+        return data;
+      },
+      keepPreviousData: true,
+    });
 
   const resumeCheckout = useMutation({
     mutationFn: async (sessionId) => {

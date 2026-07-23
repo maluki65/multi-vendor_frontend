@@ -26,44 +26,23 @@ const useCart = () => {
   
     onMutate: async (payload) => {
       await queryClient.cancelQueries({ queryKey: cartKey });
-  
+    
       const previousCart = queryClient.getQueryData(cartKey);
-  
+    
       const productId = payload.productId.toString();
       const quantity = payload.quantity || 1;
-  
+    
       const unitPrice =
         payload.discount > 0 ? payload.discountPrice : payload.price;
-  
+    
       queryClient.setQueryData(cartKey, (old) => {
-        if (!old) {
-          return {
-            cart: {
-              vendors: [{
-                vendorId: payload.vendorId,
-                vendorName: payload.vendorName || 'Vendor',
-                items: [{
-                  _id: productId,
-                  productId,
-                  quantity,
-                  price: payload.price,
-                  discount: payload.discount || 0,
-                  discountPrice: payload.discountPrice || 0,
-                  name: payload.name,
-                  image: payload.image,
-                  description: payload.description,
-                  productQuantity: payload.productQuantity,
-                }],
-                vendorTotal: unitPrice * quantity,
-              }],
-            },
-            totalItems: quantity,
-          };
-        }
-  
+        
+        // On handling empty cart after clearCart
+        const currentVendors = old?.cart?.vendors || [];
+    
         let found = false;
-  
-        const updatedVendors = old.cart.vendors.map((vendor) => {
+    
+        const updatedVendors = currentVendors.map((vendor) => {
           const updatedItems = vendor.items.map((item) => {
             if (item.productId.toString() === productId) {
               found = true;
@@ -74,7 +53,7 @@ const useCart = () => {
             }
             return item;
           });
-  
+    
           return {
             ...vendor,
             items: updatedItems,
@@ -85,7 +64,8 @@ const useCart = () => {
             }, 0),
           };
         });
-  
+    
+        // If product was not found, add it as a new vendor/item
         if (!found) {
           updatedVendors.push({
             vendorId: payload.vendorId,
@@ -105,19 +85,15 @@ const useCart = () => {
             vendorTotal: unitPrice * quantity,
           });
         }
-  
+    
         return {
-          ...old,
-          cart: {
-            ...old.cart,
-            vendors: updatedVendors,
-          },
+          cart: { vendors: updatedVendors },
           totalItems: updatedVendors
             .flatMap(v => v.items)
             .reduce((sum, i) => sum + i.quantity, 0),
         };
       });
-  
+    
       const toastId = toast.loading('Adding to cart...');
       return { previousCart, toastId };
     },
