@@ -1,16 +1,15 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import '../BuyerTabs.css';
 import { Inner } from '../../../commons';
 import { useParams } from 'react-router-dom';
 import useProducts from '../../../Hooks/useProduts';
 import { detail } from '../../../assets';
 import { CiSquareChevLeft, CiSquareChevRight } from 'react-icons/ci';
-import AttributeConfig from '../../../commons/Data/AttributConfig';
 import { SiGithubsponsors } from 'react-icons/si';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
-import { ReviewSection, Footer } from '../../';
-import { Toaster } from 'react-hot-toast';
+import { ReviewSection, Footer, AdLoader } from '../../';
+import { Toaster, toast } from 'react-hot-toast';
 import ProductSkeleton from '../BuyerItems/productSkeleton';
 import { MdRemoveShoppingCart, MdError } from "react-icons/md";
 import ProductCard from '../BuyerItems/productCard';
@@ -18,8 +17,8 @@ import useCart from '../../../Hooks/useCart';
 import useWishlist from '../../../Hooks/useWishlist';
 
 function ProductDetails() {
+  const [selectedAttributes, setSelectedAttributes] = useState({});
   const [activeTab, setActiveTab] = useState('Vendor');
-  const [selectedColor, setSelectedColor] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const { slugId } = useParams();
@@ -80,29 +79,6 @@ function ProductDetails() {
     purple: "#800080",
     orange: "#ffa500",
   };
-  
-  const normalizedAttributes = useMemo(() => {
-    if (!product?.attributes) return {};
-  
-    return product.attributes.reduce((acc, attr) => {
-      if (!attr?.name) return acc;
-  
-      let name = attr.name;
-  
-      if (Array.isArray(name)) {
-        name = name[0];
-      }
-  
-      if (typeof name === "object") {
-        name = name?.en || "";
-      }
-  
-      name = String(name).toLowerCase().trim();
-  
-      acc[name] = attr.value;
-      return acc;
-    }, {});
-  }, [product]);
 
   const getValues = (value) => {
     if (!value) return [];
@@ -116,32 +92,48 @@ function ProductDetails() {
     return [];
   };
 
-  const renderAttribute = (key, value) => {
-    const config = AttributeConfig?.[key];
-    if (!config || !value) return null;
+  const handleAttributeSelection = (attributeName, value) => {
+    setSelectedAttributes(prev => ({
+      ...prev,
+      [attributeName]: value,
+    }));
+  };
 
-    const values = getValues(value);
+  const renderAttribute = (attribute) => {
+    if (!attribute?.attributeId) return null;
 
-    if (config.type === 'color') {
+    const key = attribute.attributeId.name
+     ?.toLowerCase()
+     ?.trim();
+
+    const label = attribute.attributeId.name;
+    const type = attribute.attributeId.type;
+
+    const values = getValues(attribute.value);
+
+    if (!values.length) return null;
+
+    if (type === 'color') {
       return (
-        <div
-          key={key} 
-          className='flex flex-wrap items-center gap-3 mt-4'>
-            <span className='font-semibold text-base text-dark'>
-              {config.label}:
+        <div 
+          key={attribute._id}
+          className='flex flex-wrap items-center gap-3 mt-4'
+          >
+            <span className='font-semibold text-base taex-dark'>
+              {label}:
             </span>
 
-            {values.map((color, index) => {
+            {values.map((color) => {
               const normalized = color.toLowerCase();
 
               return (
                 <div
-                  key={index}
+                  key={color}
                   title={color}
-                  onClick={() => setSelectedColor(normalized)}
-                  className={`w-5 h-5 rounded-full cursor-pointer ${
-                   selectedColor === normalized
-                    ? 'ring-2 ring-black'
+                  onClick={() => handleAttributeSelection(key, color)}
+                  className={`w-5 h-5 rounded-full cursor-pointer transition ${
+                   selectedAttributes[key] === color
+                    ? 'ring-2 ring-primary scale-110'
                     : ''
                   }`}
                   style={{
@@ -150,41 +142,93 @@ function ProductDetails() {
                 />
               );
             })}
-          </div>
+        </div>
       );
     }
 
     return (
-      <div
-        key={key}
-        className='flex items-center gap-2 mt-4'>
+      <div 
+        key={attribute._id}
+        className='flex items-center gap-2 mt-4'
+        >
           <span className='font-semibold text-base text-dark'>
-            {config.label}:
+            {label}:
           </span>
-          <span
-            className='text-gary-600'>
-              {values.join(',')}
-          </span>
+
+          <div className='flex flex-wrap gap-2'>
+            {values.map((option) => (
+              <button
+                key={option}
+                onClick={() => handleAttributeSelection(key, option)}
+                className={`px-3 py-1 cursor-pointer rounded-full text-sm border transition ${
+                 selectedAttributes[key] === option
+                   ? 'bg-primary text-white border-primary'
+                   : 'bg-white border-gray-300'
+                  }`}
+                >
+                  {option}
+              </button>
+            ))}
+          </div>
       </div>
-    );
-  };
+    )
+  }
 
   const productTags = Array.isArray(product?.tags)
    ? product.tags
    : (product?.tags || '').split(',').map(tag => tag.trim());
 
-  if (isLoading) {
-    return (
-      <Inner>
-        <div className="p-10 text-center">Loading...</div>
-      </Inner>
-    );
-  } 
-
   const detailTabs = [
     { name: 'Vendor', link: '/vendor' },
     { name: 'Review', link: '/review' },
   ]
+
+  useEffect(() => {
+    if (!product?.attributes?.length) return;
+
+    const defaultAtt = {};
+
+    product.attributes.forEach((attribute) => {
+      const key = attribute.attributeId?.name?.toLowerCase().trim();
+
+      const values = getValues(attribute.value);
+
+      if (key && values.length) {
+        defaultAtt[key] = values[0];
+      }
+    });
+
+    setSelectedAttributes(defaultAtt);
+  }, [product]);
+
+  if (isLoading) {
+    return (
+      <Inner>
+        <div className='fixed inset-0 flex items-center justify-center bg-white/90 z-50'>
+          <AdLoader/>
+        </div>
+      </Inner>
+    );
+  } 
+
+  /*const validateSelections = () => {
+    const required = product?.attributes?.map((attribute) => ({
+      key: attribute.attributeId?.name?.toLowerCase().trim(),
+      label: attribute.attributeId?.name,
+    })) || [];
+
+    const missing = required.filter(
+      (attribute) => !selectedAttributes[attribute.key]
+    );
+
+    if (missing.length) {
+      toast.error(`Please select ${missing.map(attr => attr.label).join(',')} attribute(s)`);
+
+      return false;
+    }
+
+    return true;
+  }*/
 
   //console.log("normalizedAttributes:", normalizedAttributes);
   //console.log("AttributeConfig:", AttributeConfig);
@@ -303,14 +347,11 @@ function ProductDetails() {
             </div>
 
             <div className='mt-4'>
-              {Object.entries(normalizedAttributes).map(([key, value]) => {
-                //console.log("key:", key, "value:", value, "config:", AttributeConfig[key]);
-                return (
-                  <React.Fragment key={key}>
-                    {renderAttribute(key, value)}
-                  </React.Fragment>
-                );
-              })}
+              {product?.attributes?.map((attribute) => (
+                <React.Fragment key={attribute._id}>
+                  {renderAttribute(attribute)}
+                </React.Fragment>
+              ))}
             </div>
 
             <div className='flex flex-wrap items-center gap-2 my-3'>
@@ -335,6 +376,8 @@ function ProductDetails() {
 
               <button
                 onClick={() => {
+                  // if (!validateSelections()) return;
+
                   addToCart.mutate({
                     productId: product._id,
                     vendorId: product.vendorId?._id,
@@ -347,6 +390,7 @@ function ProductDetails() {
                     discount: product.discount,
                     discountPrice: product.discountPrice,
                     productQuantity: product.quantity,
+                    selectedAttributes,
                   });
                 }}
                 className='rounded-full px-4 py-2 cursor-pointer bg-primary text-white'

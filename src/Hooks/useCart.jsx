@@ -44,13 +44,24 @@ const useCart = () => {
     
         const updatedVendors = currentVendors.map((vendor) => {
           const updatedItems = vendor.items.map((item) => {
-            if (item.productId.toString() === productId) {
+            const sameAttributes =
+              Object.keys(item.selectedAttributes || {}).length ===
+                Object.keys(payload.selectedAttributes || {}).length &&
+              Object.entries(payload.selectedAttributes || {}).every(
+                ([key, value]) => item.selectedAttributes?.[key] === value
+              );
+
+            if (
+              item.productId.toString() === productId && sameAttributes
+            ) {
               found = true;
+
               return {
                 ...item,
                 quantity: item.quantity + quantity,
               };
             }
+
             return item;
           });
     
@@ -74,13 +85,18 @@ const useCart = () => {
               _id: productId,
               productId,
               quantity,
+
               price: payload.price,
               discount: payload.discount || 0,
               discountPrice: payload.discountPrice || 0,
+
               name: payload.name,
               image: payload.image,
               description: payload.description,
+
               productQuantity: payload.productQuantity,
+
+              selectedAttributes: payload.selectedAttributes || {},
             }],
             vendorTotal: unitPrice * quantity,
           });

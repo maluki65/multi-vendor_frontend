@@ -47,12 +47,47 @@ function ProductCard({ product }) {
       : product?.description;
   }, [product?.description]);
 
+  const getDefaultAttributes = () => {
+    if (!product?.attributes?.length) return {};
+
+    const selected = {};
+
+    product.attributes.forEach((attribute) => {
+      const key = attribute.attributeId?.name
+        ?.toLowerCase()
+        ?.trim();
+
+      if (!key) return;
+
+      let values = [];
+
+      if (Array.isArray(attribute.values)) {
+        values = attribute.value;
+      } else if (typeof attribute.value === 'string') {
+        values = attribute.value
+         .split(',')
+         .map(v => v.trim())
+         .filter(Boolean);
+      }
+
+      if (values.length) {
+        selected[key] = values[0];
+      }
+    });
+
+    return selected;
+  }
+
   const handleCart = (e) => {
     e.stopPropagation();
+
+    const selectedAttributes = getDefaultAttributes();
 
     addToCart.mutate({
       productId: product._id,
       quantity: 1,
+      selectedAttributes,
+      
       name: product.name,
       price: product.price,
       image: product.MainIMg,
