@@ -19,7 +19,6 @@ function Checkout() {
   const { getAllCheckoutSessions, resumeCheckout } = useCheckout();
   const { data, isLoading, isError } = getAllCheckoutSessions(page, limit);
 
-  //console.log('all sessions:', sessions);
   const totalPages = data?.totalPages || 1;
   const sessions = data?.sessions || [];
   const navigate = useNavigate();
@@ -118,6 +117,8 @@ function Checkout() {
         return 'bg-gray-400 text-white';
     }
   };
+
+  //console.log('all sessions:', sessions);
 
   useEffect(() => {
     const handleClickOutside = (e) => {

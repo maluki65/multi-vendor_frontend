@@ -78,7 +78,22 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
 
                                     <div className=''>
                                       <p className='font-semibold cartItem'>{item?.name}</p>
-                                      <p className='text-sm text-gray-500 CartVenItem'>Vendor item</p>
+                                      <div className='flex flex-wrap gap-2 mt-1'>
+                                        {Object.entries(item?.selectedAttributes || {}).map(([key, value]) => (
+                                          <span
+                                            key={key}
+                                            className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full attributeCart'
+                                            >
+                                              <span className='font-medium capitalize'>
+                                                {key}:
+                                              </span>
+                                              {' '}
+                                              <span className=''>
+                                                {value}
+                                              </span>
+                                            </span>
+                                        ))}
+                                      </div>
                                     </div>
                                   </td>
                                   
@@ -170,6 +185,22 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
 
                             <div className='flex flex-col gap-2'>
                               <p className='text-sm text-gray-500'>{item.description}</p>
+                              <div className='flex flex-wrap gap-2 mt-1'>
+                                {Object.entries(item?.selectedAttributes || {}).map(([key, value]) => (
+                                  <span
+                                    key={key}
+                                    className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full attributeCart'
+                                    >
+                                      <span className='font-medium capitalize'>
+                                        {key}:
+                                      </span>
+                                      {' '}
+                                      <span className=''>
+                                        {value}
+                                      </span>
+                                    </span>
+                                ))}
+                              </div>
                               <div className='flex items-center gap-2 DisCardText'>
                                 {item?.discount > 0 ? (
                                   <>

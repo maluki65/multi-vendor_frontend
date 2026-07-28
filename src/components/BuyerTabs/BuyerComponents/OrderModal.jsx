@@ -270,6 +270,22 @@ function OrderModal({ isOpen, onClose, order, onTrack, onInvoice, type }) {
                                     <h3 className='text-dark font-semibold'>
                                       {product?.name}
                                     </h3>
+                                    <div className='flex flex-wrap gap-2 mt-1'>
+                                      {Object.entries(product?.selectedAttributes || {}).map(([key, value]) => (
+                                        <span
+                                          key={key}
+                                          className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full attributeCart'
+                                          >
+                                            <span className='font-medium capitalize'>
+                                              {key}:
+                                            </span>
+                                            {' '}
+                                            <span className=''>
+                                              {value}
+                                            </span>
+                                          </span>
+                                      ))}
+                                    </div>
                                     <p className='text-gray-500 text-sm'>
                                       Qty: {product?.quantity}
                                     </p>

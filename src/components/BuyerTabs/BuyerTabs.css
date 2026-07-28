@@ -213,7 +213,7 @@
   .cartItem, .wishPrice, .wishDate{
     font-size: 1.3em;
   }
-  .CartVenItem, .sortOrderText, .checkoutTable td span{
+  .CartVenItem, .sortOrderText, .checkoutTable td span, .attributeCart{
     font-size: 1em;
   }
   .orderTrackingWhite, .orderSuccess{

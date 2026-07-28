@@ -32,7 +32,7 @@ function Cart() {
 
   const shippingAddress = profile?.profile?.addresses?.[0];
 
-  //console.log('Cart items:', cart);
+  console.log('Cart items:', cart);
   //console.log('profile', profile)
 
   const canCheckOut = Boolean(

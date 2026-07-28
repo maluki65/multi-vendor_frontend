@@ -687,7 +687,25 @@ function Orders() {
                       <tr 
                         key={item._id}
                         className=''>
-                          <td className='text-sm text-gray-700 py-2'>{item?.name}</td>
+                          <td className='text-sm text-gray-700 py-2 flex flex-col gap-2'>
+                            {item?.name}
+                            <div className='flex flex-wrap gap-2 mt-1'>
+                              {Object.entries(item?.selectedAttributes || {}).map(([key, value]) => (
+                                <span
+                                  key={key}
+                                  className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full attributeCart'
+                                  >
+                                    <span className='font-medium capitalize'>
+                                      {key}:
+                                    </span>
+                                    {' '}
+                                    <span className=''>
+                                      {value}
+                                    </span>
+                                  </span>
+                              ))}
+                            </div>
+                          </td>
                           <td className='text-sm text-gray-700 py-2 text-center'>{item?.quantity}</td>
                           <td className='text-sm text-gray-700 py-2 text-end'>ksh {(item?.price / 100).toLocaleString()}</td>
                       </tr>
