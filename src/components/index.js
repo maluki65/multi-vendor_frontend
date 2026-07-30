@@ -19,7 +19,7 @@ export { default as AddAdmin } from './Tabs/AddAdmin';
 export { default as Users } from './Tabs/Users';
 export { default as CreateVendorProfile } from './ProfileForm/createVendorProfile';
 export { default as CreateBuyerProfile } from './ProfileForm/createBuyerProfile';
-export { default as VendorVerification } from './Tabs/vendorVerification';
+export { default as VendorKyc } from './Tabs/VendorKyc';
 export { default as Approvals } from './Tabs/Approvals';
 export { default as AdminVerifications } from './Tabs/AdminVerification';
 export { default as VerifyDoc } from './Modals/verifyDoc';

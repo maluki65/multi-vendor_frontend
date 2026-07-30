@@ -30,7 +30,7 @@ export const menuRoleItems = {
     { label: 'Products', value: 'products', icon: FiShoppingBag, link: '?tab=myproducts'},
     { label: 'Orders', value: 'orders', icon: RiShoppingCartLine, requiresApproval: true, link: "?tab=orders" },
     { label: 'Wallet', value: 'wallet', icon: LiaWalletSolid, requiresApproval: true, link: "?tab=payments" },
-    { label: 'Verification', value: 'verification', icon: MdOutlineDomainVerification, requiresApproval: true, link: "?tab=verification" },
+    { label: 'kyc', value: 'kyc', icon: MdOutlineDomainVerification, requiresApproval: true, link: "?tab=kyc" },
     { label: 'Settings', value: 'vendorSettings', icon: IoSettingsOutline, link: "?tab=settings"},
   ],
  Buyer: [

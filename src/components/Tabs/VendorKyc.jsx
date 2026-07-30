@@ -3,16 +3,16 @@ import './Tabs.css';
 import { CgProfile } from "react-icons/cg";
 import { VendorTerms } from '../../commons';
 import { toast, Toaster } from 'react-hot-toast';
-import useVerification from '../../Hooks/useVerification';
-import UploadVerificationImgs from '../../utils/verificationDoc';
+import useKyc from '../../Hooks/useKyc';
+import UploadKycImgs from '../../utils/kycDocs';
 import { motion, AnimatePresence } from 'framer-motion';
 
-function VendorVerification() {
-  const { getMyVerification, submitVerification, resubmitVerification, getAllVerification } = useVerification();
-  const verification = getMyVerification.data;
-  const isLoading = getMyVerification.isLoading;
+function VendorKyc() {
+  const { getMykyc, submitKyc, resubmitKyc, getAllVerification } = useKyc();
+  const kyc = getMykyc.data;
+  const isLoading = getMykyc.isLoading;
 
-  const [verificationFiles, setVerificationFiles] = useState([]);
+  const [kycFiles, setKycFiles] = useState([]);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [signature, setSignature] = useState('');
@@ -24,14 +24,14 @@ function VendorVerification() {
   // On preventing memory leaks
   useEffect(() => {
     return () => {
-      verificationFiles.forEach((item) =>
+      kycFiles.forEach((item) =>
       URL.revokeObjectURL(item.preview)
     )};
-  }, [verificationFiles]);
+  }, [kycFiles]);
 
-  if (isLoading) return <p>Loading verification info...</p>
+  if (isLoading) return <p>Loading kyc info...</p>
 
-  const vendorUser = verification?.verificationId;
+  const vendorUser = kyc?.kycId;
   const userStatus = vendorUser?.status || 'pending'
 
   if (userStatus === 'approved') {
@@ -41,7 +41,7 @@ function VendorVerification() {
          Your vendor account is approved
         </h3>
         <p className='text-sm text-green-700'>
-          You are verified! You can now manage your store and listings.
+          Your kyc has been approved, you can now manage your store and listings.
         </p>
         <div className='mt-4 space-y-1'>
           <p><strong>Store Name:</strong> {vendorUser.storeName} </p>
@@ -61,7 +61,7 @@ function VendorVerification() {
           transition={{ duration: 0.3 }}
           className='p-4 bg-yellow-50 border border-green-300 rounded-lg'>
             <h3 className='font-medium text-green-800 mb-2'>
-              Verification for this profile is already submitted. Awaiting Admin approval.
+              Kyc for this profile is already submitted. Awaiting Admin approval.
             </h3>
         </motion.div>
       </AnimatePresence>
@@ -91,10 +91,10 @@ function VendorVerification() {
   const handleVerifyImgChange = (e) => {
     let files = Array.from(e.target.files);
 
-    if (files.length + verificationFiles.length > 4) {
+    if (files.length + kycFiles.length > 4) {
       toast.error('maximum 4 images allowed');
       //setImgErr('maximum 4 images allowed');
-      files = files.slice(0, 4 - verificationFiles.length);
+      files = files.slice(0, 4 - kycFiles.length);
     }
 
     const validFiles = files.filter(
@@ -113,14 +113,14 @@ function VendorVerification() {
       preview: URL.createObjectURL(file),
     }));
 
-    setVerificationFiles((prev) => [
+    setKycFiles((prev) => [
       ...prev,
       ...newFiles
     ]);
   };
 
   const removeImage = (indexToRemove) => {
-    setVerificationFiles((prev) => {
+    setKycFiles((prev) => {
       const updated = [...prev];
 
       URL.revokeObjectURL(updated[indexToRemove].preview);
@@ -136,34 +136,34 @@ function VendorVerification() {
     if (!termsAccepted)
       return toast.error('You must accept vendor agreement!');
   
-    if (verificationFiles.length === 0)
-      return toast.error('Please upload your verification documents!');
+    if (kycFiles.length === 0)
+      return toast.error('Please upload your kyc documents!');
   
-    const toastId = toast.loading('Submitting verification documents...');
+    const toastId = toast.loading('Submitting kyc documents...');
   
     try {
-      const uploadedFiles = await UploadVerificationImgs(
-        verificationFiles.map(item => item.file)
+      const uploadedFiles = await UploadKycImgs(
+        kycFiles.map(item => item.file)
       );
   
-      const verificationFilesPayload = uploadedFiles.map(f => ({
+      const kycFilesPayload = uploadedFiles.map(f => ({
         url: f.url,
         fileId: f.fileId,
       }));
   
       const payload = {
-        verificationFiles: verificationFilesPayload,
+        kycFiles: kycFilesPayload,
         termsConditions: termsAccepted,
         signature,
       };
   
       const onSuccess = () => {
         toast.success(
-          'Verification submitted successfully!',
+          'Kyc submitted successfully!',
           { id: toastId }
         );
   
-        setVerificationFiles([]);
+        setKycFiles([]);
         setSignature('');
         setTermsAccepted(false);
       };
@@ -171,18 +171,18 @@ function VendorVerification() {
       const onError = (error) => {
         toast.error(
           error?.response?.data?.message ||
-          'Failed to submit verification!',
+          'Failed to submit kyc!',
           { id: toastId }
         );
       };
   
       if (userStatus === 'rejected') {
-        resubmitVerification.mutate(payload, {
+        resubmitKyc.mutate(payload, {
           onSuccess,
           onError,
         });
       } else {
-        submitVerification.mutate(payload, {
+        submitKyc.mutate(payload, {
           onSuccess,
           onError,
         });
@@ -190,7 +190,7 @@ function VendorVerification() {
   
     } catch (error) {
       toast.error(
-        'Failed to upload verification documents!',
+        'Failed to upload kyc documents!',
         { id: toastId }
       );
     }
@@ -200,7 +200,7 @@ function VendorVerification() {
       <Toaster position='top-right' reverseOrder={false} />
       <div className='mx-auto p-4 bg-yellow-50 border border-yellow-300 rounded-lg verifyCon'>
         <h3 className='text-lg font-semibold mb-4'>
-          {userStatus === 'rejected' ? 'Resubmit your verification' : 'Vendor Verification'}
+          {userStatus === 'rejected' ? 'Resubmit your kyc' : 'Vendor kyc'}
         </h3>
 
         {userStatus === 'rejected' && vendorUser.rejectionReason && (
@@ -251,13 +251,13 @@ function VendorVerification() {
                   className='hidden'
                 />
               </div>
-              {verificationFiles.length > 0 && (
+              {kycFiles.length > 0 && (
                 <div className='flex flex-wrap gap-2 mt-3'>
-                  {verificationFiles.map((item, index) => (
+                  {kycFiles.map((item, index) => (
                     <div key={index} className='relative'>
                       <img
                         src={item.preview}
-                        alt={`verification-${index}`}
+                        alt={`kyc-${index}`}
                         className='w-24 h-20 object-cover rounded shadow-md'
                       />
 
@@ -330,9 +330,9 @@ function VendorVerification() {
           <button 
             type='submit'
             className='px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 disabled:opacity-50 cursor-pointer'
-            disabled={submitVerification.isLoading || resubmitVerification.isLoading}
+            disabled={submitKyc.isLoading || resubmitKyc.isLoading}
             >
-              {userStatus === 'rejected' ? 'Resubmit verification' : 'Submit verification'}
+              {userStatus === 'rejected' ? 'Resubmit kyc' : 'Submit kyc'}
             </button>
         </form>
       </div>
@@ -340,4 +340,4 @@ function VendorVerification() {
   );
 }
 
-export default VendorVerification
+export default VendorKyc

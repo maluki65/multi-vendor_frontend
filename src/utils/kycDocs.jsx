@@ -39,7 +39,7 @@ const uploadSingleImage =  async(file) => {
   };
 };
 
-const UploadVerificationImgs = async (files = []) => {
+const UploadKycImgs = async (files = []) => {
   if (!Array.isArray(files) || files.length === 0) return [];
 
   const uploads = files.map((file) => uploadSingleImage(file));
@@ -58,4 +58,4 @@ const UploadVerificationImgs = async (files = []) => {
   return results;
 }*/
 
-export default UploadVerificationImgs
+export default UploadKycImgs

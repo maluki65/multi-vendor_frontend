@@ -6,7 +6,7 @@ import { needsProfile } from '../../utils/userProfiles';
 import { getProfileFormByRole } from '../../utils/profileforms';
 import { useAuth } from '../../Context/AuthContext';
 import { useProfile } from '../../Hooks/useProfile';
-import { DashboardLayout, Overview, AddAdmin, Users, VendorVerification, Approvals, AdminVerifications, AddProducts, ProductCategory, VendorProducts, VendorOrders, VendorPayments, VendorSettings, VendorOverviewTab, AdminSettings, AdminPayments, BuyerDashboard } from '../../components';
+import { DashboardLayout, Overview, AddAdmin, Users, VendorKyc, Approvals, AdminVerifications, AddProducts, ProductCategory, VendorProducts, VendorOrders, VendorPayments, VendorSettings, VendorOverviewTab, AdminSettings, AdminPayments, BuyerDashboard } from '../../components';
 //import { AdLoader } from  '../../components'
 
 function Dashboard() {
@@ -51,14 +51,14 @@ function Dashboard() {
           storeName={user.storeName}          
           disableNavigation={adminNeedsProfile || isVendorPending || isVendorRejected}
           >
-          {isVendorRejected &&  tab !== 'verification' && (
+          {isVendorRejected &&  tab !== 'kyc' && (
             <div className='bg-red-100 border-red-400 text-red-800 p-4 rounded-lg my-4'>
               <h3 className='font-semibold'>
                 Vendor application rejected
               </h3>
               <p className='text-sm'>
                 Unfortunately your vendor application was not approved.
-                Please contact support or submit a new verification request.
+                Please contact support or submit a new kyc request.
               </p>
               <p className='mt-2 flex items-center gap-2 font-semibold text-sm'>
                 Reason: <span className='font-normal'>{me?.rejectionReason}</span>
@@ -66,16 +66,16 @@ function Dashboard() {
               <button 
               onClick={() => {
                 setSearchParams({
-                  tab: 'verification'
+                  tab: 'kyc'
                 })
               }}
               className='mt-2 px-4 py-2 bg-orange-500 text-white rounded cursor-pointer'
               >
-                Resubmit verification
+                Resubmit kyc
               </button>
             </div>
           )}
-          {isVendorPending &&  tab !== 'verification' &&(
+          {isVendorPending &&  tab !== 'kyc' &&(
             <div className='bg-yellow-100 border border-yellow-400 text-yellow-800 p-4 rounded-lg my-4'>
               <h3 className='font-semibold'>
                 Your vendor account is under review
@@ -86,12 +86,12 @@ function Dashboard() {
               <button 
               onClick={() => {
                 setSearchParams({
-                  tab: 'verification'
+                  tab: 'kyc'
                 })
               }}
               className='mt-2 px-4 py-2 bg-orange-500 text-white rounded cursor-pointer'
               >
-                Complete verification
+                Complete kyc
               </button>
             </div>
           )}
@@ -102,8 +102,8 @@ function Dashboard() {
 
           {(
             (!isVendorPending && !showProfileForm && !isVendorRejected) ||
-            (isVendorPending && tab === 'verification') ||
-            (isVendorRejected && tab === 'verification')
+            (isVendorPending && tab === 'kyc') ||
+            (isVendorRejected && tab === 'kyc')
           ) && (
             <>
               {/*tab === 'overview' && isAdmin && <Overview/>*
@@ -121,9 +121,9 @@ function Dashboard() {
               {tab === 'Add-admin' && <AddAdmin/>}
               {tab === 'Approvals' && <Approvals/>}
               {tab === 'Add-Product' && isVendorApproved && <AddProducts vendorId={userData._id}/>}
-              {tab === 'verification' && isVendor && <VendorVerification/>}
+              {tab === 'kyc' && isVendor && <VendorKyc/>}
               {tab === 'product-approval' && isAdmin && <ProductCategory/>}
-              {tab === 'verification' && me?.role === 'Admin' && <AdminVerifications/>}
+              {tab === 'kyc' && me?.role === 'Admin' && <AdminVerifications/>}
               {tab === 'products' && profile?._id && (
                 <VendorProducts vendorId={profile._id} />
               )}

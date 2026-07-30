@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { LuAlarmClock } from "react-icons/lu";
 import { FaFileContract } from "react-icons/fa";
 import { VerifyDoc, RejectVendorModal, AdLoader } from '..';
-import useVerification from '../../Hooks/useVerification';
+import useKyc from '../../Hooks/useKyc';
 import useVendorAction from '../../Hooks/useVendorAction';
 import usePendingVendors  from '../../Hooks/usePendingVendors';
 import { MdOutlineProductionQuantityLimits, MdOutlineErrorOutline } from "react-icons/md";
@@ -15,12 +15,12 @@ function Approvals() {
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [selectedVendorId, setSelectedVendorId] = useState(null);
 
-  const { getVerificationByUserId } = useVerification();
+  const { getKycByUserId } = useKyc();
   
   const { data, isLoading: isDataLoading, isError } = usePendingVendors();
   const { handleVendorActions, isLoading: isActionLoading } = useVendorAction();
 
-  const vendorVerificationQuery = getVerificationByUserId(selectedVendorId);
+  const VendorKycQuery = getKycByUserId(selectedVendorId);
 
   const getFirstTwoChars = (name) => {
     return name.slice(0,2).toUpperCase()
@@ -160,16 +160,16 @@ function Approvals() {
             <VerifyDoc
               isOpen={verifyModal}
               onClose={() => setVerifyModal(false)}
-              title='Vendor verification documents'
+              title='Vendor kyc documents'
               >
-                {vendorVerificationQuery.isLoading ? (
+                {VendorKycQuery.isLoading ? (
                   <p>Loading docs...</p>
-                ) : vendorVerificationQuery.isError ? (
+                ) : VendorKycQuery.isError ? (
                   <p className='text-red-600'>Failed to load documents</p>
-                ): vendorVerificationQuery.data?.verificationFiles?.length > 0 ? (
+                ): VendorKycQuery.data?.kycFiles?.length > 0 ? (
                   <div className='flex flex-col gap-2'>
                     <div className='grid grid-cols-2 gap-2 verifyImg '>
-                      {vendorVerificationQuery.data.verificationFiles.map((file, idx) => (
+                      {VendorKycQuery.data.kycFiles.map((file, idx) => (
                         <img 
                           key={idx}
                           src={file.url}
@@ -181,17 +181,17 @@ function Approvals() {
                     <div className='bg-gray-100 p-3 rounded-lg'>
                       <p className='text-sm text-gray-500 AppSign'>Signature</p>
                       <p className='text-dark font-medium wrap-break-words'>
-                        {vendorVerificationQuery.data.signature}
+                        {VendorKycQuery.data.signature}
                       </p>
                     </div>
                     
                     <div className='bg-gray-100 p-3 rounded-lg'>
                       <p className='text-sm text-gray-600'>Terms & Conditions</p>
-                      <p className={`font-medium ${vendorVerificationQuery.data.termsConditions 
+                      <p className={`font-medium ${VendorKycQuery.data.termsConditions 
                         ? 'text-green-600'
                         : 'text-red-600'
                         }`}>
-                          {vendorVerificationQuery.data.termsConditions
+                          {VendorKycQuery.data.termsConditions
                             ? 'Accepted'
                             : 'Note Accepted'
                           }
