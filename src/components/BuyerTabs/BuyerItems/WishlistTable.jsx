@@ -48,12 +48,12 @@ function WishlistTable({ wishlist, totalWishlistItems, isLoading, isError, remov
                       {wishlist.map((item) => {
                         return (
                           <tr
-                            key={item._id}
+                            key={item.wishlistItemId}
                             className='border-b border-gray-300'>
                               <td className='p-4 flex items-center gap-4'>
                                 <button
                                   onClick={() => 
-                                  handleRemoveFromWishlist(item._id)}
+                                  handleRemoveFromWishlist(item.wishlistItemId)}
                                   className='text-gray-500 hover:text-red-500 cursor-pointer'>
                                     <FaTimes className='CartIcon' />
                                 </button>
@@ -66,7 +66,22 @@ function WishlistTable({ wishlist, totalWishlistItems, isLoading, isError, remov
 
                                 <div className=''>
                                   <p className='font-semibold cartItem'>{item?.name}</p>
-                                  <p className='text-sm text-gray-500 CartVenItem'>Vendor item</p>
+                                  <div className='flex flex-wrap gap-2 my-1'>
+                                    {Object.entries(item?.selectedAttributes || {}).map(([key, value]) => (
+                                      <span
+                                        key={key}
+                                        className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full attributeCart'
+                                        >
+                                          <span className='font-medium capitalize'>
+                                            {key}:
+                                          </span>
+                                          {' '}
+                                          <span className=''>
+                                            {value}
+                                          </span>
+                                        </span>
+                                    ))}
+                                  </div>
                                 </div>
                               </td>
 
@@ -116,8 +131,13 @@ function WishlistTable({ wishlist, totalWishlistItems, isLoading, isError, remov
                                       discount: item.discount,
                                       discountPrice: item.discountPrice,
                                       productQuantity: item.quantity,
+                                      selectedAttributes: item.selectedAttributes,
+                                    },
+                                    {
+                                      onSuccess: () => {
+                                        handleRemoveFromWishlist(item.wishlistItemId);
+                                      },
                                     });
-                                    handleRemoveFromWishlist(item._id);
                                   }}
                                   className='bg-primary text-white rounded-full px-2 py-1 cursor-pointer wishDate'
                                   >
@@ -158,7 +178,7 @@ function WishlistTable({ wishlist, totalWishlistItems, isLoading, isError, remov
                   {wishlist.map((item) => {
                     return (
                       <div 
-                       key={item._id}
+                       key={item.wishlistItemId}
                        className='flex gap-2 rounded-md shadow-sm p-3'>
                         <img
                           src={item?.MainIMg}
@@ -180,6 +200,22 @@ function WishlistTable({ wishlist, totalWishlistItems, isLoading, isError, remov
                                 </span>
                               )}
                             </p>
+                          </div>
+                          <div className='flex flex-wrap gap-2 my-1'>
+                            {Object.entries(item?.selectedAttributes || {}).map(([key, value]) => (
+                              <span
+                                key={key}
+                                className='text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full attributeCart'
+                                >
+                                  <span className='font-medium capitalize'>
+                                    {key}:
+                                  </span>
+                                  {' '}
+                                  <span className=''>
+                                    {value}
+                                  </span>
+                                </span>
+                            ))}
                           </div>
                           <p className='text-gray-600 font-semibold'>
                             {item?.discount > 0 ? (
@@ -207,8 +243,13 @@ function WishlistTable({ wishlist, totalWishlistItems, isLoading, isError, remov
                                   discount: item.discount,
                                   discountPrice: item.discountPrice,
                                   productQuantity: item.quantity,
+                                  selectedAttributes: item.selectedAttributes,
+                                },
+                                {
+                                  onSuccess: () => {
+                                    handleRemoveFromWishlist(item.wishlistItemId);
+                                  },
                                 });
-                                handleRemoveFromWishlist(item._id);
                               }}
                               className='bg-primary text-white rounded-full px-2 py-2 text-xs cursor-pointer'
                               >
@@ -216,7 +257,7 @@ function WishlistTable({ wishlist, totalWishlistItems, isLoading, isError, remov
                             </button>
                             <div className='p-2 rounded-full text-white bg-orange-400 cursor-pointer hover:bg-red-500'>
                               <RiDeleteBin6Line
-                                onClick={() => handleRemoveFromWishlist(item._id)}
+                                onClick={() => handleRemoveFromWishlist(item.wishlistItemId)}
                                 className=''
                                 size={20}
                               />

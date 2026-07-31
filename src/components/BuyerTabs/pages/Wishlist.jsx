@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../BuyerTabs.css';
 import { Inner } from '../../../commons';
 import { cartB12 } from '../../../assets';
@@ -8,6 +8,8 @@ import { Toaster } from 'react-hot-toast';
 import { WishlistTable, Footer } from '../../';
 
 function Wishlist() {
+  const [page, setPage] = useState(1);
+
   const navigate = useNavigate();
   const { 
     wishlist,
@@ -16,7 +18,8 @@ function Wishlist() {
     isError,
     removeFromWishlist,
     clearWishlist,
-  } = useWishlist();
+    pagination,
+  } = useWishlist(page, 10);
 
   //console.log('Wishlist:', wishlist);
 
@@ -53,9 +56,28 @@ function Wishlist() {
           isError={isError}
           removeFromWishlist={removeFromWishlist}
         />
+        <div className='flex justify-between items-center CatNav mt-4'>
+            <button 
+              disabled={!pagination?.hasPrevPage} 
+              onClick={() => setPage((p) => p - 1)}
+              className='px-3 py-1 border rounded cursor-pointer disabled:opacity-50'
+                >
+                Prev
+            </button>
+            <span className=''>
+              Page {pagination?.page} of {pagination?.totalPages}
+            </span>
+            <button 
+              disabled={!pagination?.hasNextPage}
+              onClick={() => setPage((p) => p + 1)}
+              className='px-3 py-1 border rounded cursor-pointer disabled:opacity-50'
+              >
+                Next
+            </button>
+          </div>
       </section>
 
-      <secion className='min-h-[20vh] px-[3%] my-5 overflow-hidden'>
+      <section className='min-h-[20vh] px-[3%] my-5 overflow-hidden'>
         {wishlist.length > 0 ? (
           <div className='my-3 px-[3%] flex items-center justify-between clearWishlisxtCon'>
             <div className='flex gap-3 items-center'>
@@ -78,7 +100,7 @@ function Wishlist() {
         ): (
           <div className=''></div>
         )}
-      </secion>
+      </section>
 
       <div className='p-2'>
        <Footer/>

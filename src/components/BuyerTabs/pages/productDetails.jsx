@@ -407,6 +407,7 @@ function ProductDetails() {
                 onClick={() => {
                   addToWishlist.mutate({
                     productId: product._id,
+                    selectedAttributes,
                     name: product.name,
                     price: product.price,
                     MainIMg: product.MainIMg,
