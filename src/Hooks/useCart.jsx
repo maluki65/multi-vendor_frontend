@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from 'react-hot-toast';
 import { Api } from '../utils';
+const tempId = crypto.randomUUID();
 
 const useCart = () => {
   const queryClient = useQueryClient();
@@ -82,7 +83,8 @@ const useCart = () => {
             vendorId: payload.vendorId,
             vendorName: payload.vendorName || 'Vendor',
             items: [{
-              _id: productId,
+              cartItemId: tempId,
+              _id: tempId,
               productId,
               quantity,
 
@@ -152,8 +154,9 @@ const useCart = () => {
         if (!old?.cart?.vendors) return old;
 
         const updatedVendors = old.cart.vendors.map(vendor => {
+          //console.log(vendor.items);
           const items = vendor.items.map(item =>
-            item.productId.toString() === payload.productId.toString()
+            item.cartItemId.toString() === payload.cartItemId.toString()
               ? { ...item, quantity: payload.quantity }
               : item
           );
@@ -196,12 +199,12 @@ const useCart = () => {
 
   // On removing a product from cart
   const removeFromCart = useMutation({
-    mutationFn: async (productId) => {
-      const { data } = await Api.delete(`/cart/delete/${productId}`);
+    mutationFn: async (cartItemId) => {
+      const { data } = await Api.delete(`/cart/delete/${cartItemId}`);
       return data;
     },
 
-    onMutate: async (productId) => {
+    onMutate: async (cartItemId) => {
       await queryClient.cancelQueries({ queryKey: cartKey });
 
       const previousCart = queryClient.getQueryData(cartKey);
@@ -212,7 +215,7 @@ const useCart = () => {
         const updatedVendors = old.cart.vendors
           .map(v => {
             const items = v.items.filter(
-              i => i.productId.toString() !== productId.toString()
+              i => i.cartItemId.toString() !== cartItemId.toString()
             );
 
             return {
@@ -281,7 +284,12 @@ const useCart = () => {
   });
 
   const flattenedItems =
-    getCart.data?.cart?.vendors?.flatMap(v => v.items) || [];
+    getCart.data?.cart?.vendors?.flatMap(
+      v => v.items.map(item => ({
+        ...item,
+        cartItemId: item.cartItemId || item._id,
+      }))
+    ) || [];
 
   return {
     cart: {

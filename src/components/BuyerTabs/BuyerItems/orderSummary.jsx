@@ -21,7 +21,7 @@ function OrderSummary({ pricing, canCheckOut, totalItems, onCheckout, isLoading,
 
           return (
             <div
-              key={item.productId}
+              key={item.cartItemId || item._id}
               className='flex justify-between'
             >
               <div className='flex-1'>
@@ -31,6 +31,16 @@ function OrderSummary({ pricing, canCheckOut, totalItems, onCheckout, isLoading,
                     x {item.quantity}
                   </span>
                 </p>
+                <div className='flex flex-wrap gap-1 mt-1'>
+                  {Object.entries(item.selectedAttributes || {}).map(([key, value]) => (
+                    <span
+                      key={key}
+                      className='text-[11px] bg-gray-100 px-2 py-0.5 rounded-full'
+                    >
+                      {key}: {value}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               <p className='text-sm font-semibold whitespace-nowrap text-right'>

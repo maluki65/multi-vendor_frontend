@@ -8,7 +8,7 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
 
   const handleIncrease = (item) => {
     updateQuantity.mutate({
-      productId: item.productId,
+      cartItemId: item.cartItemId,
       quantity: item.quantity + 1,
     });
   };
@@ -16,7 +16,7 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
   const handleDecrease = (item) => {
     if (item.quantity <= 1) return;
     updateQuantity.mutate({
-      productId: item.productId,
+      cartItemId: item.cartItemId,
       quantity: item.quantity - 1,
     });
   };
@@ -61,11 +61,11 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
 
                             return(
                               <tr
-                                key={item._id}
+                                key={item.cartItemId}
                                 className='border-b border-gray-500'>
                                   <td className='p-4 flex items-center gap-4'>
                                     <button
-                                      onClick={() => handleRemove(item.productId)}
+                                      onClick={() => handleRemove(item.cartItemId)}
                                       className='text-gray-500 hover:text-red-500 cursor-pointer'>
                                         <FaTimes className='CartIcon' />
                                     </button>
@@ -173,7 +173,7 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
 
                       return (
                         <div 
-                          key={item._id}
+                          key={item.cartItemId}
                           className='flex flex-col gap-2 border-[1.5px] border-gray-300 shadow-md mb-2 rounded p-2'>
                           <div 
                            className='flex gap-2'>
@@ -236,7 +236,7 @@ function CartTable({ cart, updateQuantity, removeFromCart, isLoading, isError })
 
                           <div className='flex items-center justify-between subTotals'>
                             <p 
-                             onClick={() => handleRemove(item.productId)}
+                             onClick={() => handleRemove(item.cartItemId)}
                              className='flex items-center gap-2 cursor-pointer text-primary text-xs hover:underline'>
                               <MdDeleteOutline className='' size={20} />
                               Remove
