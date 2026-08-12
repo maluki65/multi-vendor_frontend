@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import '../BuyerTabs.css';
 import { Inner } from '../../../commons';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useProducts from '../../../Hooks/useProduts';
 import { detail } from '../../../assets';
 import { CiSquareChevLeft, CiSquareChevRight } from 'react-icons/ci';
 import { SiGithubsponsors } from 'react-icons/si';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RiVerifiedBadgeFill } from 'react-icons/ri';
-import { ReviewSection, Footer, AdLoader } from '../../';
+import { ReviewSection, Footer, AdLoader, StoreInfo } from '../../';
 import { Toaster, toast } from 'react-hot-toast';
 import ProductSkeleton from '../BuyerItems/productSkeleton';
 import { MdRemoveShoppingCart, MdError } from "react-icons/md";
@@ -65,6 +65,7 @@ function ProductDetails() {
    );
   };
 
+  const navigate = useNavigate();
 
   const colorMap = {
     black: "#000",
@@ -512,6 +513,15 @@ function ProductDetails() {
                       </p>
 
                       <button
+                        onClick={() => {
+                          const storeSlug = product?.vendorId?.store?.storeSlug;
+
+                          if (!storeSlug) {
+                            toast.error('Store information unavailable');
+                            return;
+                          }
+                          navigate(`/buyer/store/${storeSlug}`);
+                        }}
                         className='px-3 py-2 rounded-full bg-dark text-white text-base cursor-pointer hover:text-secondary'>
                           Visit Store
                         </button>

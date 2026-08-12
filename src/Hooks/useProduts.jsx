@@ -159,6 +159,26 @@ const useProducts = () => {
     }
   });
 
+  // On getting store info
+  const getStore = (storeSlug) => useQuery({
+    queryKey: ['store', storeSlug],
+    queryFn: async () => {
+      const { data } = await Api.get(`/buyer/store/${storeSlug}`);
+      return data;
+    },
+
+    enabled: !!storeSlug,
+    staleTime: 1000 * 60 * 5,
+
+    onError: (error) => {
+      toast.error(
+        error?.response?.data?.message || 'Failed to fetch store information'
+      );
+
+      console.error('Failed to fetch store information', error);
+    }
+  });
+
   const createProduct = useMutation({
     mutationFn: async (payload) => {
       const { data } = await Api.post('/vendor/add-product/', payload);
@@ -321,7 +341,8 @@ const useProducts = () => {
     getProductFilters,
     rejectProducts,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getStore,
   };
 };
 

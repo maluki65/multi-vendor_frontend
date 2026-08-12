@@ -83,3 +83,4 @@ export { default as OrderModal } from './BuyerTabs/BuyerComponents/OrderModal';
 export { default as AddressModal } from './BuyerTabs/BuyerComponents/AddressModal';
 export { default as BuyerPrompt } from './BuyerTabs/pages/buyerPrompt';
 export { default as OrderSuccess } from './BuyerTabs/pages/orderSuccess';
+export { default as StoreInfo } from './BuyerTabs/pages/storeInfo';
