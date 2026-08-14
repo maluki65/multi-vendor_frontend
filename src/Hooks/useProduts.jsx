@@ -160,10 +160,16 @@ const useProducts = () => {
   });
 
   // On getting store info
-  const getStore = (storeSlug) => useQuery({
-    queryKey: ['store', storeSlug],
+  const getStore = (storeSlug, sortOrder = 'newest', page = 1, limit = 12 ) => useQuery({
+    queryKey: ['store', storeSlug, sortOrder, page, limit],
     queryFn: async () => {
-      const { data } = await Api.get(`/buyer/store/${storeSlug}`);
+      const { data } = await Api.get(`/buyer/store/${storeSlug}`, {
+        params: {
+          sort: sortOrder,
+          page,
+          limit,
+        },
+      });
       return data;
     },
 
@@ -176,7 +182,7 @@ const useProducts = () => {
       );
 
       console.error('Failed to fetch store information', error);
-    }
+    },
   });
 
   const createProduct = useMutation({
