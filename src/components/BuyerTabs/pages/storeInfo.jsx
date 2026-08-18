@@ -60,7 +60,7 @@ function StoreInfo() {
             backgroundRepeat: 'no-repeat'
           }}>
             <div className='absolute bottom-5 right-8 z-10'>
-              <div className='w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-md bg-white'>
+              <div className='w-28 h-28 rounded-full border-4 border-white overflow-hidden shadow-md bg-white storeLogo'>
                 <img
                   src={vendor?.logo || logoIcon}
                   alt={vendor?.businessInfo?.legalName}
@@ -72,25 +72,25 @@ function StoreInfo() {
         </section>
 
         <section className='px-[2%] my-3 overflow-hidden min-h-[30vh]'>
-          <div className='grid grid-cols-[35%_65%] gap-2 items-center'>
+          <div className='grid grid-cols-[35%_65%] gap-2 items-center storeDescription'>
             <h1 className='px-3 py-2 rounded-full border-[1.4px] font-semibold border-dark w-fit m-3 hover:bg-gray-200 hover:text-primary hover:border-orange-400 flex items-center gap-2'>
               About {vendor?.businessInfo?.legalName}
               <span className=''>
                 {vendor?.verification?.isverified === true ? (
-                  <RiVerifiedBadgeFill className='text-primary' size={23} />
+                  <RiVerifiedBadgeFill className='text-primary storeVerified' size={23} />
                 ) : (
                   <p className=''/>
                 )}
               </span>
             </h1>
             <p className='text-right px-4 font-medium text-dark tracking-wide'>
-            Fascism is a far-right, authoritarian, and ultranationalist political ideology. It features a dictatorial leader, strict societal control, and the violent crushing of any opposition. The state or race comes before individual rights.
-            </p> {/*{vendor?.store?.description}*/}
+              {vendor?.store?.description}
+            </p> {/* Fascism is a far-right, authoritarian, and ultranationalist political ideology. It features a dictatorial leader, strict societal control, and the violent crushing of any opposition. The state or race comes before individual rights.*/}
           </div>
         </section>
 
-        <section className='px-[2%] my-5 overflow-hidden min-h-[30vh] bg-gray-200 py-5'>
-          <h1 className='text-primary text-lg font-semibold text-right underline'> 
+        <section className='px-[2%] my-5 overflow-hidden min-h-[30vh] bg-gray-200 py-5 storeProducts'>
+          <h1 className='text-primary text-lg font-semibold text-right underline storeProducts'> 
             Products 
           </h1>
           <div className='relative px-3'>
@@ -157,7 +157,7 @@ function StoreInfo() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -40 }}
                   transition={{ duration: 0.3 }}
-                  className='grid grid-cols-4 gap-2'>
+                  className='grid grid-cols-4 gap-2 storeItems'>
                     {products.length > 0 ? (
                       products.map((product, index) => (
                         <motion.div
@@ -182,7 +182,7 @@ function StoreInfo() {
           </div>
 
           {pagination?.totalPages > 1 && (
-            <div className='flex justify-between items-center my-3 px-3'>
+            <div className='flex justify-between items-center my-3 px-3 storePagination'>
               <button
                 disabled={!pagination.hasPreviousPage || isFetching}
                 onClick={() => setPage(prev => prev - 1)}
